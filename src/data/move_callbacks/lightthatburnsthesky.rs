@@ -25,7 +25,7 @@ pub fn on_modify_move(
 
     if atk > spa {
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.category = String::from("Physical");
+            active_move.borrow_mut().category = String::from("Physical");
         }
     }
 

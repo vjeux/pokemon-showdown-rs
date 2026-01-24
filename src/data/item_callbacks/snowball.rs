@@ -17,7 +17,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
     // if (move.type === 'Ice')
     let is_ice = {
         if let Some(ref active_move) = battle.active_move {
-            active_move.move_type == "Ice"
+            active_move.borrow().move_type == "Ice"
         } else {
             false
         }

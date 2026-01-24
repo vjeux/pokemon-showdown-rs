@@ -51,12 +51,12 @@ pub fn on_modify_move(
     let terrain_id = &battle.field.terrain;
 
     // move.secondaries = [];
-    let active_move = match &mut battle.active_move {
+    let active_move = match &battle.active_move {
         Some(m) => m,
         None => return EventResult::Continue,
     };
 
-    active_move.secondaries = vec![];
+    active_move.borrow_mut().secondaries = vec![];
 
     // if (this.field.isTerrain('electricterrain')) {
     if *terrain_id == ID::from("electricterrain") {
@@ -69,7 +69,7 @@ pub fn on_modify_move(
             status: Some("par".to_string()),
             ..Default::default()
         };
-        active_move.secondaries.push(secondary);
+        active_move.borrow_mut().secondaries.push(secondary);
     } else if *terrain_id == ID::from("grassyterrain") {
         // move.secondaries.push({
         //     chance: 30,
@@ -80,7 +80,7 @@ pub fn on_modify_move(
             status: Some("slp".to_string()),
             ..Default::default()
         };
-        active_move.secondaries.push(secondary);
+        active_move.borrow_mut().secondaries.push(secondary);
     } else if *terrain_id == ID::from("mistyterrain") {
         // move.secondaries.push({
         //     chance: 30,
@@ -95,7 +95,7 @@ pub fn on_modify_move(
             boosts: Some(boosts),
             ..Default::default()
         };
-        active_move.secondaries.push(secondary);
+        active_move.borrow_mut().secondaries.push(secondary);
     } else if *terrain_id == ID::from("psychicterrain") {
         // move.secondaries.push({
         //     chance: 30,
@@ -110,7 +110,7 @@ pub fn on_modify_move(
             boosts: Some(boosts),
             ..Default::default()
         };
-        active_move.secondaries.push(secondary);
+        active_move.borrow_mut().secondaries.push(secondary);
     }
 
     EventResult::Continue

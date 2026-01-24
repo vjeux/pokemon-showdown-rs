@@ -154,8 +154,8 @@ impl Pokemon {
             }
 
             // Get move category and id
-            let (move_category, move_id_str) = if let Some(active_move) = &battle.active_move {
-                (active_move.category.clone(), active_move.id.as_str().to_string())
+            let (move_category, move_id_str) = if let Some(ref active_move) = battle.active_move {
+                (active_move.borrow().category.clone(), active_move.borrow().id.as_str().to_string())
             } else if let Some(move_data) = battle.dex.moves().get_by_id(move_id) {
                 (move_data.category.clone(), move_id.as_str().to_string())
             } else {

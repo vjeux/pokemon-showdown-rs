@@ -16,7 +16,7 @@ use crate::event::EventResult;
 pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // Get the active move flags
     let is_punch = match &battle.active_move {
-        Some(active_move) => active_move.flags.punch,
+        Some(active_move) => active_move.borrow().flags.punch,
         None => return EventResult::Continue,
     };
 
@@ -37,11 +37,11 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize
 /// }
 pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // Get mutable reference to active move
-    if let Some(ref mut active_move) = battle.active_move {
+    if let Some(ref active_move) = battle.active_move {
         // if (move.flags['punch'])
-        if active_move.flags.punch {
+        if active_move.borrow().flags.punch {
             // delete move.flags['contact'];
-            active_move.flags.contact = false;
+            active_move.borrow_mut().flags.contact = false;
         }
     }
 

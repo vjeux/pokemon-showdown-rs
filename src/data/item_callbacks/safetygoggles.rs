@@ -30,7 +30,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
     // Get active move
     let (has_powder_flag, move_name) = {
         if let Some(ref active_move) = battle.active_move {
-            (active_move.flags.powder, active_move.name.clone())
+            (active_move.borrow().flags.powder, active_move.borrow().name.clone())
         } else {
             return EventResult::Continue;
         }

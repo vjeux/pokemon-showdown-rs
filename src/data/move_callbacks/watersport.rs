@@ -62,8 +62,8 @@ pub mod condition {
         let move_type = battle
             .active_move
             .as_ref()
-            .map(|m| m.move_type.as_str())
-            .unwrap_or("");
+            .map(|m| m.borrow().move_type.clone())
+            .unwrap_or_default();
 
         if move_type == "Fire" {
             battle.debug("water sport weaken");

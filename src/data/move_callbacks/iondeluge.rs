@@ -52,15 +52,15 @@ pub mod condition {
         // }
         let (is_normal, move_name) = {
             if let Some(ref active_move) = battle.active_move {
-                (active_move.move_type.eq_ignore_ascii_case("Normal"), active_move.name.clone())
+                (active_move.borrow().move_type.eq_ignore_ascii_case("Normal"), active_move.borrow().name.clone())
             } else {
                 return EventResult::Continue;
             }
         };
 
         if is_normal {
-            if let Some(ref mut active_move) = battle.active_move {
-                active_move.move_type = String::from("Electric");
+            if let Some(ref active_move) = battle.active_move {
+                active_move.borrow_mut().move_type = String::from("Electric");
             }
             battle.debug(&format!("{}'s type changed to Electric", move_name));
         }

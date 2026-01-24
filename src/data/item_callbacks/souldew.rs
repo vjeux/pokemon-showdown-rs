@@ -26,7 +26,7 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, pokemon_pos: (usize,
             .map(|s| s.num)
             .unwrap_or(0);
         let move_type = battle.active_move.as_ref()
-            .map(|m| m.move_type.clone())
+            .map(|m| m.borrow().move_type.clone())
             .unwrap_or_default();
         (species_num, move_type)
     };

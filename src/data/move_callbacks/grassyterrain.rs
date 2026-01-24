@@ -79,7 +79,7 @@ pub mod condition {
                 ID::from("magnitude"),
             ];
 
-            if weakened_moves.contains(&id.id) {
+            if weakened_moves.contains(&id.borrow().id) {
                 let defender_grounded = {
                     let defender_pokemon = match battle.pokemon_at(defender.0, defender.1) {
                         Some(p) => p,
@@ -101,7 +101,7 @@ pub mod condition {
         }
 
         // if (move.type === 'Grass' && attacker.isGrounded()) {
-        let move_type = battle.active_move.as_ref().map(|m| m.move_type.clone());
+        let move_type = battle.active_move.as_ref().map(|m| m.borrow().move_type.clone());
 
         if let Some(ref type_id) = move_type {
             if type_id == "Grass" {

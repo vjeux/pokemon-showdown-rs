@@ -12,8 +12,8 @@ impl Battle {
     /// JavaScript (used in Magnitude, Electro Ball, etc.):
     ///   move.basePower = 150;
     pub fn modify_active_move_base_power(&mut self, base_power: i32) {
-        if let Some(ref mut active_move) = self.active_move {
-            active_move.base_power = base_power;
+        if let Some(ref active_move) = self.active_move {
+            active_move.borrow_mut().base_power = base_power;
         }
     }
 
@@ -23,8 +23,8 @@ impl Battle {
     /// JavaScript (used in Max Guard, Protect, etc.):
     ///   move.smartTarget = false;
     pub fn modify_active_move_smart_target(&mut self, smart_target: bool) {
-        if let Some(ref mut active_move) = self.active_move {
-            active_move.smart_target = Some(smart_target);
+        if let Some(ref active_move) = self.active_move {
+            active_move.borrow_mut().smart_target = Some(smart_target);
         }
     }
 

@@ -17,7 +17,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
     // if (move.type === 'Water')
     let is_water = {
         if let Some(ref active_move) = battle.active_move {
-            active_move.move_type == "Water"
+            active_move.borrow().move_type == "Water"
         } else {
             false
         }

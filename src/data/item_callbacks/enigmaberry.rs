@@ -15,7 +15,7 @@ use crate::Pokemon;
 ///         }
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let _move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let _move_id = active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
     // if (move && target.getMoveHitData(move).typeMod > 0)
     let target_pos = match target_pos {
         Some(pos) => pos,

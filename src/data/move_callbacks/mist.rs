@@ -37,7 +37,7 @@ pub mod condition {
         if let (Some(source), Some(target)) = (source_pos, target_pos) {
             // Check if the effect is a Move with infiltrates property
             let has_infiltrates = battle.active_move.as_ref()
-                .map(|m| m.infiltrates)
+                .map(|m| m.borrow().infiltrates)
                 .unwrap_or(false);
 
             if has_infiltrates {
@@ -84,7 +84,7 @@ pub mod condition {
             // }
             if show_msg {
                 let has_secondaries = battle.active_move.as_ref()
-                    .map(|m| !m.secondaries.is_empty())
+                    .map(|m| !m.borrow().secondaries.is_empty())
                     .unwrap_or(false);
 
                 if !has_secondaries {

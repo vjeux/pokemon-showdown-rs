@@ -43,7 +43,7 @@ pub fn on_hit(
         if !has_mirrorarmor {
             // delete move.selfSwitch;
             if let Some(ref mut active_move) = battle.active_move {
-                active_move.self_switch = None;
+                active_move.borrow_mut().self_switch = None;
             }
         }
     }

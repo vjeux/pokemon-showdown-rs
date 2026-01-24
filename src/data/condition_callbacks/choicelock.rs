@@ -35,14 +35,16 @@ pub fn on_start(
     };
 
     // if (!this.activeMove.id || this.activeMove.hasBounced || this.activeMove.sourceEffect === 'snatch') return false;
-    if active_move.id.as_str().is_empty() || active_move.has_bounced ||
-       active_move.source_effect.as_ref().map(|se| se.as_str() == "snatch").unwrap_or(false) {
+    let active_move_ref = active_move.borrow();
+    if active_move_ref.id.as_str().is_empty() || active_move_ref.has_bounced ||
+       active_move_ref.source_effect.as_ref().map(|se| se.as_str() == "snatch").unwrap_or(false) {
         return EventResult::Boolean(false);
     }
 
     // this.effectState.move = this.activeMove.id;
     // JavaScript: this.effectState.move = ...
-    let move_id = active_move.id.to_string();
+    let move_id = active_move_ref.id.to_string();
+    drop(active_move_ref);
 
     battle.with_effect_state(|state| {
         state.move_id = Some(move_id);

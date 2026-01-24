@@ -18,8 +18,8 @@ pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), _target
     // }
 
     if let Some(active_move) = battle.active_move.as_mut() {
-        if active_move.multi_accuracy {
-            active_move.multi_accuracy = false;
+        if active_move.borrow().multi_accuracy {
+            active_move.borrow_mut().multi_accuracy = false;
         }
     }
 

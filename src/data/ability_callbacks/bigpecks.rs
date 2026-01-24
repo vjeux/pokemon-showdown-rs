@@ -41,7 +41,7 @@ pub fn on_try_boost(
 
         // if (!(effect as ActiveMove).secondaries && effect.id !== 'octolock') {
         let has_secondaries = battle.active_move.as_ref()
-            .map(|m| !m.secondaries.is_empty())
+            .map(|m| !m.borrow().secondaries.is_empty())
             .unwrap_or(false);
 
         let is_octolock = battle.event.as_ref()

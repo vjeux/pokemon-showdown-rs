@@ -33,7 +33,7 @@ pub fn on_try_move(
 
     // Get move ID - for dig it should be "dig"
     let move_id = match &battle.active_move {
-        Some(active_move) => active_move.id.clone(),
+        Some(active_move) => active_move.borrow().id.clone(),
         None => return EventResult::Continue,
     };
 
@@ -127,7 +127,7 @@ pub mod condition {
         _source_pos: Option<(usize, usize)>,
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+        let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
         // if (['earthquake', 'magnitude'].includes(move.id)) {
         //     return;
         // }
@@ -152,7 +152,7 @@ pub mod condition {
         _target_pos: Option<(usize, usize)>,
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+        let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
         // if (move.id === 'earthquake' || move.id === 'magnitude') {
         //     return this.chainModify(2);
         // }

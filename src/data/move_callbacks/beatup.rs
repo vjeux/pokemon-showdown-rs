@@ -63,8 +63,8 @@ pub fn on_modify_move(
     // Store allies directly on the active move (not in effect_state which is temporary)
     // Set multihit on the active move
     if let Some(ref mut active_move) = battle.active_move {
-        active_move.allies = Some(allies);
-        active_move.multi_hit = Some(crate::dex::Multihit::Fixed(allies_count));
+        active_move.borrow_mut().allies = Some(allies);
+        active_move.borrow_mut().multi_hit = Some(crate::dex::Multihit::Fixed(allies_count));
     }
 
     EventResult::Continue
@@ -83,8 +83,8 @@ pub fn base_power_callback(
 ) -> EventResult {
     // Get allies from active move (not effect_state)
     // move.allies!.shift() - pop the first ally from the list
-    let ally_pos = if let Some(ref mut active_move) = battle.active_move {
-        if let Some(ref mut allies) = active_move.allies {
+    let ally_pos = if let Some(ref active_move) = battle.active_move {
+        if let Some(ref mut allies) = active_move.borrow_mut().allies {
             if !allies.is_empty() {
                 Some(allies.remove(0))
             } else {

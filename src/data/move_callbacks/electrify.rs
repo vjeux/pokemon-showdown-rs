@@ -75,7 +75,7 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_modify_type(battle: &mut Battle, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+        let move_id = active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
 
         // if (move.id !== 'struggle') {
         //     this.debug('Electrify making move type electric');
@@ -87,8 +87,8 @@ pub mod condition {
 
             // move.type = 'Electric';
             // Modify the active move's type directly
-            if let Some(ref mut active_move) = battle.active_move {
-                active_move.move_type = "Electric".to_string();
+            if let Some(ref active_move) = battle.active_move {
+                active_move.borrow_mut().move_type = "Electric".to_string();
             }
         }
 

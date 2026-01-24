@@ -22,12 +22,12 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
     let has_custom_damage = match &battle.active_move {
         Some(active_move) => {
             // Check if move has fixed damage value (like Dragon Rage's 40 damage)
-            if active_move.damage.is_some() {
+            if active_move.borrow().damage.is_some() {
                 true
             } else {
                 // Check if move has damage callback (like Counter, Seismic Toss)
                 // These are the moves registered in move_callbacks/mod.rs::dispatch_damage_callback
-                matches!(active_move.id.as_str(),
+                matches!(active_move.borrow().id.as_str(),
                     "comeuppance" | "counter" | "endeavor" | "finalgambit" |
                     "guardianofalola" | "metalburst" | "mirrorcoat" | "naturesmadness" |
                     "psywave" | "ruination" | "superfang"
@@ -44,7 +44,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
 
     // Clone the active_move for run_effectiveness (need owned copy to avoid borrow issues)
     let active_move_clone = match &battle.active_move {
-        Some(active_move) => active_move.clone(),
+        Some(active_move) => active_move.borrow().clone(),
         None => return EventResult::Continue,
     };
 

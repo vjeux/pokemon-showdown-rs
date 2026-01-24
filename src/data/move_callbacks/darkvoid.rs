@@ -37,7 +37,7 @@ pub fn on_try(
     let has_bounced = battle
         .active_move
         .as_ref()
-        .map(|m| m.has_bounced)
+        .map(|m| m.borrow().has_bounced)
         .unwrap_or(false);
 
     if is_darkrai || has_bounced {

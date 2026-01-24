@@ -38,8 +38,8 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
     }
 
     // move.accuracy = true;
-    if let Some(ref mut active_move) = battle.active_move {
-        active_move.accuracy = crate::dex::Accuracy::AlwaysHits;
+    if let Some(ref active_move) = battle.active_move {
+        active_move.borrow_mut().accuracy = crate::dex::Accuracy::AlwaysHits;
     }
 
     // if (!target.addVolatile('flashfire'))

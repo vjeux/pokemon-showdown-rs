@@ -53,7 +53,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     };
 
     // if (move.category === 'Physical' && (!toxicSpikes || toxicSpikes.layers < 2))
-    let move_category = active_move.map(|m| m.category.as_str()).unwrap_or("");
+    let move_category = active_move.map(|m| m.category.to_string()).unwrap_or_default();
 
     if move_category == "Physical" && toxic_spikes_layers < 2 {
         // this.add('-activate', target, 'ability: Toxic Debris');

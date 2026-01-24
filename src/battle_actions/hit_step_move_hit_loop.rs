@@ -152,8 +152,8 @@ pub fn hit_step_move_hit_loop(
         // move.hit = hit;
         active_move.hit = hit;
         // Also sync to battle.active_move so callbacks can read it
-        if let Some(ref mut battle_active_move) = battle.active_move {
-            battle_active_move.hit = hit;
+        if let Some(ref battle_active_move) = battle.active_move {
+            battle_active_move.borrow_mut().hit = hit;
         }
 
         // Handle smartTarget
@@ -538,8 +538,8 @@ pub fn hit_step_move_hit_loop(
             battle.damage(recoil_damage, Some(attacker_pos), Some(attacker_pos), Some(&Effect::condition(active_move.id.clone())), true);
             active_move.mindblown_recoil = false;
             // Also update battle.active_move since callbacks read from there, not the local active_move
-            if let Some(ref mut am) = battle.active_move {
-                am.mindblown_recoil = false;
+            if let Some(ref am) = battle.active_move {
+                am.borrow_mut().mindblown_recoil = false;
             }
 
             let hp_after = battle.pokemon_at(attacker_pos.0, attacker_pos.1)
@@ -762,8 +762,8 @@ pub fn hit_step_move_hit_loop(
     // Sync battle.active_move with local active_move before calling after_move_secondary_event
     // In JS, move is passed by reference so totalDamage is immediately visible.
     // In Rust, we clone, so we need to sync before callbacks read from battle.active_move.
-    if let Some(ref mut battle_active_move) = battle.active_move {
-        battle_active_move.total_damage = active_move.total_damage;
+    if let Some(ref battle_active_move) = battle.active_move {
+        battle_active_move.borrow_mut().total_damage = active_move.total_damage;
     }
     crate::battle_actions::after_move_secondary_event(battle, &valid_targets, attacker_pos, active_move);
 

@@ -13,8 +13,8 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), _source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
-    if let Some(move_data) = battle.dex.moves().get(move_id) {
+pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), _source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
+    if let Some(move_data) = battle.dex.moves().get(&move_id) {
         if move_data.flags.contains_key("bullet") {
             let target_ident = {
                 let target = match battle.pokemon_at(target_pos.0, target_pos.1) {

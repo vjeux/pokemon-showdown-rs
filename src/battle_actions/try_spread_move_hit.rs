@@ -153,7 +153,7 @@ pub fn try_spread_move_hit(
     if not_active && !targets.is_empty() {
         battle.set_active_move(Some(move_id.clone()), Some(pokemon_pos), Some(targets[0]));
         // Restore active_move to battle so event handlers can access it with all fields (including base_move)
-        battle.active_move = Some(active_move.clone());
+        battle.active_move = Some(crate::battle_actions::SharedActiveMove::new(active_move.clone()));
     }
 
     // Get first target for Try/PrepareHit events
@@ -218,8 +218,9 @@ pub fn try_spread_move_hit(
     // This is necessary because abilities like Parental Bond modify battle.active_move
     // during the PrepareHit event (e.g., setting multi_hit = 2)
     if let Some(ref updated_move) = battle.active_move {
-        active_move.multi_hit = updated_move.multi_hit.clone();
-        active_move.multi_hit_type = updated_move.multi_hit_type.clone();
+        let updated = updated_move.borrow();
+        active_move.multi_hit = updated.multi_hit.clone();
+        active_move.multi_hit_type = updated.multi_hit_type.clone();
     }
 
     // Final result check (same as before)
@@ -455,8 +456,8 @@ pub fn try_spread_move_hit(
     // Sync hit_targets to battle.active_move so ability callbacks like Magician can see it
     // We only update hit_targets, not the entire active_move, to avoid the nested move issue
     // described below.
-    if let Some(ref mut battle_active_move) = battle.active_move {
-        battle_active_move.hit_targets = target_list.clone();
+    if let Some(ref battle_active_move) = battle.active_move {
+        battle_active_move.borrow_mut().hit_targets = target_list.clone();
     }
 
     // NOTE: Do NOT restore battle.active_move here!

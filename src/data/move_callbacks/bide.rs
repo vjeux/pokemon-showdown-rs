@@ -256,7 +256,7 @@ pub mod condition {
 
             // Set the custom ActiveMove on the battle
             let bide_move_for_hit = bide_move.clone();
-            battle.active_move = Some(bide_move);
+            battle.active_move = Some(crate::battle_actions::SharedActiveMove::new(bide_move));
             battle.active_pokemon = Some(pokemon_pos);
             battle.active_target = Some(final_target);
 

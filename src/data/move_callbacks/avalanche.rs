@@ -30,12 +30,12 @@ pub fn base_power_callback(
 
     // Get the active move
     let move_id = match &battle.active_move {
-        Some(active_move) => &active_move.id,
+        Some(active_move) => active_move.borrow().id.clone(),
         None => return EventResult::Continue,
     };
 
     // Get the move data
-    let move_data = match battle.dex.moves().get_by_id(move_id) {
+    let move_data = match battle.dex.moves().get_by_id(&move_id) {
         Some(m) => m,
         None => return EventResult::Continue,
     };

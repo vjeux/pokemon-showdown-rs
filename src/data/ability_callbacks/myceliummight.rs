@@ -21,7 +21,7 @@ pub fn on_fractional_priority(battle: &mut Battle, _priority: i32, _pokemon_pos:
         mv.category == "Status"
     } else if let Some(ref mv) = battle.active_move {
         // Fallback to battle.active_move if available
-        mv.category == "Status"
+        mv.borrow().category == "Status"
     } else if let Some(ref event) = battle.event {
         // Try to get move category from event's source_effect
         if let Some(ref effect) = event.effect {

@@ -130,7 +130,8 @@ impl Battle {
 
                 // Create a temporary ActiveMove for the ModifyPriority event
                 // This is needed because ability callbacks like Prankster check battle.active_move
-                let temp_active_move = self.dex.get_active_move(move_id.as_str());
+                let temp_active_move = self.dex.get_active_move(move_id.as_str())
+                    .map(crate::battle_actions::SharedActiveMove::new);
                 let previous_active_move = self.active_move.take();
                 self.active_move = temp_active_move;
 
@@ -146,7 +147,7 @@ impl Battle {
 
                 // Check if prankster_boosted was set
                 let prankster_boosted = self.active_move.as_ref()
-                    .map(|m| m.prankster_boosted)
+                    .map(|m| m.borrow().prankster_boosted)
                     .unwrap_or(false);
                 if prankster_boosted {
                     move_action.prankster_boosted = true;

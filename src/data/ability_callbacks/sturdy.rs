@@ -14,12 +14,12 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), _source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), _source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
     use crate::battle::Arg;
 
     // if (move.ohko)
     let has_ohko = {
-        let move_data = match battle.dex.moves().get(move_id) {
+        let move_data = match battle.dex.moves().get(&move_id) {
             Some(m) => m,
             None => return EventResult::Continue,
         };

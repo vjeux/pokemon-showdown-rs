@@ -98,7 +98,7 @@ pub mod condition {
     ///         return false;
     ///     }
     /// }
-    pub fn on_foe_before_move(battle: &mut Battle, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+    pub fn on_foe_before_move(battle: &mut Battle, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
         use crate::dex_data::ID;
 
         // if (move.id !== 'struggle' && this.effectState.source.hasMove(move.id) && !move.isZOrMaxPowered) {
@@ -113,7 +113,7 @@ pub mod condition {
             battle
                 .active_move
                 .as_ref()
-                .map(|m| m.is_z_or_max_powered)
+                .map(|m| m.borrow().is_z_or_max_powered)
                 .unwrap_or(false)
         };
 

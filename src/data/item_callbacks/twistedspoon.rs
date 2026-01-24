@@ -22,7 +22,7 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize
     // if (move.type === 'Psychic') {
     //     return this.chainModify([4915, 4096]);
     // }
-    if active_move.move_type == "Psychic" {
+    if active_move.borrow().move_type == "Psychic" {
         // chain_modify accumulates the modifier - we return Continue, not the result
         battle.chain_modify_fraction(4915, 4096);
     }

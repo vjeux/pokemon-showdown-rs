@@ -36,7 +36,7 @@ pub fn base_power_callback(
     }
 
     // return move.basePower;
-    EventResult::Number(active_move.base_power)
+    EventResult::Number(active_move.borrow().base_power)
 }
 
 /// onPrepareHit(target, source, move) {
@@ -109,7 +109,7 @@ pub fn on_modify_type(
     // Set the move type to the tera type
     if let Some(tera_type_str) = tera_type {
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.move_type = tera_type_str;
+            active_move.borrow_mut().move_type = tera_type_str;
         }
     }
 
@@ -157,7 +157,7 @@ pub fn on_modify_move(
         // if (pokemon.terastallized && ...)
         if terastallized_value.is_some() && should_be_physical {
             // move.category = 'Physical';
-            active_move.category = "Physical".to_string();
+            active_move.borrow_mut().category = "Physical".to_string();
         }
 
         // if (pokemon.terastallized === 'Stellar')
@@ -166,7 +166,7 @@ pub fn on_modify_move(
             let mut boosts = crate::dex_data::BoostsTable::default();
             boosts.atk = -1;
             boosts.spa = -1;
-            active_move.self_boost = Some(boosts);
+            active_move.borrow_mut().self_boost = Some(boosts);
         }
     }
 

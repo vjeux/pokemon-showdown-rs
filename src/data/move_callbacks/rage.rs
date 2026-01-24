@@ -60,7 +60,7 @@ pub mod condition {
         if pokemon != source {
             // Get the active move
             let move_id = match &battle.active_move {
-                Some(active_move) => active_move.id.clone(),
+                Some(active_move) => active_move.borrow().id.clone(),
                 None => return EventResult::Continue,
             };
 

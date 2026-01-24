@@ -36,7 +36,7 @@ pub fn on_try_move(
         None => return EventResult::Continue,
     };
 
-    let removed = Pokemon::remove_volatile(battle, attacker, &move_id.id);
+    let removed = Pokemon::remove_volatile(battle, attacker, &move_id.borrow().id);
     if removed {
         return EventResult::Continue;
     }
@@ -45,7 +45,7 @@ pub fn on_try_move(
     let move_name = battle
         .active_move
         .as_ref()
-        .map(|m| m.name.clone())
+        .map(|m| m.borrow().name.clone())
         .unwrap_or_default();
     let attacker_ident = {
         let pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
@@ -70,7 +70,7 @@ pub fn on_try_move(
     }
 
     // attacker.addVolatile('twoturnmove', defender);
-    Pokemon::add_volatile(battle, attacker, ID::from("twoturnmove"), defender, Some(&Effect::move_(move_id.id.clone())), None, None);
+    Pokemon::add_volatile(battle, attacker, ID::from("twoturnmove"), defender, Some(&Effect::move_(move_id.borrow().id.clone())), None, None);
 
     // return null; - prevents the move from executing during charge turn
     EventResult::Null

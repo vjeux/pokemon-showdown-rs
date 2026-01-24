@@ -37,11 +37,11 @@ pub fn base_power_callback(
     // NOT null or undefined. MoveResult::Failed represents explicit false.
     // MoveResult::Null (from moves blocked by Protect) does NOT trigger this.
     if pokemon.move_last_turn_result == MoveResult::Failed {
-        let bp = active_move.base_power * 2;
+        let bp = active_move.borrow().base_power * 2;
         // this.debug('doubling Temper Flare BP due to previous move failure');
         battle.debug("doubling Temper Flare BP due to previous move failure");
         return EventResult::Number(bp);
     }
 
-    EventResult::Number(active_move.base_power)
+    EventResult::Number(active_move.borrow().base_power)
 }

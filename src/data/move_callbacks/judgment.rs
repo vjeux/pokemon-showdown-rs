@@ -61,7 +61,7 @@ pub fn on_modify_type(
 
     if let Some(plate_type) = on_plate_type {
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.move_type = plate_type;
+            active_move.borrow_mut().move_type = plate_type;
         }
     }
 

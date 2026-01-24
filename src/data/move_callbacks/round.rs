@@ -29,10 +29,11 @@ pub fn base_power_callback(
         None => return EventResult::Continue,
     };
 
-    let base_power = active_move.base_power;
+    let base_power = active_move.borrow().base_power;
     // JavaScript sets move.sourceEffect = sourceEffect.id (a string ID)
     // In Rust, this is stored in source_effect_name
     let is_round_source = active_move
+        .borrow()
         .source_effect_name
         .as_ref()
         .map(|se| se == "round")
@@ -71,12 +72,9 @@ pub fn on_try(
     //     }
     // }
     let queue_list = battle.queue.list.clone();
-    let active_move_id = {
-        let active_move = match &battle.active_move {
-            Some(active_move) => &active_move.id,
-            None => return EventResult::Continue,
-        };
-        active_move.clone()
+    let active_move_id = match &battle.active_move {
+        Some(active_move) => active_move.borrow().id.clone(),
+        None => return EventResult::Continue,
     };
 
     for action in queue_list.iter() {

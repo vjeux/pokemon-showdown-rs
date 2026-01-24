@@ -49,9 +49,9 @@ pub fn on_prepare_hit(battle: &mut Battle, _source_pos: Option<(usize, usize)>, 
 
     // move.multihit = 2;
     // move.multihitType = 'parentalbond';
-    if let Some(ref mut active_move) = battle.active_move {
-        active_move.multi_hit = Some(Multihit::Fixed(2));
-        active_move.multi_hit_type = Some("parentalbond".to_string());
+    if let Some(ref active_move) = battle.active_move {
+        active_move.borrow_mut().multi_hit = Some(Multihit::Fixed(2));
+        active_move.borrow_mut().multi_hit_type = Some("parentalbond".to_string());
     }
 
     EventResult::Continue
@@ -70,7 +70,7 @@ pub fn on_source_modify_secondaries(
     _source_pos: Option<(usize, usize)>,
     active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+    let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
     // if (move.multihitType === 'parentalbond' && move.id === 'secretpower' && move.hit < 2)
     let should_filter = if let Some(am) = active_move {
         am.multi_hit_type.as_deref() == Some("parentalbond")

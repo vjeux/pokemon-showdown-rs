@@ -190,7 +190,7 @@ pub fn on_modify_move(
 ) -> EventResult {
     // Get move info
     let (has_defrost, move_name) = match &battle.active_move {
-        Some(m) => (m.flags.defrost, m.name.clone()),
+        Some(m) => (m.borrow().flags.defrost, m.borrow().name.clone()),
         None => return EventResult::Continue,
     };
 

@@ -14,7 +14,7 @@ use crate::event::EventResult;
 pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, _pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>) -> EventResult {
     // if (!this.activeMove) return false;
     let active_move_id = match &battle.active_move {
-        Some(m) => m.id.as_str(),
+        Some(m) => m.borrow().id.to_string(),
         None => return EventResult::Boolean(false),
     };
 

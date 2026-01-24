@@ -42,7 +42,7 @@ pub fn on_try(
             };
 
             let active_move = match &battle.active_move {
-                Some(active_move) => active_move.id.to_string(),
+                Some(active_move) => active_move.borrow().id.to_string(),
                 None => return EventResult::Continue,
             };
 

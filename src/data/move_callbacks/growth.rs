@@ -31,13 +31,13 @@ pub fn on_modify_move(
     if effective_weather == "sunnyday" || effective_weather == "desolateland" {
         // move.boosts = { atk: 2, spa: 2 };
         // Modify the current move's boosts
-        if let Some(ref mut current_move) = battle.active_move {
+        if let Some(ref current_move) = battle.active_move {
             let boosts = crate::dex_data::BoostsTable {
                 atk: 2,
                 spa: 2,
                 ..Default::default()
             };
-            current_move.boosts = Some(boosts);
+            current_move.borrow_mut().boosts = Some(boosts);
         }
     }
 

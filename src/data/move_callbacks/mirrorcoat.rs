@@ -121,7 +121,7 @@ pub mod condition {
         source_pos: Option<(usize, usize)>,
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+        let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
         // if (move.id !== 'mirrorcoat') return;
         if move_id != "mirrorcoat" {
             return EventResult::Continue;

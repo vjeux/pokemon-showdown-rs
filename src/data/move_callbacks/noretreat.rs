@@ -54,7 +54,7 @@ pub fn on_try(
     if has_trapped {
         // delete move.volatileStatus;
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.volatile_status = None;
+            active_move.borrow_mut().volatile_status = None;
         }
     }
 

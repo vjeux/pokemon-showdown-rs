@@ -45,7 +45,7 @@ pub fn on_modify_move(
                 Some(m) => m,
                 None => return EventResult::Continue,
             };
-            active_move.accuracy = crate::dex::Accuracy::AlwaysHits;
+            active_move.borrow_mut().accuracy = crate::dex::Accuracy::AlwaysHits;
         }
     }
 

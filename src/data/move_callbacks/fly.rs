@@ -27,7 +27,7 @@ pub fn on_try_move(
 ) -> EventResult {
     // Get the active move
     let move_id = match &battle.active_move {
-        Some(active_move) => active_move.id.clone(),
+        Some(active_move) => active_move.borrow().id.clone(),
         None => return EventResult::Continue,
     };
 
@@ -100,7 +100,7 @@ pub mod condition {
         _source_pos: Option<(usize, usize)>,
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+        let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
         // if (['gust', 'twister', 'skyuppercut', 'thunder', 'hurricane', 'smackdown', 'thousandarrows'].includes(move.id)) {
         let valid_moves = [
             "gust",
@@ -112,7 +112,7 @@ pub mod condition {
             "thousandarrows",
         ];
 
-        if valid_moves.contains(&move_id) {
+        if valid_moves.contains(&move_id.as_str()) {
             // return;
             return EventResult::Continue;
         }
@@ -133,7 +133,7 @@ pub mod condition {
         _target_pos: Option<(usize, usize)>,
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+        let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
         // if (move.id === 'gust' || move.id === 'twister') {
         if move_id == "gust" || move_id == "twister" {
             // return this.chainModify(2);

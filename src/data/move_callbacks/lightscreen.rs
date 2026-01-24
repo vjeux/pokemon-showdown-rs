@@ -60,7 +60,7 @@ pub mod condition {
         target_pos: Option<(usize, usize)>,
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
-        let _move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+        let _move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
         let target = match target_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,
@@ -91,7 +91,7 @@ pub mod condition {
         // this.getCategory(move) === 'Special'
         let is_special = {
             if let Some(ref active_move) = battle.active_move {
-                active_move.category == "Special"
+                active_move.borrow().category == "Special"
             } else {
                 false
             }
@@ -112,7 +112,7 @@ pub mod condition {
         let infiltrates = battle
             .active_move
             .as_ref()
-            .map(|m| m.infiltrates)
+            .map(|m| m.borrow().infiltrates)
             .unwrap_or(false);
 
         if is_crit || infiltrates {

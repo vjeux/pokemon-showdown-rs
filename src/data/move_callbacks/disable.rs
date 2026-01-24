@@ -103,7 +103,7 @@ pub mod condition {
 
         // Check if pokemon === this.activePokemon && this.activeMove && !this.activeMove.isExternal
         let is_active_pokemon_with_internal_move = if let Some(active_pos) = battle.active_pokemon {
-            active_pos == pokemon && battle.active_move.as_ref().map(|m| !m.is_external).unwrap_or(false)
+            active_pos == pokemon && battle.active_move.as_ref().map(|m| !m.borrow().is_external).unwrap_or(false)
         } else {
             false
         };
@@ -280,7 +280,7 @@ pub mod condition {
     ///         return false;
     ///     }
     /// }
-    pub fn on_before_move(battle: &mut Battle, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+    pub fn on_before_move(battle: &mut Battle, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
         // if (!(move.isZ && move.isZOrMaxPowered) && move.id === this.effectState.move) {
         //     this.add('cant', attacker, 'Disable', move);
         //     return false;
@@ -298,7 +298,7 @@ pub mod condition {
                 let is_z_or_max_powered_z = battle
                     .active_move
                     .as_ref()
-                    .map(|m| m.is_z.is_some() && m.is_z_or_max_powered)
+                    .map(|m| m.borrow().is_z.is_some() && m.borrow().is_z_or_max_powered)
                     .unwrap_or(false);
 
                 // If it's a Z-move with max power, don't disable it

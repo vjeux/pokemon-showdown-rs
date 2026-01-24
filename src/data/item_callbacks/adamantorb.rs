@@ -25,10 +25,10 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, pokemon_pos: (usize,
             .unwrap_or(0);
 
         let move_type = battle.active_move.as_ref()
-            .map(|m| m.move_type.as_str())
-            .unwrap_or("");
+            .map(|m| m.borrow().move_type.clone())
+            .unwrap_or_default();
 
-        (species_num, move_type.to_string())
+        (species_num, move_type)
     };
 
     if species_num == 483 && (move_type == "Steel" || move_type == "Dragon") {

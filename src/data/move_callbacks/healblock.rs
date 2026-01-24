@@ -185,7 +185,7 @@ pub mod condition {
         _target_pos: Option<(usize, usize)>,
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+        let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
         use crate::dex_data::ID;
 
         let pokemon = pokemon_pos;
@@ -193,7 +193,7 @@ pub mod condition {
         // Check if move has heal flag
         // JavaScript: if (move.flags['heal'] && ...) - checks if flag is truthy, not just present
         let has_heal_flag = {
-            let move_id_obj = ID::from(move_id);
+            let move_id_obj = ID::from(move_id.clone());
             battle
                 .dex
                 .moves
@@ -204,7 +204,7 @@ pub mod condition {
 
         // Check if move is Z or Max move
         let (is_z, is_max) = if let Some(ref active_move) = battle.active_move {
-            (active_move.is_z.is_some(), active_move.is_max.is_some())
+            (active_move.borrow().is_z.is_some(), active_move.borrow().is_max.is_some())
         } else {
             (false, false)
         };
@@ -222,7 +222,7 @@ pub mod condition {
 
             // Get move name for display
             let move_name = {
-                let move_id_obj = ID::from(move_id);
+                let move_id_obj = ID::from(move_id.clone());
                 battle
                     .dex
                     .moves().get_by_id(&move_id_obj)
@@ -262,7 +262,7 @@ pub mod condition {
 
         // Get the active move ID
         let move_id = if let Some(ref active_move) = battle.active_move {
-            active_move.id.clone()
+            active_move.borrow().id.clone()
         } else {
             return EventResult::Continue;
         };
@@ -280,7 +280,7 @@ pub mod condition {
 
         // Check if move is Z or Max move
         let (is_z, is_max) = if let Some(ref active_move) = battle.active_move {
-            (active_move.is_z.is_some(), active_move.is_max.is_some())
+            (active_move.borrow().is_z.is_some(), active_move.borrow().is_max.is_some())
         } else {
             (false, false)
         };
@@ -376,7 +376,7 @@ pub mod condition {
 
             // Check if the active move is a Z-move
             if let Some(ref active_move) = battle.active_move {
-                if active_move.is_z.is_some() {
+                if active_move.borrow().is_z.is_some() {
                     return EventResult::Number(damage);
                 }
             }

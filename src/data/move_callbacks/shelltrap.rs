@@ -152,7 +152,7 @@ pub mod condition {
                 Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
-            active_move.category == "Physical"
+            active_move.borrow().category == "Physical"
         };
 
         if !is_ally && is_physical {

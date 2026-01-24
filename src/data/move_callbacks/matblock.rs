@@ -107,7 +107,7 @@ pub mod condition {
         let has_protect_flag = battle
             .active_move
             .as_ref()
-            .map(|m| m.flags.protect)
+            .map(|m| m.borrow().flags.protect)
             .unwrap_or(false);
 
         if !has_protect_flag {
@@ -115,8 +115,8 @@ pub mod condition {
             let move_id = battle
                 .active_move
                 .as_ref()
-                .map(|m| m.id.as_str())
-                .unwrap_or("");
+                .map(|m| m.borrow().id.to_string())
+                .unwrap_or_default();
             if move_id == "gmaxoneblow" || move_id == "gmaxrapidflow" {
                 return EventResult::Continue;
             }
@@ -125,14 +125,14 @@ pub mod condition {
             let is_z_or_max = battle
                 .active_move
                 .as_ref()
-                .map(|m| m.is_z.is_some() || m.is_max.is_some())
+                .map(|m| m.borrow().is_z.is_some() || m.borrow().is_max.is_some())
                 .unwrap_or(false);
 
             if is_z_or_max {
                 // Set zBrokeProtect in move hit data
-                if let Some(hit_data) = battle.get_move_hit_data_mut(target) {
+                battle.with_move_hit_data_mut(target, |hit_data| {
                     hit_data.z_broke_protect = true;
-                }
+                });
             }
 
             // return;
@@ -143,7 +143,7 @@ pub mod condition {
         let move_data = battle
             .active_move
             .as_ref()
-            .and_then(|m| battle.dex.moves().get_by_id(&m.id));
+            .and_then(|m| battle.dex.moves().get_by_id(&m.borrow().id));
 
         if let Some(m) = move_data {
             if m.target == "self" || m.category == "Status" {

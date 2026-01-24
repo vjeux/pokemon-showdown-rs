@@ -32,8 +32,8 @@ pub fn on_prepare_hit(
         let category = battle
             .active_move
             .as_ref()
-            .map(|m| m.category.as_str())
-            .unwrap_or("Special");
+            .map(|m| m.borrow().category.to_string())
+            .unwrap_or_else(|| "Special".to_string());
         let anim_str = format!("[anim] Shell Side Arm {}", category);
         battle.attr_last_move(&[&anim_str]);
     }
@@ -94,9 +94,9 @@ pub fn on_modify_move(
     //     move.flags.contact = 1;
     // }
     if physical > special || (physical == special && battle.random_chance(1.0, 2)) {
-        if let Some(active_move) = &mut battle.active_move {
-            active_move.category = String::from("Physical");
-            active_move.flags.contact = true;
+        if let Some(ref active_move) = battle.active_move {
+            active_move.borrow_mut().category = String::from("Physical");
+            active_move.borrow_mut().flags.contact = true;
         }
     }
 
@@ -125,8 +125,8 @@ pub fn on_hit(
         let category = battle
             .active_move
             .as_ref()
-            .map(|m| m.category.as_str())
-            .unwrap_or("Special");
+            .map(|m| m.borrow().category.to_string())
+            .unwrap_or_else(|| "Special".to_string());
         let hint_str = format!("{} Shell Side Arm", category);
         battle.hint(&hint_str, false, None);
     }

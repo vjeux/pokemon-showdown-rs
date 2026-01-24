@@ -19,7 +19,7 @@ use crate::event::EventResult;
 ///     this.actions.useMove(newMove, target, { target: source });
 ///     return null;
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
     use crate::pokemon::Pokemon;
 
     // if (this.effectState.target.activeTurns) return;
@@ -55,7 +55,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
 
         let target_semi_invuln = Pokemon::is_semi_invulnerable(battle, target_pos);
 
-        (active_move.has_bounced, active_move.flags.reflectable, target_semi_invuln)
+        (active_move.borrow().has_bounced, active_move.borrow().flags.reflectable, target_semi_invuln)
     };
 
     if has_bounced || !is_reflectable || target_semi_invulnerable {
@@ -66,14 +66,14 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
     // newMove.hasBounced = true;
     // newMove.pranksterBoosted = false;
     // Set has_bounced and pranksterBoosted = false on current active move
-    if let Some(ref mut active_move) = battle.active_move {
-        active_move.has_bounced = true;
-        active_move.prankster_boosted = false;
+    if let Some(ref active_move) = battle.active_move {
+        active_move.borrow_mut().has_bounced = true;
+        active_move.borrow_mut().prankster_boosted = false;
     }
 
     // this.actions.useMove(newMove, target, { target: source });
     // Reflect the move: Rebound holder (target) uses the move against the original source
-    let move_data = match battle.dex.moves().get(move_id).cloned() {
+    let move_data = match battle.dex.moves().get(&move_id).cloned() {
         Some(m) => m,
         None => return EventResult::Continue,
     };
@@ -104,7 +104,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
 ///     move.hasBounced = true; // only bounce once in free-for-all battles
 ///     return null;
 /// }
-pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
     use crate::pokemon::Pokemon;
 
     let target = match target_pos {
@@ -151,7 +151,7 @@ pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usiz
 
         let target_semi_invuln = Pokemon::is_semi_invulnerable(battle, target);
 
-        (active_move.has_bounced, active_move.flags.reflectable, target_semi_invuln)
+        (active_move.borrow().has_bounced, active_move.borrow().flags.reflectable, target_semi_invuln)
     };
 
     if has_bounced || !is_reflectable || target_semi_invulnerable {
@@ -163,9 +163,9 @@ pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usiz
     // newMove.pranksterBoosted = false;
     // move.hasBounced = true; // only bounce once in free-for-all battles
     // Set has_bounced and pranksterBoosted = false on current active move
-    if let Some(ref mut active_move) = battle.active_move {
-        active_move.has_bounced = true;
-        active_move.prankster_boosted = false;
+    if let Some(ref active_move) = battle.active_move {
+        active_move.borrow_mut().has_bounced = true;
+        active_move.borrow_mut().prankster_boosted = false;
     }
 
     // this.actions.useMove(newMove, this.effectState.target, { target: source });
@@ -176,7 +176,7 @@ pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usiz
     };
 
     // Reflect the move: Rebound holder uses the move against the original source
-    let move_data = match battle.dex.moves().get(move_id).cloned() {
+    let move_data = match battle.dex.moves().get(&move_id).cloned() {
         Some(m) => m,
         None => return EventResult::Continue,
     };

@@ -39,7 +39,7 @@ pub fn base_power_callback(
     let mut bp = battle
         .active_move
         .as_ref()
-        .map(|m| m.base_power)
+        .map(|m| m.borrow().base_power)
         .unwrap_or(0);
 
     // const iceballData = pokemon.volatiles['iceball'];
@@ -175,7 +175,7 @@ pub fn on_modify_move(
     if battle
         .active_move
         .as_ref()
-        .and_then(|m| m.source_effect.as_ref())
+        .and_then(|m| m.borrow().source_effect.clone())
         .is_some()
     {
         let target_loc = {

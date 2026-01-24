@@ -104,7 +104,7 @@ pub fn on_start(
 
         // JavaScript: if (effect.sourceEffect && this.dex.moves.get(effect.id).target !== 'self') {
         let source_effect_exists = battle.active_move.as_ref()
-            .and_then(|m| m.source_effect.as_ref())
+            .and_then(|m| m.borrow().source_effect.as_ref().cloned())
             .is_some();
 
         if source_effect_exists {

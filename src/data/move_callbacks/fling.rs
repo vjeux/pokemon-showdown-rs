@@ -176,7 +176,7 @@ pub fn on_prepare_hit(
 
     // move.basePower = item.fling.basePower;
     if let Some(ref mut active_move) = battle.active_move {
-        active_move.base_power = fling.base_power;
+        active_move.borrow_mut().base_power = fling.base_power;
     }
 
     // this.debug(`BP: ${move.basePower}`);
@@ -196,7 +196,7 @@ pub fn on_prepare_hit(
     // Store the item ID in the active_move so on_hit can access it
     // (battle.effect gets overwritten, but active_move persists)
     if let Some(ref mut active_move) = battle.active_move {
-        active_move.flung_item = Some(item_id.clone());
+        active_move.borrow_mut().flung_item = Some(item_id.clone());
     }
 
     // Get item.isBerry to handle berry case
@@ -247,20 +247,20 @@ pub fn on_prepare_hit(
     // The fling effect logic will be handled in on_hit callback via item.fling.effect
     else if fling.effect.is_none() {
         // else case - only add secondaries if no berry and no effect
-        if let Some(ref mut active_move) = battle.active_move {
+        if let Some(ref active_move) = battle.active_move {
             // if (!move.secondaries) move.secondaries = [];
             // (secondaries already exists as Vec, so we just push to it)
 
             // if (item.fling.status) { move.secondaries.push({ status: item.fling.status }); }
             if let Some(status) = fling.status {
-                active_move.secondaries.push(crate::dex::MoveSecondary {
+                active_move.borrow_mut().secondaries.push(crate::dex::MoveSecondary {
                     status: Some(status),
                     ..Default::default()
                 });
             }
             // else if (item.fling.volatileStatus) { move.secondaries.push({ volatileStatus: item.fling.volatileStatus }); }
             else if let Some(volatile_status) = fling.volatile_status {
-                active_move.secondaries.push(crate::dex::MoveSecondary {
+                active_move.borrow_mut().secondaries.push(crate::dex::MoveSecondary {
                     volatile_status: Some(volatile_status),
                     ..Default::default()
                 });
@@ -300,7 +300,7 @@ pub fn on_hit(
 
     // Get the flung item ID from active_move.flung_item (set in on_prepare_hit)
     let item_id = match &battle.active_move {
-        Some(active_move) => match &active_move.flung_item {
+        Some(active_move) => match &active_move.borrow().flung_item {
             Some(id) => {
                 debug_elog!("[FLING_ON_HIT] Flung item: {}", id.as_str());
                 id.clone()

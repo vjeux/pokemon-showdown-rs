@@ -20,7 +20,7 @@ pub fn on_prepare_hit(
     // if (move.type !== "Grass") {
     //     this.attrLastMove('[anim] Ivy Cudgel ' + move.type);
     // }
-    let move_type = battle.active_move.as_ref().map(|m| m.move_type.clone());
+    let move_type = battle.active_move.as_ref().map(|m| m.borrow().move_type.clone());
 
     if let Some(move_type) = move_type {
         if move_type != "Grass" {
@@ -81,7 +81,7 @@ pub fn on_modify_type(
 
     if let Some(new_type_str) = new_type {
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.move_type = new_type_str.to_string();
+            active_move.borrow_mut().move_type = new_type_str.to_string();
         }
     }
 

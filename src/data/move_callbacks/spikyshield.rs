@@ -155,12 +155,13 @@ pub mod condition {
                 Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
+            let am = active_move.borrow();
             (
-                active_move.flags.protect,
-                active_move.id.clone(),
-                active_move.is_z.is_some(),
-                active_move.is_max.is_some(),
-                active_move.smart_target,
+                am.flags.protect,
+                am.id.clone(),
+                am.is_z.is_some(),
+                am.is_max.is_some(),
+                am.smart_target,
             )
         };
 
@@ -172,9 +173,9 @@ pub mod condition {
 
             // if (move.isZ || move.isMax) target.getMoveHitData(move).zBrokeProtect = true;
             if is_z || is_max {
-                if let Some(hit_data) = battle.get_move_hit_data_mut(target) {
+                battle.with_move_hit_data_mut(target, |hit_data| {
                     hit_data.z_broke_protect = true;
-                }
+                });
             }
 
             // return;
@@ -187,8 +188,8 @@ pub mod condition {
         //     this.add('-activate', target, 'move: Protect');
         // }
         if smart_target.unwrap_or(false) {
-            if let Some(ref mut active_move) = battle.active_move {
-                active_move.smart_target = Some(false);
+            if let Some(ref active_move) = battle.active_move {
+                active_move.borrow_mut().smart_target = Some(false);
             }
         } else {
             let target_arg = {
@@ -233,7 +234,7 @@ pub mod condition {
         // }
         // Use check_move_makes_contact_with_active_move to check the active move's flags
         // (which may have been modified by onModifyMove, e.g., Sky Drop removes contact on charge turn)
-        let active_move_clone = battle.active_move.clone();
+        let active_move_clone = battle.active_move.as_ref().map(|am| am.borrow().clone());
         let makes_contact = battle.check_move_makes_contact_with_active_move(
             active_move_clone.as_ref(),
             source,
@@ -288,12 +289,12 @@ pub mod condition {
                 Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
-            active_move.is_z_or_max_powered
+            active_move.borrow().is_z_or_max_powered
         };
 
         // Use check_move_makes_contact_with_active_move to check the active move's flags
         // (which may have been modified by onModifyMove, e.g., Sky Drop removes contact on charge turn)
-        let active_move_clone = battle.active_move.clone();
+        let active_move_clone = battle.active_move.as_ref().map(|am| am.borrow().clone());
         let makes_contact = battle.check_move_makes_contact_with_active_move(
             active_move_clone.as_ref(),
             source,

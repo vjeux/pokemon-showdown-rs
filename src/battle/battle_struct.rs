@@ -124,7 +124,7 @@ pub struct Battle {
 
     /// Last move used in battle (full ActiveMove, not just ID)
     /// JavaScript: lastMove: ActiveMove | null
-    pub last_move: Option<crate::battle_actions::ActiveMove>,
+    pub last_move: Option<crate::battle_actions::SharedActiveMove>,
     /// Last successful move this turn (for Dancer ability)
     /// JavaScript: lastSuccessfulMoveThisTurn?: ID
     pub last_successful_move_this_turn: Option<ID>,
@@ -140,7 +140,7 @@ pub struct Battle {
 
     /// Currently active move being executed
     /// JavaScript: activeMove: ActiveMove | null
-    pub active_move: Option<crate::battle_actions::ActiveMove>,
+    pub active_move: Option<crate::battle_actions::SharedActiveMove>,
 
     /// Flag to indicate we're executing a queued future move (doomdesire, futuresight)
     /// This is used to prevent future move callbacks from queuing another future move

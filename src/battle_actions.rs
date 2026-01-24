@@ -11,6 +11,7 @@ use once_cell::sync::Lazy;
 // Type modules
 mod damage_result;
 mod active_move;
+mod shared_active_move;
 mod move_flags;
 mod move_data;
 mod enums;
@@ -69,6 +70,7 @@ mod add_pseudoweather;
 // Re-export types from submodules
 pub use damage_result::DamageResult;
 pub use active_move::ActiveMove;
+pub use shared_active_move::SharedActiveMove;
 pub use move_flags::MoveFlags;
 pub use move_data::{MoveHitData, MaxMoveData, ZMoveData, ZMoveOption};
 pub use enums::{IgnoreImmunity, Damage, DamageValue, SwitchCopyFlag, SpreadMoveTarget, HitResult, MoveResult};

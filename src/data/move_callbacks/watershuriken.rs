@@ -38,8 +38,8 @@ pub fn base_power_callback(
         && pokemon.has_ability(battle, &["battlebond"])
         && !pokemon.transformed
     {
-        return EventResult::Number(active_move.base_power + 5);
+        return EventResult::Number(active_move.borrow().base_power + 5);
     }
 
-    EventResult::Number(active_move.base_power)
+    EventResult::Number(active_move.borrow().base_power)
 }

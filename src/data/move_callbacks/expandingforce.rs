@@ -75,7 +75,7 @@ pub fn on_modify_move(
             // move.target = 'allAdjacentFoes';
             // We need to modify the current move's target
             if let Some(ref mut active_move) = battle.active_move {
-                active_move.target = "allAdjacentFoes".to_string();
+                active_move.borrow_mut().target = "allAdjacentFoes".to_string();
             }
         }
     }

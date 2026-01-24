@@ -58,7 +58,7 @@ pub fn on_try_move(
             Some(active_move) => active_move,
             None => return EventResult::Continue,
         };
-        active_move.id.clone()
+        active_move.borrow().id.clone()
     };
 
     let removed = {
@@ -78,7 +78,7 @@ pub fn on_try_move(
             Some(active_move) => active_move,
             None => return EventResult::Continue,
         };
-        (attacker_pokemon.get_slot(), active_move.name.clone())
+        (attacker_pokemon.get_slot(), active_move.borrow().name.clone())
     };
 
     battle.add(

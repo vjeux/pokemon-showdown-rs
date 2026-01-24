@@ -89,11 +89,11 @@ impl Battle {
         prankster_boosted: bool,
     ) -> bool {
         // Set active move flags before using the move
-        if let Some(ref mut active_move) = self.active_move {
+        if let Some(ref active_move) = self.active_move {
             if has_bounced {
-                active_move.has_bounced = true;
+                active_move.borrow_mut().has_bounced = true;
             }
-            active_move.prankster_boosted = prankster_boosted;
+            active_move.borrow_mut().prankster_boosted = prankster_boosted;
         }
 
         // Use the move with the new user and target

@@ -23,7 +23,7 @@ pub fn on_effectiveness(
 ) -> EventResult {
     // if (move.type !== 'Ground') return;
     let move_type = match &battle.active_move {
-        Some(m) => m.move_type.clone(),
+        Some(m) => m.borrow().move_type.clone(),
         None => return EventResult::Continue,
     };
 

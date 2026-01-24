@@ -20,7 +20,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
     // if (move.category === 'Special' && source.hp && source.isActive && !source.hasAbility('magicguard'))
     let (is_special, source_alive_and_active, source_has_magic_guard) = {
         let is_special = match &battle.active_move {
-            Some(active_move) => active_move.category == "Special",
+            Some(active_move) => active_move.borrow().category == "Special",
             None => return EventResult::Continue,
         };
 

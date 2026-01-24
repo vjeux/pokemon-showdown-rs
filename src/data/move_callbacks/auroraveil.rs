@@ -77,7 +77,7 @@ pub mod condition {
         target_pos: Option<(usize, usize)>,
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+        let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
         debug_elog!("[AURORAVEIL] on_any_modify_damage called: source={:?}, target={:?}, move={}", source_pos, target_pos, move_id);
 
         // Get target and source positions
@@ -146,7 +146,7 @@ pub mod condition {
         let infiltrates = battle
             .active_move
             .as_ref()
-            .map(|m| m.infiltrates)
+            .map(|m| m.borrow().infiltrates)
             .unwrap_or(false);
 
         // Check crit via getMoveHitData

@@ -19,7 +19,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
     // }
 
     let is_water_move = match &battle.active_move {
-        Some(active_move) => active_move.move_type == "Water",
+        Some(active_move) => active_move.borrow().move_type == "Water",
         None => return EventResult::Continue,
     };
 

@@ -32,7 +32,7 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, pokemon_pos: (usize,
 
     // move.type === 'Ghost' || move.type === 'Dragon'
     let is_ghost_or_dragon = battle.active_move.as_ref()
-        .map(|m| m.move_type.as_str() == "Ghost" || m.move_type.as_str() == "Dragon")
+        .map(|m| m.borrow().move_type.as_str() == "Ghost" || m.borrow().move_type.as_str() == "Dragon")
         .unwrap_or(false);
 
     if is_ghost_or_dragon {

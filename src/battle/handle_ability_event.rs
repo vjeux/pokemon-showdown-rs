@@ -58,7 +58,7 @@ impl Battle {
         // IMPORTANT: For events like AfterMoveSecondarySelf, the event.effect contains the
         // correct move (e.g., Assist), while self.active_move might have been changed by
         // a called move (e.g., healbell called via Assist). We need to check:
-        // - If event.effect matches battle.active_move.id -> use battle.active_move (has runtime state like total_damage)
+        // - If event.effect matches battle.active_move.borrow().id -> use battle.active_move (has runtime state like total_damage)
         // - If event.effect differs -> look up from dex (correct flags for abilities that check move properties)
         let active_move_clone = {
             // First try to get the move from event.effect (the move passed to the event)
@@ -70,24 +70,27 @@ impl Battle {
             if let Some(ref move_id) = event_move_id {
                 // Check if event's move ID matches battle.active_move
                 let active_move_matches = self.active_move.as_ref()
-                    .map(|am| am.id == *move_id)
+                    .map(|am| am.borrow().id == *move_id)
                     .unwrap_or(false);
 
                 if active_move_matches {
                     // Same move - use battle.active_move which has runtime state (total_damage, etc.)
-                    self.active_move.clone()
+                    // Clone the inner ActiveMove from SharedActiveMove
+                    self.active_move.as_ref().map(|am| am.borrow().clone())
                 } else {
                     // Different move (e.g., Assist vs healbell) - look up from dex for correct flags
                     if let Some(active_move) = self.dex.get_active_move(move_id.as_str()) {
                         Some(active_move)
                     } else {
                         // Fallback to active_move if move not found in dex
-                        self.active_move.clone()
+                        // Clone the inner ActiveMove from SharedActiveMove
+                        self.active_move.as_ref().map(|am| am.borrow().clone())
                     }
                 }
             } else {
                 // No event effect or not a move effect - use active_move
-                self.active_move.clone()
+                // Clone the inner ActiveMove from SharedActiveMove
+                self.active_move.as_ref().map(|am| am.borrow().clone())
             }
         };
 
@@ -439,7 +442,7 @@ impl Battle {
                 }).unwrap_or(0);
 
                 // Get move_id from active_move (extract to owned String to avoid borrow issues)
-                let move_id_owned = self.active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
+                let move_id_owned = self.active_move.as_ref().map(|m| m.borrow().id.to_string()).unwrap_or_default();
                 let _move_id = move_id_owned.as_str();
 
                 ability_callbacks::dispatch_on_base_power(self, ability_id.as_str(), base_power, attacker_pos, defender_pos, active_move_clone.as_ref())
@@ -679,20 +682,36 @@ impl Battle {
             }
             "ModifyDefPriority" => ability_callbacks::dispatch_on_modify_def_priority(self, ability_id.as_str(), 0, pokemon_pos, (0, 0), active_move_clone.as_ref()),
             "ModifyMove" => {
-                let mut active_move_temp = self.active_move.take();
-                let result = ability_callbacks::dispatch_on_modify_move(self, ability_id.as_str(), active_move_temp.as_mut(), pokemon_pos, event_target_pos);
+                let active_move_temp = self.active_move.take();
+                let result = if let Some(ref shared_move) = active_move_temp {
+                    let mut borrowed = shared_move.borrow_mut();
+                    ability_callbacks::dispatch_on_modify_move(self, ability_id.as_str(), Some(&mut *borrowed), pokemon_pos, event_target_pos)
+                } else {
+                    ability_callbacks::dispatch_on_modify_move(self, ability_id.as_str(), None, pokemon_pos, event_target_pos)
+                };
                 self.active_move = active_move_temp;
                 result
             }
             "ModifyMovePriority" => {
-                let mut active_move_temp = self.active_move.take();
-                let result = ability_callbacks::dispatch_on_modify_move_priority(
-                    self,
-                    ability_id.as_str(),
-                    active_move_temp.as_mut(),
-                    pokemon_pos,
-                    event_target_pos,
-                );
+                let active_move_temp = self.active_move.take();
+                let result = if let Some(ref shared_move) = active_move_temp {
+                    let mut borrowed = shared_move.borrow_mut();
+                    ability_callbacks::dispatch_on_modify_move_priority(
+                        self,
+                        ability_id.as_str(),
+                        Some(&mut *borrowed),
+                        pokemon_pos,
+                        event_target_pos,
+                    )
+                } else {
+                    ability_callbacks::dispatch_on_modify_move_priority(
+                        self,
+                        ability_id.as_str(),
+                        None,
+                        pokemon_pos,
+                        event_target_pos,
+                    )
+                };
                 self.active_move = active_move_temp;
                 result
             }
@@ -748,20 +767,36 @@ impl Battle {
                 ability_callbacks::dispatch_on_modify_spe(self, ability_id.as_str(), relay_var_int, pokemon_pos)
             }
             "ModifyType" => {
-                let mut active_move_temp = self.active_move.take();
-                let result = ability_callbacks::dispatch_on_modify_type(self, ability_id.as_str(), active_move_temp.as_mut(), pokemon_pos, event_target_pos);
+                let active_move_temp = self.active_move.take();
+                let result = if let Some(ref shared_move) = active_move_temp {
+                    let mut borrowed = shared_move.borrow_mut();
+                    ability_callbacks::dispatch_on_modify_type(self, ability_id.as_str(), Some(&mut *borrowed), pokemon_pos, event_target_pos)
+                } else {
+                    ability_callbacks::dispatch_on_modify_type(self, ability_id.as_str(), None, pokemon_pos, event_target_pos)
+                };
                 self.active_move = active_move_temp;
                 result
             }
             "ModifyTypePriority" => {
-                let mut active_move_temp = self.active_move.take();
-                let result = ability_callbacks::dispatch_on_modify_type_priority(
-                    self,
-                    ability_id.as_str(),
-                    active_move_temp.as_mut(),
-                    pokemon_pos,
-                    event_target_pos,
-                );
+                let active_move_temp = self.active_move.take();
+                let result = if let Some(ref shared_move) = active_move_temp {
+                    let mut borrowed = shared_move.borrow_mut();
+                    ability_callbacks::dispatch_on_modify_type_priority(
+                        self,
+                        ability_id.as_str(),
+                        Some(&mut *borrowed),
+                        pokemon_pos,
+                        event_target_pos,
+                    )
+                } else {
+                    ability_callbacks::dispatch_on_modify_type_priority(
+                        self,
+                        ability_id.as_str(),
+                        None,
+                        pokemon_pos,
+                        event_target_pos,
+                    )
+                };
                 self.active_move = active_move_temp;
                 result
             }

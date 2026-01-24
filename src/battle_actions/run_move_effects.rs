@@ -635,9 +635,9 @@ pub fn run_move_effects<'a>(
         //
         // Special case: if battle.active_move.id matches active_move.id, check battle.active_move
         // because callbacks (like partingshot's onHit) may have deleted selfSwitch on it.
-        let self_switch_to_check = if battle.active_move.as_ref().map(|m| m.id == active_move.id).unwrap_or(false) {
+        let self_switch_to_check = if battle.active_move.as_ref().map(|m| m.borrow().id == active_move.id).unwrap_or(false) {
             // Same move - use battle.active_move to see any modifications from callbacks
-            battle.active_move.as_ref().and_then(|m| m.self_switch.clone())
+            battle.active_move.as_ref().and_then(|m| m.borrow().self_switch.clone())
         } else {
             // Different move (e.g., assist called flipturn) - use the parameter's selfSwitch
             active_move.self_switch.clone()
@@ -719,9 +719,9 @@ pub fn run_move_effects<'a>(
     // Special case: if battle.active_move.id matches active_move.id, check battle.active_move
     // because callbacks (like partingshot's onHit) may have deleted selfSwitch on it.
     else {
-        let self_switch_to_check = if battle.active_move.as_ref().map(|m| m.id == active_move.id).unwrap_or(false) {
+        let self_switch_to_check = if battle.active_move.as_ref().map(|m| m.borrow().id == active_move.id).unwrap_or(false) {
             // Same move - use battle.active_move to see any modifications from callbacks
-            battle.active_move.as_ref().and_then(|m| m.self_switch.clone())
+            battle.active_move.as_ref().and_then(|m| m.borrow().self_switch.clone())
         } else {
             // Different move (e.g., assist called flipturn) - use the parameter's selfSwitch
             active_move.self_switch.clone()

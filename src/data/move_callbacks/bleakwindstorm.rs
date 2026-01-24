@@ -36,7 +36,7 @@ pub fn on_modify_move(
     if effective_weather == "raindance" || effective_weather == "primordialsea" {
         // move.accuracy = true;
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.accuracy = crate::dex::Accuracy::AlwaysHits;
+            active_move.borrow_mut().accuracy = crate::dex::Accuracy::AlwaysHits;
         }
     }
 

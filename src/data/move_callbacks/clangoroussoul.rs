@@ -40,7 +40,7 @@ pub fn on_try_hit(
     // if (!this.boost(move.boosts!)) return null;
     // Get the move boosts from the active move
     let move_id = match &battle.active_move {
-        Some(active_move) => active_move.id.clone(),
+        Some(active_move) => active_move.borrow().id.clone(),
         None => return EventResult::Continue,
     };
 
@@ -78,7 +78,7 @@ pub fn on_try_hit(
     // delete move.boosts;
     // Clear boosts from active_move so Sheer Force doesn't apply
     if let Some(ref mut active_move) = battle.active_move {
-        active_move.boosts = None;
+        active_move.borrow_mut().boosts = None;
     }
 
     EventResult::Continue

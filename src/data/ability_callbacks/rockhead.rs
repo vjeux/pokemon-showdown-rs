@@ -21,7 +21,7 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, _target_pos: (usize, usize),
         if eff_id == "recoil" {
             // Check if active move exists and is not Struggle
             if let Some(ref active_move) = battle.active_move {
-                if active_move.id.as_str() != "struggle" {
+                if active_move.borrow().id.as_str() != "struggle" {
                     // Prevent recoil damage for all moves except Struggle
                     return EventResult::Null;
                 }

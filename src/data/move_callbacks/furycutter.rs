@@ -38,7 +38,7 @@ pub fn base_power_callback(
         let hit = battle
             .active_move
             .as_ref()
-            .map(|m| m.hit)
+            .map(|m| m.borrow().hit)
             .unwrap_or(0);
 
         (has_volatile, hit)
@@ -58,7 +58,7 @@ pub fn base_power_callback(
         let base_power = battle
             .active_move
             .as_ref()
-            .map(|m| m.base_power)
+            .map(|m| m.borrow().base_power)
             .unwrap_or(0);
 
         let multiplier = pokemon_ref

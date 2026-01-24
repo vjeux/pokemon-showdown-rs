@@ -16,7 +16,7 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize
     // if (move && move.type === 'Dark')
     let is_dark = {
         if let Some(ref active_move) = battle.active_move {
-            active_move.move_type == "Dark"
+            active_move.borrow().move_type == "Dark"
         } else {
             false
         }

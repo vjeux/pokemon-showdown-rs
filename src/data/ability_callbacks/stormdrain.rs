@@ -42,7 +42,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
 ///         return this.effectState.target;
 ///     }
 /// }
-pub fn on_any_redirect_target(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _source2_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let _move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_any_redirect_target(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _source2_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let _move_id = active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
     // onAnyRedirectTarget(target, source, source2, move) {
     //     if (move.type !== 'Water' || move.flags['pledgecombo']) return;
     //     const redirectTarget = ['randomNormal', 'adjacentFoe'].includes(move.target) ? 'normal' : move.target;
@@ -87,9 +87,9 @@ pub fn on_any_redirect_target(battle: &mut Battle, target_pos: Option<(usize, us
 
     if battle.valid_target(storm_drain_holder, source, redirect_target) {
         // if (move.smartTarget) move.smartTarget = false;
-        if let Some(ref mut active_move) = battle.active_move {
-            if active_move.smart_target == Some(true) {
-                active_move.smart_target = Some(false);
+        if let Some(ref active_move) = battle.active_move {
+            if active_move.borrow().smart_target == Some(true) {
+                active_move.borrow_mut().smart_target = Some(false);
             }
         }
 

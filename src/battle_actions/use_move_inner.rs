@@ -222,7 +222,7 @@ pub fn use_move_inner(
     if active_move.id.as_str() == "weatherball" && z_move.is_some() {
         // We need to run ModifyType event to potentially change the move type
         // Store the move temporarily in battle.active_move for the event
-        battle.active_move = Some(active_move.clone());
+        battle.active_move = Some(crate::battle_actions::SharedActiveMove::new(active_move.clone()));
 
         let modify_type_result = battle.single_event(
             "ModifyType",
@@ -236,17 +236,17 @@ pub fn use_move_inner(
         // Apply the returned type to active_move if the callback returned a String
         if let EventResult::String(new_type) = modify_type_result {
             active_move.move_type = new_type.clone();
-            if let Some(ref mut am) = battle.active_move {
-                am.move_type = new_type;
+            if let Some(ref am) = battle.active_move {
+                am.borrow_mut().move_type = new_type;
             }
         }
 
         // Get the potentially modified move back
         if let Some(ref modified_move) = battle.active_move {
-            if modified_move.move_type != "Normal" {
+            if modified_move.borrow().move_type != "Normal" {
                 source_effect = Some(Effect::move_(active_move.id.clone()));
             }
-            active_move = modified_move.clone();
+            active_move = modified_move.borrow().clone();
         }
     }
 
@@ -257,7 +257,7 @@ pub fn use_move_inner(
         (active_move.category != "Status" &&
          source_effect.as_ref().map_or(false, |se| {
              // Check if the source effect is a Z-move by checking battle.active_move
-             battle.active_move.as_ref().map_or(false, |am| am.is_z.is_some() && am.id == se.id)
+             battle.active_move.as_ref().map_or(false, |am| am.borrow().is_z.is_some() && am.borrow().id == se.id)
          }));
 
     if should_convert_to_z {
@@ -277,7 +277,7 @@ pub fn use_move_inner(
     //     this.battle.runEvent('ModifyType', pokemon, target, move, move);
     // }
     if max_move.is_some() && active_move.category != "Status" {
-        battle.active_move = Some(active_move.clone());
+        battle.active_move = Some(crate::battle_actions::SharedActiveMove::new(active_move.clone()));
 
         let modify_type_result = battle.single_event(
             "ModifyType",
@@ -291,15 +291,15 @@ pub fn use_move_inner(
         // Apply the returned type to active_move if the callback returned a String
         if let EventResult::String(new_type) = modify_type_result {
             active_move.move_type = new_type.clone();
-            if let Some(ref mut am) = battle.active_move {
-                am.move_type = new_type;
+            if let Some(ref am) = battle.active_move {
+                am.borrow_mut().move_type = new_type;
             }
         }
 
         battle.run_event("ModifyType", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&Effect::move_(active_move.id.clone())), EventResult::Continue, false, false);
 
         if let Some(ref modified_move) = battle.active_move {
-            active_move = modified_move.clone();
+            active_move = modified_move.borrow().clone();
         }
     }
 
@@ -309,7 +309,7 @@ pub fn use_move_inner(
     let should_convert_to_max = max_move.is_some() ||
         (active_move.category != "Status" &&
          source_effect.as_ref().map_or(false, |se| {
-             battle.active_move.as_ref().map_or(false, |am| am.is_max.is_some() && am.id == se.id)
+             battle.active_move.as_ref().map_or(false, |am| am.borrow().is_max.is_some() && am.borrow().id == se.id)
          }));
 
     if should_convert_to_max {
@@ -329,9 +329,10 @@ pub fn use_move_inner(
     //     if (!move.hasBounced) move.pranksterBoosted = this.battle.activeMove.pranksterBoosted;
     // }
     if let Some(ref existing_active_move) = battle.active_move {
-        active_move.priority = existing_active_move.priority;
+        let borrowed = existing_active_move.borrow();
+        active_move.priority = borrowed.priority;
         if !active_move.has_bounced {
-            active_move.prankster_boosted = existing_active_move.prankster_boosted;
+            active_move.prankster_boosted = borrowed.prankster_boosted;
         }
     }
 
@@ -371,8 +372,9 @@ pub fn use_move_inner(
         active_move.source_effect = Some(se.clone());
         // Check if source effect is an active move and has ignoreAbility
         if let Some(ref existing_active) = battle.active_move {
-            if existing_active.id == se.id {
-                active_move.ignore_ability = existing_active.ignore_ability;
+            let borrowed = existing_active.borrow();
+            if borrowed.id == se.id {
+                active_move.ignore_ability = borrowed.ignore_ability;
             }
         }
     }
@@ -384,14 +386,14 @@ pub fn use_move_inner(
     // This is needed for Magic Bounce/Magic Coat - they set has_bounced = true on the
     // current active_move before calling use_move, and we need to preserve that flag
     // on the new active_move to prevent infinite recursion
-    let old_has_bounced = battle.active_move.as_ref().map_or(false, |m| m.has_bounced);
+    let old_has_bounced = battle.active_move.as_ref().map_or(false, |m| m.borrow().has_bounced);
     if old_has_bounced {
         active_move.has_bounced = true;
     }
 
     // this.battle.setActiveMove(move, pokemon, target);
     battle.set_active_move(Some(active_move.id.clone()), Some(pokemon_pos), target_pos);
-    battle.active_move = Some(active_move.clone());
+    battle.active_move = Some(crate::battle_actions::SharedActiveMove::new(active_move.clone()));
 
     // Run ModifyPriority to allow abilities like Prankster to boost priority
     // This is needed because the active_move was just created from dex data with base priority
@@ -407,13 +409,13 @@ pub fn use_move_inner(
     );
     // Apply the modified priority
     if let EventResult::Number(new_priority) = priority_result {
-        if let Some(ref mut am) = battle.active_move {
-            am.priority = new_priority as i8;
+        if let Some(ref am) = battle.active_move {
+            am.borrow_mut().priority = new_priority as i8;
         }
     }
     // Re-clone the active_move to get any modifications
     if let Some(ref modified) = battle.active_move {
-        active_move = modified.clone();
+        active_move = modified.borrow().clone();
     }
 
     // this.battle.singleEvent('ModifyType', move, null, pokemon, target, move, move);
@@ -432,8 +434,8 @@ pub fn use_move_inner(
     if let EventResult::String(new_type) = modify_type_result {
         active_move.move_type = new_type.clone();
         // Also update battle.active_move so the change persists
-        if let Some(ref mut am) = battle.active_move {
-            am.move_type = new_type;
+        if let Some(ref am) = battle.active_move {
+            am.borrow_mut().move_type = new_type;
         }
     }
 
@@ -450,7 +452,7 @@ pub fn use_move_inner(
 
     // Get potentially modified move
     if let Some(ref modified) = battle.active_move {
-        active_move = modified.clone();
+        active_move = modified.borrow().clone();
     }
 
     // if (baseTarget !== move.target) {
@@ -471,7 +473,7 @@ pub fn use_move_inner(
 
     // Get potentially modified move again
     if let Some(ref modified) = battle.active_move {
-        active_move = modified.clone();
+        active_move = modified.borrow().clone();
     }
 
     // pokemon.lastMoveUsed = move; (after ModifyType to capture runtime modifications)
@@ -549,12 +551,13 @@ pub fn use_move_inner(
     if z_move.is_some() {
         // Apply Z-Power effect for status Z-moves
         if let Some(ref am) = battle.active_move {
-            if am.category == "Status" {
+            let am_borrowed = am.borrow();
+            if am_borrowed.category == "Status" {
                 // Get Z-power effect ID
                 let zpower_id = ID::from("zpower");
 
                 // Check if there's a boost
-                if let Some(ref z_move_data) = am.z_move {
+                if let Some(ref z_move_data) = am_borrowed.z_move {
                     if let Some(ref boost_table) = z_move_data.boost {
                         // Convert BoostsTable to array format for boost method
                         let mut boosts_array: Vec<(&str, i8)> = Vec::new();
@@ -566,11 +569,15 @@ pub fn use_move_inner(
                         if boost_table.accuracy != 0 { boosts_array.push(("accuracy", boost_table.accuracy)); }
                         if boost_table.evasion != 0 { boosts_array.push(("evasion", boost_table.evasion)); }
 
+                        // Need to drop borrow before calling battle methods
+                        drop(am_borrowed);
                         // Apply boost
                         battle.boost(&boosts_array, pokemon_pos, Some(pokemon_pos), Some(zpower_id.as_str()), false, false);
                     } else if let Some(ref effect) = z_move_data.effect {
                         // Apply effect based on type
-                        match effect.as_str() {
+                        let effect_str = effect.clone();
+                        drop(am_borrowed);
+                        match effect_str.as_str() {
                             "heal" => {
                                 let maxhp = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].maxhp;
                                 battle.heal(maxhp, Some(pokemon_pos), Some(pokemon_pos), Some(&Effect::move_(zpower_id.clone())));
@@ -633,6 +640,7 @@ pub fn use_move_inner(
                 }
             } else {
                 // Damage Z-moves just add [zeffect] attribute
+                drop(am_borrowed);
                 battle.attr_last_move(&["[zeffect]"]);
             }
         }
@@ -790,8 +798,8 @@ pub fn use_move_inner(
     let try_move_success = try_move_single_success && try_move_run;
 
     if !try_move_success {
-        if let Some(ref mut am) = battle.active_move {
-            am.mindblown_recoil = false;
+        if let Some(ref am) = battle.active_move {
+            am.borrow_mut().mindblown_recoil = false;
         }
         debug_elog!("[USE_MOVE_INNER] TryMove failed, returning false");
         return false;
@@ -811,10 +819,11 @@ pub fn use_move_inner(
     // if (move.ignoreImmunity === undefined) {
     //     move.ignoreImmunity = (move.category === 'Status');
     // }
-    if let Some(ref mut am) = battle.active_move {
-        if am.ignore_immunity.is_none() {
-            if am.category == "Status" {
-                am.ignore_immunity = Some(crate::battle_actions::IgnoreImmunity::All);
+    if let Some(ref am) = battle.active_move {
+        let mut am_mut = am.borrow_mut();
+        if am_mut.ignore_immunity.is_none() {
+            if am_mut.category == "Status" {
+                am_mut.ignore_immunity = Some(crate::battle_actions::IgnoreImmunity::All);
             }
         }
     }
@@ -824,10 +833,12 @@ pub fn use_move_inner(
     // }
     if battle.gen != 4 {
         if let Some(ref am) = battle.active_move {
+            let am_borrowed = am.borrow();
             debug_elog!("[SELFDESTRUCT] Checking selfdestruct for move={}, self_destruct={:?}",
-                am.id, am.self_destruct);
-            if am.self_destruct.as_deref() == Some("always") {
+                am_borrowed.id, am_borrowed.self_destruct);
+            if am_borrowed.self_destruct.as_deref() == Some("always") {
                 debug_elog!("[SELFDESTRUCT] Calling battle.faint() for pokemon_pos={:?}", pokemon_pos);
+                drop(am_borrowed);
                 battle.faint(pokemon_pos, Some(pokemon_pos), Some(active_move.id.as_str()));
             }
         }

@@ -51,7 +51,7 @@ pub mod condition {
             if effect.is_some() {
                 // It's a move
                 if let Some(ref move_data) = battle.active_move {
-                    let prankster_boosted = move_data.prankster_boosted;
+                    let prankster_boosted = move_data.borrow().prankster_boosted;
                     battle.with_effect_state(|state| {
                         state.prankster_boosted = prankster_boosted;
                     });
@@ -94,7 +94,7 @@ pub mod condition {
         let has_bounced = battle
             .active_move
             .as_ref()
-            .map(|m| m.has_bounced)
+            .map(|m| m.borrow().has_bounced)
             .unwrap_or(false);
         if has_bounced {
             return EventResult::Continue;
@@ -104,7 +104,7 @@ pub mod condition {
         let is_reflectable = battle
             .active_move
             .as_ref()
-            .map(|m| m.flags.reflectable)
+            .map(|m| m.borrow().flags.reflectable)
             .unwrap_or(false);
         if !is_reflectable {
             return EventResult::Continue;
@@ -121,7 +121,7 @@ pub mod condition {
         // newMove.pranksterBoosted = this.effectState.pranksterBoosted;
         let (move_data, _prankster_boosted) = {
             let move_id = match &battle.active_move {
-                Some(active_move) => active_move.id.clone(),
+                Some(active_move) => active_move.borrow().id.clone(),
                 None => return EventResult::Continue,
             };
             let prankster_boosted = battle.with_effect_state_ref(|state| state.prankster_boosted).unwrap_or(false);
@@ -218,8 +218,8 @@ pub mod condition {
         battle.use_move_with_bounced(&move_data, _effect_state_target, Some(source), true, false);
 
         // move.hasBounced = true; // only bounce once in free-for-all battles
-        if let Some(ref mut active_move_mut) = battle.active_move {
-            active_move_mut.has_bounced = true;
+        if let Some(ref active_move_mut) = battle.active_move {
+            active_move_mut.borrow_mut().has_bounced = true;
         }
 
         // return null;

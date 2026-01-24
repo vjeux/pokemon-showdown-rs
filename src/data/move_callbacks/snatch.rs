@@ -57,7 +57,7 @@ pub mod condition {
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         use crate::dex_data::ID;
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+        let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
 
         // onAnyPrepareHit(source, target, move) {
         //     const snatchUser = this.effectState.source;
@@ -93,10 +93,10 @@ pub mod condition {
                 None => return EventResult::Continue,
             };
             (
-                active_move.is_z.is_some(),
-                active_move.is_max.is_some(),
-                active_move.flags.snatch,
-                active_move.source_effect.as_ref().map(|e| e.as_str().to_string()),
+                active_move.borrow().is_z.is_some(),
+                active_move.borrow().is_max.is_some(),
+                active_move.borrow().flags.snatch,
+                active_move.borrow().source_effect.as_ref().map(|e| e.as_str().to_string()),
             )
         };
 
@@ -143,7 +143,7 @@ pub mod condition {
         }
 
         // this.actions.useMove(move.id, snatchUser);
-        if let Some(move_data) = battle.dex.moves().get(move_id).cloned() {
+        if let Some(move_data) = battle.dex.moves().get(&move_id).cloned() {
             battle.use_move(&move_data, snatch_user, None, None, None, None);
         }
 

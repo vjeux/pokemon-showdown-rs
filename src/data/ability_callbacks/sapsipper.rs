@@ -37,7 +37,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
 ///         this.boost({ atk: 1 }, this.effectState.target);
 ///     }
 /// }
-pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let _move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let _move_id = active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
     
 
     // if (source === this.effectState.target || !target.isAlly(source)) return;

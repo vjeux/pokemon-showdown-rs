@@ -16,7 +16,7 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize
     // if (move.type === 'Ground')
     let is_ground = {
         if let Some(ref active_move) = battle.active_move {
-            active_move.move_type == "Ground"
+            active_move.borrow().move_type == "Ground"
         } else {
             false
         }

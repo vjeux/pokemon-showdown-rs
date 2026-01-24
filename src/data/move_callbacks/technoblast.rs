@@ -33,7 +33,7 @@ pub fn on_modify_type(
 
     // move.type = this.runEvent('Drive', pokemon, null, move, 'Normal');
     // Extract the move ID before calling run_event to avoid borrow issues
-    let source_effect = battle.active_move.as_ref().map(|m| Effect::move_(m.id.clone()));
+    let source_effect = battle.active_move.as_ref().map(|m| Effect::move_(m.borrow().id.clone()));
     let move_type = match battle.run_event(
         "Drive",
         Some(crate::event::EventTarget::Pokemon(pokemon)),
@@ -48,7 +48,7 @@ pub fn on_modify_type(
     };
 
     if let Some(ref mut active_move) = battle.active_move {
-        active_move.move_type = move_type;
+        active_move.borrow_mut().move_type = move_type;
     }
 
     EventResult::Continue

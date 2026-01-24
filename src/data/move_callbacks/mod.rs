@@ -1123,7 +1123,8 @@ pub fn dispatch_on_modify_move(
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    let move_id = battle.active_move.as_ref().map(|m| m.id.as_str()).unwrap_or("");
+    let move_id = battle.active_move.as_ref().map(|m| m.borrow().id.to_string()).unwrap_or_default();
+    let move_id = move_id.as_str();
     match move_id {
         "beatup" => beatup::on_modify_move(battle, pokemon_pos, target_pos),
         "bleakwindstorm" => bleakwindstorm::on_modify_move(battle, pokemon_pos, target_pos),

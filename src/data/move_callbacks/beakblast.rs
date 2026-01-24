@@ -88,7 +88,7 @@ pub mod condition {
         // This is important for Synchronize to know who to pass the status back to
 
         // Check if the active move has contact flag set (using two-phase borrow)
-        let has_contact = battle.active_move.as_ref().map(|m| m.flags.contact).unwrap_or(false);
+        let has_contact = battle.active_move.as_ref().map(|m| m.borrow().flags.contact).unwrap_or(false);
 
         // Check for Protective Pads on the attacker
         let has_protective_pads = {

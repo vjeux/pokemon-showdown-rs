@@ -30,8 +30,8 @@ pub fn on_modify_type(
         }
     };
 
-    if let Some(ref mut current_move) = battle.active_move {
-        current_move.move_type = hp_type;
+    if let Some(ref current_move) = battle.active_move {
+        current_move.borrow_mut().move_type = hp_type;
     }
 
     EventResult::Continue

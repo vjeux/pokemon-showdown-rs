@@ -52,7 +52,7 @@ pub fn on_hit(
     if species_base_species == "ramnarok" && !transformed {
         // move.willChangeForme = true;
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.will_change_forme = true;
+            active_move.borrow_mut().will_change_forme = true;
         }
     }
 

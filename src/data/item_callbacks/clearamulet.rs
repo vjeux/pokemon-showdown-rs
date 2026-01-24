@@ -80,7 +80,7 @@ pub fn on_try_boost(
     if show_msg {
         // Check if effect.secondaries exists and is non-empty, or if effect.id is 'octolock'
         let has_secondaries = battle.active_move.as_ref()
-            .map(|m| !m.secondaries.is_empty())
+            .map(|m| !m.borrow().secondaries.is_empty())
             .unwrap_or(false);
 
         let is_octolock = battle.event.as_ref()

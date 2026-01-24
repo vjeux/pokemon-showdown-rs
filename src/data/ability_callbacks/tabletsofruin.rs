@@ -71,7 +71,7 @@ pub fn on_any_modify_atk(battle: &mut Battle, _atk: i32, source_pos: Option<(usi
 
     let (_current_ruined, need_to_update) = {
         if let Some(ref active_move) = battle.active_move {
-            if let Some(ruined_pos) = active_move.ruined_atk {
+            if let Some(ruined_pos) = active_move.borrow().ruined_atk {
                 let ruined_has_tablets = {
                     if let Some(ruined) = battle.pokemon_at(ruined_pos.0, ruined_pos.1) {
                         ruined.has_ability(battle, &["tabletsofruin"])
@@ -89,14 +89,14 @@ pub fn on_any_modify_atk(battle: &mut Battle, _atk: i32, source_pos: Option<(usi
     };
 
     if need_to_update {
-        if let Some(ref mut active_move) = battle.active_move {
-            active_move.ruined_atk = Some(ability_holder);
+        if let Some(ref active_move) = battle.active_move {
+            active_move.borrow_mut().ruined_atk = Some(ability_holder);
         }
     }
 
     let should_apply = {
         if let Some(ref active_move) = battle.active_move {
-            active_move.ruined_atk == Some(ability_holder)
+            active_move.borrow().ruined_atk == Some(ability_holder)
         } else {
             false
         }

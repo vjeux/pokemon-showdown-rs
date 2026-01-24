@@ -22,7 +22,7 @@ use crate::pokemon::Pokemon;
 ///     }
 /// }
 pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+    let move_id = active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
     // Get source and target positions
     let source_pos = match source_pos {
         Some(pos) => pos,
@@ -91,7 +91,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
         // source.trySetStatus('par', target, move);
         // JavaScript: source = the attacker (being paralyzed), target = Cramorant (causing the paralysis)
         // For try_set_status: first param is pokemon getting status, source_pos is who caused it
-        let move_effect = Effect::move_(move_id);
+        let move_effect = Effect::move_(move_id.clone());
         Pokemon::try_set_status(battle, source_pos, ID::from("par"), Some(target_pos), Some(&move_effect));
     }
 

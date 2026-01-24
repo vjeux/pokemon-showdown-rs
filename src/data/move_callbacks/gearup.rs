@@ -24,7 +24,7 @@ pub fn on_hit_side(
     source_pos: Option<(usize, usize)>,
     active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+    let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
     use crate::dex_data::ID;
 
     let source = source_pos;
@@ -76,7 +76,7 @@ pub fn on_hit_side(
                 "TryHit",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
                 source,
-                Some(&Effect::move_(ID::from(move_id))),
+                Some(&Effect::move_(ID::from(move_id.clone()))),
                 crate::event::EventResult::Number(1),
                 false,
                 false,
@@ -101,7 +101,7 @@ pub fn on_hit_side(
     // }
     let mut did_something = false;
     for target in targets {
-        let boost_result = battle.boost(&[("atk", 1), ("spa", 1)], target, source, Some(move_id), false, false);
+        let boost_result = battle.boost(&[("atk", 1), ("spa", 1)], target, source, Some(&move_id), false, false);
         did_something = boost_result || did_something;
     }
 

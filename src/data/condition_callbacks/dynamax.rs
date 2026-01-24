@@ -218,7 +218,7 @@ pub fn on_source_modify_damage(
     _target_pos: (usize, usize),
     active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+    let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
     // if (move.id === 'behemothbash' || move.id === 'behemothblade' || move.id === 'dynamaxcannon')
     if move_id == "behemothbash" || move_id == "behemothblade" || move_id == "dynamaxcannon" {
         // return this.chainModify(2);

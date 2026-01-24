@@ -40,7 +40,7 @@ pub fn on_modify_move(
         // In the JavaScript data, Curse has nonGhostTarget: "self"
         if let Some(ref mut active_move) = battle.active_move {
             // The nonGhostTarget for Curse is "self" (targets the user, not an opponent)
-            active_move.target = "self".to_string();
+            active_move.borrow_mut().target = "self".to_string();
         }
     } else if let Some(target) = target_pos {
         // else if (source.isAlly(target)) {
@@ -50,7 +50,7 @@ pub fn on_modify_move(
         if is_ally {
             // move.target = 'randomNormal';
             if let Some(ref mut active_move) = battle.active_move {
-                active_move.target = "randomNormal".to_string();
+                active_move.borrow_mut().target = "randomNormal".to_string();
             }
         }
     }
@@ -93,13 +93,13 @@ pub fn on_try_hit(
         // Modify the active move to be the non-Ghost version
         if let Some(ref mut active_move) = battle.active_move {
             // Clear volatile status (delete move.volatileStatus)
-            active_move.volatile_status = None;
+            active_move.borrow_mut().volatile_status = None;
 
             // Set self-boost effect (move.self = { boosts: { spe: -1, atk: 1, def: 1 } })
             use crate::dex::MoveSecondary;
             use crate::dex_data::BoostsTable;
 
-            active_move.self_effect = Some(MoveSecondary {
+            active_move.borrow_mut().self_effect = Some(MoveSecondary {
                 boosts: Some(BoostsTable {
                     atk: 1,
                     def: 1,
@@ -117,8 +117,8 @@ pub fn on_try_hit(
         //     return false;
         // }
         let has_volatile_status = battle.active_move.as_ref()
-            .and_then(|m| m.volatile_status.as_ref())
-            .is_some();
+            .map(|m| m.borrow().volatile_status.is_some())
+            .unwrap_or(false);
 
         if has_volatile_status {
             let has_curse_volatile = {

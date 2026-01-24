@@ -93,7 +93,7 @@ pub mod condition {
         source_pos: Option<(usize, usize)>,
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+        let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
         // if (!this.effectState.target.isSkyDropped() && this.validTarget(this.effectState.target, source, move.target)) {
         // Get the effect state target (the Pokemon with Follow Me active)
         let effect_state_target = match battle.with_effect_state_ref(|state| state.target).flatten() {
@@ -127,7 +127,7 @@ pub mod condition {
         if is_valid_target {
             // if (move.smartTarget) move.smartTarget = false;
             if let Some(ref mut active_move) = battle.active_move {
-                active_move.smart_target = Some(false);
+                active_move.borrow_mut().smart_target = Some(false);
             }
 
             // this.debug("Follow Me redirected target of move");

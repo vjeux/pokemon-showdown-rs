@@ -20,7 +20,7 @@ pub fn on_modify_move(
 
     // move.type = '???';
     if let Some(ref mut active_move) = battle.active_move {
-        active_move.move_type = "???".to_owned();
+        active_move.borrow_mut().move_type = "???".to_owned();
     }
 
     // this.add('-activate', pokemon, 'move: Struggle');

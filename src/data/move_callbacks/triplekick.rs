@@ -22,5 +22,5 @@ pub fn base_power_callback(
     };
 
     // return 10 * move.hit;
-    EventResult::Number(10 * active_move.hit)
+    EventResult::Number(10 * active_move.borrow().hit)
 }

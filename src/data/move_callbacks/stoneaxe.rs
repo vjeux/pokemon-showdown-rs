@@ -25,7 +25,7 @@ pub fn on_after_hit(
 
     // if (!move.hasSheerForce && source.hp) {
     let has_sheer_force = match &battle.active_move {
-        Some(active_move) => active_move.has_sheer_force,
+        Some(active_move) => active_move.borrow().has_sheer_force,
         None => return EventResult::Continue,
     };
 

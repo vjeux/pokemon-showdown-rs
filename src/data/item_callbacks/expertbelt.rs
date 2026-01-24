@@ -24,7 +24,7 @@ pub fn on_modify_damage(battle: &mut Battle, _damage: i32, _pokemon_pos: (usize,
 
     // Clone active_move for run_effectiveness (need owned copy to avoid borrow issues)
     let active_move_clone = match &battle.active_move {
-        Some(active_move) => active_move.clone(),
+        Some(active_move) => active_move.borrow().clone(),
         None => return EventResult::Continue,
     };
 

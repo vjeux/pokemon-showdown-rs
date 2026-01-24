@@ -57,20 +57,20 @@ pub fn base_power_callback(
 
     // Determine which move to look up: sourceEffect || move.id
     // If sourceEffect is set, use its ID, otherwise use move.id
-    let caller_move_id_str = active_move.source_effect.as_ref()
+    let caller_move_id_str = active_move.borrow().source_effect.as_ref()
         .map(|e| e.id.clone())
-        .unwrap_or_else(|| active_move.id.clone());
+        .unwrap_or_else(|| active_move.borrow().id.clone());
 
     // Determine which move slot to check
     // If caller is 'instruct', use move.id, otherwise use caller_move_id
     let move_slot_id = if caller_move_id_str.as_str() == "instruct" {
-        &active_move.id
+        active_move.borrow().id.clone()
     } else {
-        &caller_move_id_str
+        caller_move_id_str.clone()
     };
 
     // Find the move slot
-    let move_slot = pokemon.move_slots.iter().find(|s| &s.id == move_slot_id);
+    let move_slot = pokemon.move_slots.iter().find(|s| s.id == move_slot_id);
 
     // Calculate base power based on PP
     let bp = if let Some(slot) = move_slot {

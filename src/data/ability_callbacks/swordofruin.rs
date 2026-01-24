@@ -77,7 +77,7 @@ pub fn on_any_modify_def(battle: &mut Battle, _def: i32, target_pos: Option<(usi
     // First check if ruinedDef is set and if that Pokemon still has the ability
     let (_current_ruined, need_to_update) = {
         if let Some(ref active_move) = battle.active_move {
-            if let Some(ruined_pos) = active_move.ruined_def {
+            if let Some(ruined_pos) = active_move.borrow().ruined_def {
                 // Check if the Pokemon at ruined_pos still has Sword of Ruin
                 let ruined_has_sword = {
                     if let Some(ruined) = battle.pokemon_at(ruined_pos.0, ruined_pos.1) {
@@ -97,15 +97,15 @@ pub fn on_any_modify_def(battle: &mut Battle, _def: i32, target_pos: Option<(usi
 
     // Now update if needed
     if need_to_update {
-        if let Some(ref mut active_move) = battle.active_move {
-            active_move.ruined_def = Some(ability_holder);
+        if let Some(ref active_move) = battle.active_move {
+            active_move.borrow_mut().ruined_def = Some(ability_holder);
         }
     }
 
     // Check if this ability holder is the one affecting the move
     let should_apply = {
         if let Some(ref active_move) = battle.active_move {
-            active_move.ruined_def == Some(ability_holder)
+            active_move.borrow().ruined_def == Some(ability_holder)
         } else {
             false
         }

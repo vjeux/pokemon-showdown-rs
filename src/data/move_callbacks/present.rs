@@ -34,23 +34,23 @@ pub fn on_modify_move(
         // move.heal = [1, 4];
         // move.infiltrates = true;
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.heal = Some((1, 4));
-            active_move.infiltrates = true;
+            active_move.borrow_mut().heal = Some((1, 4));
+            active_move.borrow_mut().infiltrates = true;
         }
     } else if rand < 6 {
         // move.basePower = 40;
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.base_power = 40;
+            active_move.borrow_mut().base_power = 40;
         }
     } else if rand < 9 {
         // move.basePower = 80;
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.base_power = 80;
+            active_move.borrow_mut().base_power = 80;
         }
     } else {
         // move.basePower = 120;
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.base_power = 120;
+            active_move.borrow_mut().base_power = 120;
         }
     }
 

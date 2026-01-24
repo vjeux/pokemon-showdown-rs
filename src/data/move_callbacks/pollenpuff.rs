@@ -29,8 +29,8 @@ pub fn on_try_hit(
         // move.basePower = 0;
         // move.infiltrates = true;
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.base_power = 0;
-            active_move.infiltrates = true;
+            active_move.borrow_mut().base_power = 0;
+            active_move.borrow_mut().infiltrates = true;
         }
     }
 
@@ -87,7 +87,7 @@ pub fn on_try_move(
             let source_arg = source_pokemon.get_slot();
 
             let move_id = match &battle.active_move {
-                Some(active_move) => active_move.id.clone(),
+                Some(active_move) => active_move.borrow().id.clone(),
                 None => return EventResult::Continue,
             };
 

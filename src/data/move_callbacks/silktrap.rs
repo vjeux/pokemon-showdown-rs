@@ -151,19 +151,20 @@ pub mod condition {
                 Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
-            let has_protect = active_move.flags.protect;
-            let is_status = active_move.category == "Status";
-            let is_z = active_move.is_z.is_some();
-            let is_max = active_move.is_max.is_some();
+            let am = active_move.borrow();
+            let has_protect = am.flags.protect;
+            let is_status = am.category == "Status";
+            let is_z = am.is_z.is_some();
+            let is_max = am.is_max.is_some();
             (has_protect, is_status, is_z, is_max)
         };
 
         if !has_protect_flag || is_status {
             // if (move.isZ || move.isMax) target.getMoveHitData(move).zBrokeProtect = true;
             if is_z || is_max {
-                if let Some(hit_data) = battle.get_move_hit_data_mut(target) {
+                battle.with_move_hit_data_mut(target, |hit_data| {
                     hit_data.z_broke_protect = true;
-                }
+                });
             }
             // return;
             return EventResult::Continue;
@@ -179,12 +180,12 @@ pub mod condition {
                 Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
-            active_move.smart_target
+            active_move.borrow().smart_target
         };
 
         if smart_target.unwrap_or(false) {
-            if let Some(ref mut active_move) = battle.active_move {
-                active_move.smart_target = Some(false);
+            if let Some(ref active_move) = battle.active_move {
+                active_move.borrow_mut().smart_target = Some(false);
             }
         } else {
             let target_arg = {
@@ -238,9 +239,9 @@ pub mod condition {
         // }
         // Use check_move_makes_contact_with_active_move to check the active move's flags
         // (which may have been modified by onModifyMove, e.g., skydrop removing contact)
-        let active_move = battle.active_move.clone();
+        let active_move_clone = battle.active_move.as_ref().map(|am| am.borrow().clone());
         let makes_contact = battle.check_move_makes_contact_with_active_move(
-            active_move.as_ref(),
+            active_move_clone.as_ref(),
             source,
             target,
             false,
@@ -282,14 +283,14 @@ pub mod condition {
                 Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
-            active_move.is_z_or_max_powered
+            active_move.borrow().is_z_or_max_powered
         };
 
         if is_z_or_max_powered {
             // Use check_move_makes_contact_with_active_move to check the active move's flags
-            let active_move = battle.active_move.clone();
+            let active_move_clone = battle.active_move.as_ref().map(|am| am.borrow().clone());
             let makes_contact = battle.check_move_makes_contact_with_active_move(
-                active_move.as_ref(),
+                active_move_clone.as_ref(),
                 source,
                 target,
                 false,

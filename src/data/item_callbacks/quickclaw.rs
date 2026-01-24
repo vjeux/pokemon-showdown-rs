@@ -31,7 +31,7 @@ pub fn on_fractional_priority(
     // During FractionalPriority (action resolution), active_move is not yet set.
     // The move is passed via event.effect. We need to check both like Mycelium Might does.
     let is_status = if let Some(ref mv) = battle.active_move {
-        mv.category == "Status"
+        mv.borrow().category == "Status"
     } else if let Some(ref event) = battle.event {
         // Try to get move category from event's source_effect
         if let Some(ref effect) = event.effect {

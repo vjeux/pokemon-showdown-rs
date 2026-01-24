@@ -54,8 +54,8 @@ pub fn on_modify_move(
             None => return EventResult::Continue,
         };
         debug_elog!("[SKYDROP_MODIFY_MOVE] Setting accuracy=true (charge phase)");
-        active_move.accuracy = crate::dex::Accuracy::AlwaysHits;
-        active_move.flags.contact = false;
+        active_move.borrow_mut().accuracy = crate::dex::Accuracy::AlwaysHits;
+        active_move.borrow_mut().flags.contact = false;
     } else {
         debug_elog!("[SKYDROP_MODIFY_MOVE] Keeping accuracy=100 (attack phase)");
     }
@@ -235,7 +235,7 @@ pub fn on_try_hit(
             Some(active_move) => active_move,
             None => return EventResult::Continue,
         };
-        active_move.id.clone()
+        active_move.borrow().id.clone()
     };
 
     // if (source.removeVolatile(move.id)) {
@@ -364,7 +364,7 @@ pub fn on_try_hit(
             };
             (
                 source_pokemon.get_slot(),
-                active_move.name.clone(),
+                active_move.borrow().name.clone(),
                 target_pokemon.get_slot(),
             )
         };
@@ -475,7 +475,7 @@ pub mod condition {
     ///         return null;
     ///     }
     /// }
-    pub fn on_foe_before_move(battle: &mut Battle, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let _move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+    pub fn on_foe_before_move(battle: &mut Battle, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let _move_id = active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
         // onFoeBeforeMove(attacker, defender, move) {
         //     if (attacker === this.effectState.source) {
         //         attacker.activeMoveActions--;
@@ -565,7 +565,7 @@ pub mod condition {
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         use crate::dex_data::ID;
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+        let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
 
         debug_elog!("[SKYDROP_ANY_INVULN] Called with target_pos={:?}, source_pos={:?}, move_id={}", target_pos, source_pos, move_id);
 
@@ -662,7 +662,7 @@ pub mod condition {
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         use crate::dex_data::ID;
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+        let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
 
         // onAnyBasePower(basePower, target, source, move) {
         //     if (target !== this.effectState.target && target !== this.effectState.source) {

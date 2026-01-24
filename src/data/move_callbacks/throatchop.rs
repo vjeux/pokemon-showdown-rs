@@ -179,7 +179,7 @@ pub mod condition {
                 None => return EventResult::Continue,
             };
 
-            !active_move.is_z_or_max_powered && active_move.flags.sound
+            !active_move.borrow().is_z_or_max_powered && active_move.borrow().flags.sound
         };
 
         if should_block {

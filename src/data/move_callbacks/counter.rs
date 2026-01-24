@@ -133,7 +133,7 @@ pub mod condition {
         source_pos: Option<(usize, usize)>,
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+        let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
         // if (move.id !== 'counter') return;
         if move_id != "counter" {
             return EventResult::Continue;
@@ -193,7 +193,7 @@ pub mod condition {
         // Use active_move category (runtime) instead of static dex data
         // JS uses this.getCategory(move) which returns the effective category
         // Moves like Photon Geyser can change category based on stats
-        let category = active_move.map(|m| m.category.as_str()).unwrap_or("");
+        let category = active_move.map(|m| m.category.to_string()).unwrap_or_default();
 
         if !is_ally && category == "Physical" {
             debug_elog!("[COUNTER] on_damaging_hit: is_ally=false, category=Physical - storing damage * 2 = {}", 2 * damage);

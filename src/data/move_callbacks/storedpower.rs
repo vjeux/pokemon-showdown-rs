@@ -30,7 +30,7 @@ pub fn base_power_callback(
     };
 
     // const bp = move.basePower + 20 * pokemon.positiveBoosts();
-    let bp = active_move.base_power + 20 * pokemon.positive_boosts();
+    let bp = active_move.borrow().base_power + 20 * pokemon.positive_boosts();
 
     // this.debug(`BP: ${bp}`);
     battle.debug(&format!("BP: {}", bp));

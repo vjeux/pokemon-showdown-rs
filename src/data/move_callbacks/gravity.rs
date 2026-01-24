@@ -330,18 +330,18 @@ pub mod condition {
         _target_pos: Option<(usize, usize)>,
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+        let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
         let pokemon = pokemon_pos;
 
         // if (move.flags['gravity'] && !move.isZ) {
         let has_gravity_flag = if let Some(move_data) = battle.active_move.as_ref() {
-            move_data.flags.gravity
+            move_data.borrow().flags.gravity
         } else {
             false
         };
 
         let is_z_move = if let Some(move_data) = battle.active_move.as_ref() {
-            move_data.is_z.is_some()
+            move_data.borrow().is_z.is_some()
         } else {
             false
         };
@@ -386,13 +386,13 @@ pub mod condition {
 
         // if (move.flags['gravity'] && !move.isZ) {
         let has_gravity_flag = if let Some(move_data) = battle.active_move.as_ref() {
-            move_data.flags.gravity
+            move_data.borrow().flags.gravity
         } else {
             false
         };
 
         let is_z_move = if let Some(move_data) = battle.active_move.as_ref() {
-            move_data.is_z.is_some()
+            move_data.borrow().is_z.is_some()
         } else {
             false
         };
@@ -400,7 +400,7 @@ pub mod condition {
         let move_id = battle
             .active_move
             .as_ref()
-            .map(|m| m.id.as_str().to_string())
+            .map(|m| m.borrow().id.to_string())
             .unwrap_or_default();
 
         if has_gravity_flag && !is_z_move {
@@ -417,7 +417,7 @@ pub mod condition {
                 &[
                     pokemon_ident.as_str().into(),
                     "move: Gravity".into(),
-                    move_id.as_str().into(),
+                    move_id.into(),
                 ],
             );
 

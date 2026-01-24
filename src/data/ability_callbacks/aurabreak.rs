@@ -41,7 +41,7 @@ pub fn on_any_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize, us
     }
 
     let is_status = if let Some(ref active_move) = battle.active_move {
-        active_move.category == "Status"
+        active_move.borrow().category == "Status"
     } else {
         false
     };
@@ -51,8 +51,8 @@ pub fn on_any_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize, us
     }
 
     // move.hasAuraBreak = true;
-    if let Some(ref mut active_move) = battle.active_move {
-        active_move.has_aura_break = Some(true);
+    if let Some(ref active_move) = battle.active_move {
+        active_move.borrow_mut().has_aura_break = Some(true);
     }
 
     EventResult::Continue

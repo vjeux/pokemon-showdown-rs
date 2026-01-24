@@ -17,7 +17,10 @@ impl Battle {
         pokemon: Option<(usize, usize)>,
         target: Option<(usize, usize)>,
     ) {
-        self.active_move = move_id.and_then(|id| self.dex.get_active_move(&id.to_string()));
+        self.active_move = move_id.and_then(|id| {
+            self.dex.get_active_move(&id.to_string())
+                .map(crate::battle_actions::SharedActiveMove::new)
+        });
         self.active_pokemon = pokemon;
         self.active_target = target.or(pokemon);
     }

@@ -17,9 +17,8 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
     //     this.damage(source.baseMaxhp / 6, source, target);
     // }
 
-    // JavaScript uses this.checkMoveMakesContact(move, source, target) which checks for Protective Pads
-    // We need to clone active_move first to avoid borrow issues
-    let active_move_clone = battle.active_move.clone();
+    // Clone the active move to avoid borrow conflicts with mutable battle methods
+    let active_move_clone = battle.active_move.as_ref().map(|am| am.borrow().clone());
     if !battle.check_move_makes_contact_with_active_move(active_move_clone.as_ref(), source_pos, target_pos, false) {
         return EventResult::Continue;
     }

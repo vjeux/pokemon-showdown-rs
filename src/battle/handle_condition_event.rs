@@ -21,8 +21,8 @@ impl Battle {
         use crate::data::condition_callbacks;
         use crate::event::EventResult;
 
-        // Clone active_move to avoid borrow issues
-        let active_move_clone = self.active_move.clone();
+        // Clone active_move (extract from SharedActiveMove) to avoid borrow issues
+        let active_move_clone: Option<crate::battle_actions::ActiveMove> = self.active_move.as_ref().map(|am| am.borrow().clone());
 
         // Extract pokemon position from EventTarget
         // If target is None (for field handlers), fall back to event.target
@@ -55,7 +55,7 @@ impl Battle {
                 // Extract target from event and move_id from active_move
                 let target_pos = self.event.as_ref().and_then(|e| e.target);
                 let _move_id = self.active_move.as_ref()
-                    .map(|m| m.id.to_string())
+                    .map(|m| m.borrow().id.to_string())
                     .unwrap_or_default();
                 condition_callbacks::dispatch_on_after_move(self, condition_id, pokemon_pos, target_pos, active_move_clone.as_ref())
             }
@@ -136,7 +136,7 @@ impl Battle {
                 // Use event.source for defender (not event.target which is the attacker)
                 let defender_pos = self.event.as_ref().and_then(|e| e.source);
                 let _move_id = self.active_move.as_ref()
-                    .map(|m| m.id.to_string())
+                    .map(|m| m.borrow().id.to_string())
                     .unwrap_or_default();
                 debug_elog!("[HANDLE_CONDITION_EVENT] BasePower: condition_id={}, base_power={}, pokemon_pos={:?}, defender_pos={:?}",
                     condition_id, base_power, pokemon_pos, defender_pos);
@@ -148,7 +148,7 @@ impl Battle {
                 // Extract target from event and move_id from active_move
                 let target_pos = self.event.as_ref().and_then(|e| e.target);
                 let _move_id = self.active_move.as_ref()
-                    .map(|m| m.id.to_string())
+                    .map(|m| m.borrow().id.to_string())
                     .unwrap_or_default();
                 condition_callbacks::dispatch_on_before_move(self, condition_id, pokemon_pos, target_pos, active_move_clone.as_ref())
             }
@@ -157,7 +157,7 @@ impl Battle {
                 let target_pos = self.event.as_ref().and_then(|e| e.target);
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
                 let _move_id = self.active_move.as_ref()
-                    .map(|m| m.id.to_string())
+                    .map(|m| m.borrow().id.to_string())
                     .unwrap_or_default();
                 condition_callbacks::dispatch_on_foe_before_move(self, condition_id, pokemon_pos, target_pos, source_pos, active_move_clone.as_ref())
             }
@@ -206,7 +206,7 @@ impl Battle {
                 }).unwrap_or(0);
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
                 let _move_id = self.active_move.as_ref()
-                    .map(|m| m.id.to_string())
+                    .map(|m| m.borrow().id.to_string())
                     .unwrap_or_default();
                 debug_elog!("[HANDLE_CONDITION_EVENT] DamagingHit: condition_id={}, damage={}, pokemon_pos={:?}, source_pos={:?}", condition_id, damage, pokemon_pos, source_pos);
                 condition_callbacks::dispatch_on_damaging_hit(self, condition_id, damage, pokemon_pos, source_pos, active_move_clone.as_ref())
@@ -242,7 +242,7 @@ impl Battle {
                 // Extract source from event and move_id from active_move
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
                 let _move_id = self.active_move.as_ref()
-                    .map(|m| m.id.to_string())
+                    .map(|m| m.borrow().id.to_string())
                     .unwrap_or_default();
                 condition_callbacks::dispatch_on_drag_out(self, condition_id, pokemon_pos, source_pos, active_move_clone.as_ref())
             }
@@ -261,7 +261,7 @@ impl Battle {
 
                 // Extract move_id from active_move
                 let _move_id = self.active_move.as_ref()
-                    .map(|m| m.id.to_string())
+                    .map(|m| m.borrow().id.to_string())
                     .unwrap_or_default();
 
                 condition_callbacks::dispatch_on_effectiveness(self, condition_id, type_mod, &target_type, pokemon_pos, active_move_clone.as_ref())
@@ -331,7 +331,7 @@ impl Battle {
                 let target_pos = self.event.as_ref().and_then(|e| e.target);
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
                 let _move_id = self.active_move.as_ref()
-                    .map(|m| m.id.to_string())
+                    .map(|m| m.borrow().id.to_string())
                     .unwrap_or_default();
                 condition_callbacks::dispatch_on_modify_def(self, condition_id, def, pokemon_pos, target_pos, source_pos, active_move_clone.as_ref())
             }
@@ -353,7 +353,7 @@ impl Battle {
                 let target_pos = self.event.as_ref().and_then(|e| e.target);
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
                 let _move_id = self.active_move.as_ref()
-                    .map(|m| m.id.to_string())
+                    .map(|m| m.borrow().id.to_string())
                     .unwrap_or_default();
                 condition_callbacks::dispatch_on_modify_sp_d(self, condition_id, spd, pokemon_pos, target_pos, source_pos, active_move_clone.as_ref())
             }
@@ -420,7 +420,7 @@ impl Battle {
                 // Extract target from event and move_id from active_move
                 let target_pos = self.event.as_ref().and_then(|e| e.target);
                 let _move_id = self.active_move.as_ref()
-                    .map(|m| m.id.to_string())
+                    .map(|m| m.borrow().id.to_string())
                     .unwrap_or_default();
                 condition_callbacks::dispatch_on_move_aborted(self, condition_id, pokemon_pos, target_pos, active_move_clone.as_ref())
             }
@@ -745,7 +745,7 @@ impl Battle {
 
                 // Extract the active move ID for logging
                 let _move_id_for_log = self.active_move.as_ref()
-                    .map(|m| m.id.to_string())
+                    .map(|m| m.borrow().id.to_string())
                     .unwrap_or_default();
 
                 debug_elog!("[HANDLE_CONDITION_EVENT] Calling dispatch_condition_on_any_modify_damage for condition={}, move={}, source(attacker)={:?}, target(defender)={:?}",

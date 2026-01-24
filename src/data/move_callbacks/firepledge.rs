@@ -27,7 +27,8 @@ pub fn base_power_callback(
     };
 
     // Check if sourceEffect is 'grasspledge' or 'waterpledge'
-    if let Some(ref source_effect) = active_move.source_effect {
+    let active_move_ref = active_move.borrow();
+    if let Some(ref source_effect) = active_move_ref.source_effect {
         let source_str = source_effect.as_str();
         if source_str == "grasspledge" || source_str == "waterpledge" {
             // Note: JS has this.add('-combine') which we don't have infrastructure for yet
@@ -37,7 +38,7 @@ pub fn base_power_callback(
     }
 
     // Get the move data for base power
-    let move_data = match battle.dex.moves().get_by_id(&active_move.id) {
+    let move_data = match battle.dex.moves().get_by_id(&active_move_ref.id) {
         Some(m) => m,
         None => return EventResult::Continue,
     };
@@ -159,30 +160,31 @@ pub fn on_modify_move(
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // Get the active move
-    let active_move = match &mut battle.active_move {
+    let active_move = match &battle.active_move {
         Some(m) => m,
         None => return EventResult::Continue,
     };
 
     // if (move.sourceEffect === 'waterpledge')
-    if let Some(ref source_effect) = active_move.source_effect {
-        if source_effect.as_str() == "waterpledge" {
+    let source_effect = active_move.borrow().source_effect.clone();
+    if let Some(ref effect) = source_effect {
+        if effect.as_str() == "waterpledge" {
             // move.type = 'Water';
-            active_move.move_type = "Water".to_string();
+            active_move.borrow_mut().move_type = "Water".to_string();
             // move.forceSTAB = true;
-            active_move.force_stab = true;
+            active_move.borrow_mut().force_stab = true;
             // move.self = { sideCondition: 'waterpledge' };
-            active_move.self_effect = Some(crate::dex::MoveSecondary {
+            active_move.borrow_mut().self_effect = Some(crate::dex::MoveSecondary {
                 side_condition: Some("waterpledge".to_string()),
                 ..Default::default()
             });
-        } else if source_effect.as_str() == "grasspledge" {
+        } else if effect.as_str() == "grasspledge" {
             // move.type = 'Fire';
-            active_move.move_type = "Fire".to_string();
+            active_move.borrow_mut().move_type = "Fire".to_string();
             // move.forceSTAB = true;
-            active_move.force_stab = true;
+            active_move.borrow_mut().force_stab = true;
             // move.sideCondition = 'firepledge';
-            active_move.side_condition = Some("firepledge".to_string());
+            active_move.borrow_mut().side_condition = Some("firepledge".to_string());
         }
     }
 

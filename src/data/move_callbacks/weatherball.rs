@@ -44,30 +44,30 @@ pub fn on_modify_type(
         pokemon_ref.effective_weather(battle, field_weather.as_str()).to_string()
     };
 
-    if let Some(ref mut active_move) = battle.active_move {
+    if let Some(ref active_move) = battle.active_move {
         match effective_weather.as_ref() {
             // case 'sunnyday':
             // case 'desolateland':
             //     move.type = 'Fire';
             "sunnyday" | "desolateland" => {
-                active_move.move_type = "Fire".to_string();
+                active_move.borrow_mut().move_type = "Fire".to_string();
             }
             // case 'raindance':
             // case 'primordialsea':
             //     move.type = 'Water';
             "raindance" | "primordialsea" => {
-                active_move.move_type = "Water".to_string();
+                active_move.borrow_mut().move_type = "Water".to_string();
             }
             // case 'sandstorm':
             //     move.type = 'Rock';
             "sandstorm" => {
-                active_move.move_type = "Rock".to_string();
+                active_move.borrow_mut().move_type = "Rock".to_string();
             }
             // case 'hail':
             // case 'snowscape':
             //     move.type = 'Ice';
             "hail" | "snowscape" => {
-                active_move.move_type = "Ice".to_string();
+                active_move.borrow_mut().move_type = "Ice".to_string();
             }
             _ => {}
         }
@@ -121,7 +121,7 @@ pub fn on_modify_move(
     };
 
     if should_double {
-        if let Some(ref mut active_move) = battle.active_move {
+        if let Some(ref active_move) = battle.active_move {
             // case 'sunnyday':
             // case 'desolateland':
             //     move.basePower *= 2;
@@ -133,7 +133,7 @@ pub fn on_modify_move(
             // case 'hail':
             // case 'snowscape':
             //     move.basePower *= 2;
-            active_move.base_power *= 2;
+            active_move.borrow_mut().base_power *= 2;
         }
     }
 
@@ -141,7 +141,7 @@ pub fn on_modify_move(
     let base_power = battle
         .active_move
         .as_ref()
-        .map(|m| m.base_power)
+        .map(|m| m.borrow().base_power)
         .unwrap_or(0);
     battle.debug(&format!("BP: {}", base_power));
 

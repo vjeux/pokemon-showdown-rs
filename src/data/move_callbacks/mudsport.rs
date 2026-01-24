@@ -57,7 +57,7 @@ pub mod condition {
         // Get the move type from the ACTIVE move (not the base move data)
         // Hidden Power and other moves may have variable types that are set on the active move
         let move_type = battle.active_move.as_ref()
-            .map(|m| m.move_type.clone());
+            .map(|m| m.borrow().move_type.clone());
 
         debug_elog!("[MUDSPORT] on_base_power: move_type={:?}", move_type);
 

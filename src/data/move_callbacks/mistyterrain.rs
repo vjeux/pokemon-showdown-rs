@@ -202,7 +202,7 @@ pub mod condition {
 
         // Get the move type from the active_move (NOT from dex, since Hidden Power has dynamic type)
         let move_type = match &battle.active_move {
-            Some(active_move) => active_move.move_type.as_str(),
+            Some(active_move) => active_move.borrow().move_type.clone(),
             None => return EventResult::Continue,
         };
 

@@ -16,7 +16,7 @@ use crate::Pokemon;
 pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), _source_pos: (usize, usize)) -> EventResult {
     // JavaScript checks move.type (the active move's type, not the dex type)
     let is_electric = battle.active_move.as_ref()
-        .map(|m| m.move_type == "Electric")
+        .map(|m| m.borrow().move_type == "Electric")
         .unwrap_or(false);
 
     // if (move.type === 'Electric')

@@ -105,8 +105,8 @@ pub mod condition {
         // Check if the effect is a move with infiltrates
         let is_infiltrating_move = {
             if let Some(ref active_move) = battle.active_move {
-                if active_move.id == ID::from(effect_id) {
-                    active_move.infiltrates
+                if active_move.borrow().id == ID::from(effect_id) {
+                    active_move.borrow().infiltrates
                 } else {
                     false
                 }
@@ -208,8 +208,8 @@ pub mod condition {
         // Check if the effect is a move with infiltrates
         let is_infiltrating_move = {
             if let Some(ref active_move) = battle.active_move {
-                if active_move.id == ID::from(effect_id) {
-                    active_move.infiltrates
+                if active_move.borrow().id == ID::from(effect_id) {
+                    active_move.borrow().infiltrates
                 } else {
                     false
                 }

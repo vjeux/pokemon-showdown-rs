@@ -72,9 +72,9 @@ pub mod condition {
         // Get the active move (effect)
         let (move_id, move_priority, move_target) = match &battle.active_move {
             Some(active_move) => (
-                active_move.id.clone(),
-                active_move.priority,
-                active_move.target.clone(),
+                active_move.borrow().id.clone(),
+                active_move.borrow().priority,
+                active_move.borrow().target.clone(),
             ),
             None => return EventResult::Continue,
         };
@@ -154,7 +154,7 @@ pub mod condition {
 
         // Get move type
         let move_type = match &battle.active_move {
-            Some(active_move) => active_move.move_type.clone(),
+            Some(active_move) => active_move.borrow().move_type.clone(),
             None => return EventResult::Continue,
         };
 

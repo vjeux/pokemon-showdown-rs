@@ -24,7 +24,7 @@ pub fn base_power_callback(
     let source_effect = battle
         .active_move
         .as_ref()
-        .and_then(|m| m.source_effect.clone());
+        .and_then(|m| m.borrow().source_effect.clone());
 
     if let Some(ref effect) = source_effect {
         if effect.as_str() == "waterpledge" || effect.as_str() == "firepledge" {
@@ -38,7 +38,7 @@ pub fn base_power_callback(
 
     // return move.basePower;
     if let Some(ref active_move) = battle.active_move {
-        return EventResult::Number(active_move.base_power);
+        return EventResult::Number(active_move.borrow().base_power);
     }
 
     EventResult::Continue
@@ -181,17 +181,18 @@ pub fn on_modify_move(
     let source_effect = battle
         .active_move
         .as_ref()
-        .and_then(|m| m.source_effect.clone());
+        .and_then(|m| m.borrow().source_effect.clone());
 
     if let Some(ref effect) = source_effect {
         if effect.as_str() == "waterpledge" {
             // move.type = 'Grass';
             // move.forceSTAB = true;
             // move.sideCondition = 'grasspledge';
-            if let Some(ref mut current_move) = battle.active_move {
-                current_move.move_type = "Grass".to_string();
-                current_move.force_stab = true;
-                current_move.side_condition = Some("grasspledge".to_string());
+            if let Some(ref current_move) = battle.active_move {
+                let mut cm = current_move.borrow_mut();
+                cm.move_type = "Grass".to_string();
+                cm.force_stab = true;
+                cm.side_condition = Some("grasspledge".to_string());
             }
         }
 
@@ -200,10 +201,11 @@ pub fn on_modify_move(
             // move.type = 'Fire';
             // move.forceSTAB = true;
             // move.sideCondition = 'firepledge';
-            if let Some(ref mut current_move) = battle.active_move {
-                current_move.move_type = "Fire".to_string();
-                current_move.force_stab = true;
-                current_move.side_condition = Some("firepledge".to_string());
+            if let Some(ref current_move) = battle.active_move {
+                let mut cm = current_move.borrow_mut();
+                cm.move_type = "Fire".to_string();
+                cm.force_stab = true;
+                cm.side_condition = Some("firepledge".to_string());
             }
         }
     }

@@ -38,7 +38,7 @@ pub fn on_effectiveness(battle: &mut Battle, target_pos: Option<(usize, usize)>)
 
     // if (move.type === 'Ground' && target.hasType('Flying')) return 0;
     let (move_type, target_has_flying) = {
-        let move_type = battle.active_move.as_ref().map(|m| m.move_type.clone()).unwrap_or_default();
+        let move_type = battle.active_move.as_ref().map(|m| m.borrow().move_type.clone()).unwrap_or_default();
 
         let target_has_flying = {
             let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {

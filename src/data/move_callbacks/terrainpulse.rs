@@ -63,7 +63,7 @@ pub fn on_modify_type(
 
     // move.type = ...
     if let Some(ref mut active_move) = battle.active_move {
-        active_move.move_type = new_type.to_string();
+        active_move.borrow_mut().move_type = new_type.to_string();
     }
 
     EventResult::Continue
@@ -103,8 +103,8 @@ pub fn on_modify_move(
     }
 
     // move.basePower *= 2;
-    if let Some(ref mut active_move) = battle.active_move {
-        active_move.base_power *= 2;
+    if let Some(ref active_move) = battle.active_move {
+        active_move.borrow_mut().base_power *= 2;
         // this.debug('BP doubled in Terrain');
         // Debug is typically not logged in production code
     }

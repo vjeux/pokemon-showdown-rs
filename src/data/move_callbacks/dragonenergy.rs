@@ -21,7 +21,7 @@ pub fn base_power_callback(
 
     // Get current move's base power
     let base_power = match &battle.active_move {
-        Some(active_move) => active_move.base_power,
+        Some(active_move) => active_move.borrow().base_power,
         None => return EventResult::Continue,
     };
 

@@ -29,7 +29,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
     }
 
     // JavaScript checks move.category (the active move's category, not the dex category)
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+    let move_id = active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
     let is_status = active_move.map(|m| m.category == "Status").unwrap_or(false);
     let is_struggle = move_id == "struggle";
     let is_skydrop = move_id == "skydrop";
@@ -81,9 +81,9 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
 
     if should_block {
         // if (move.smartTarget) { move.smartTarget = false; }
-        let should_show_immune = if let Some(active_move) = &mut battle.active_move {
-            if active_move.smart_target.unwrap_or(false) {
-                active_move.smart_target = Some(false);
+        let should_show_immune = if let Some(ref active_move) = battle.active_move {
+            if active_move.borrow().smart_target.unwrap_or(false) {
+                active_move.borrow_mut().smart_target = Some(false);
                 false
             } else {
                 true

@@ -28,8 +28,8 @@ pub fn on_hit(
     // if (!move) return;
     let move_id = match &battle.last_move {
         Some(active_move) => {
-            debug_elog!("[COPYCAT] Found last_move: id={}, turn={}", active_move.id.as_str(), battle.turn);
-            active_move.id.clone()
+            debug_elog!("[COPYCAT] Found last_move: id={}, turn={}", active_move.borrow().id.as_str(), battle.turn);
+            active_move.borrow().id.clone()
         },
         None => {
             debug_elog!("[COPYCAT] No last_move found, returning Continue");

@@ -34,7 +34,7 @@ pub fn on_hit_field(
     source_pos: Option<(usize, usize)>,
     active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+    let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
     let source = source_pos;
 
     // let result = false;
@@ -51,7 +51,7 @@ pub fn on_hit_field(
                 "Invulnerability",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
             source,
-            Some(&Effect::move_(ID::from(move_id))),
+            Some(&Effect::move_(ID::from(move_id.clone()))),
             EventResult::Continue,
             false,
             false
@@ -87,7 +87,7 @@ pub fn on_hit_field(
                 "TryHit",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
                 source,
-                Some(&Effect::move_(ID::from(move_id))),
+                Some(&Effect::move_(ID::from(move_id.clone()))),
                 EventResult::Continue,
                 false,
                 false

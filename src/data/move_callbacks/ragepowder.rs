@@ -77,7 +77,7 @@ pub mod condition {
         source_pos: Option<(usize, usize)>,
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+        let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
         // const ragePowderUser = this.effectState.target;
         let rage_powder_user = match battle.with_effect_state_ref(|state| state.target).flatten() {
             Some(pos) => pos,
@@ -117,7 +117,7 @@ pub mod condition {
         if is_valid_target {
             // if (move.smartTarget) move.smartTarget = false;
             if let Some(ref mut active_move) = battle.active_move {
-                active_move.smart_target = Some(false);
+                active_move.borrow_mut().smart_target = Some(false);
             }
 
             // this.debug("Rage Powder redirected target of move");

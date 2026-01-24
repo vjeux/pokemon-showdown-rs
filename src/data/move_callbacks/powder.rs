@@ -57,7 +57,7 @@ pub mod condition {
                 Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
-            active_move.move_type.clone()
+            active_move.borrow().move_type.clone()
         };
 
         if move_type.as_str() == "Fire" {

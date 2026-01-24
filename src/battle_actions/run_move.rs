@@ -114,8 +114,8 @@ pub fn run_move(
     // onModifyPriority callback during action speed calculation. We need to restore this flag
     // since set_active_move creates a fresh active_move.
     if prankster_boosted {
-        if let Some(ref mut active_move) = battle.active_move {
-            active_move.prankster_boosted = true;
+        if let Some(ref active_move) = battle.active_move {
+            active_move.borrow_mut().prankster_boosted = true;
         }
     }
 
@@ -161,7 +161,7 @@ pub fn run_move(
     // NOTE: This does NOT fail/return - it just adds a volatile for tracking purposes.
     // The actual disable happens at end_turn in DisableMove event.
     // Use active_move to get flags since the move may have been changed by OverrideAction
-    let has_cantusetwice_flag = battle.active_move.as_ref().map_or(false, |m| m.flags.contains_key("cantusetwice"));
+    let has_cantusetwice_flag = battle.active_move.as_ref().map_or(false, |m| m.borrow().flags.contains_key("cantusetwice"));
     if has_cantusetwice_flag {
         let last_move_matches = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
@@ -184,8 +184,8 @@ pub fn run_move(
     //
     // JavaScript: if this callback returns true, the move is cancelled
     // (e.g., Focus Punch when lostFocus is set)
-    // Clone active_move to avoid borrow issues
-    let active_move_for_callback = battle.active_move.clone();
+    // Clone inner ActiveMove to avoid borrow issues and match expected types
+    let active_move_for_callback = battle.active_move.as_ref().map(|am| am.borrow().clone());
     if crate::data::move_callbacks::has_before_move_callback(active_move_for_callback.as_ref()) {
         let callback_result = crate::data::move_callbacks::dispatch_before_move_callback(battle, active_move_for_callback.as_ref(), pokemon_pos);
         if let crate::event::EventResult::Boolean(true) = callback_result {
@@ -388,7 +388,7 @@ pub fn run_move(
 
     // this.battle.lastSuccessfulMoveThisTurn = moveDidSomething ? this.battle.activeMove && this.battle.activeMove.id : null;
     battle.last_successful_move_this_turn = if move_did_something {
-        battle.active_move.as_ref().map(|m| m.id.clone())
+        battle.active_move.as_ref().map(|m| m.borrow().id.clone())
     } else {
         None
     };
@@ -415,7 +415,7 @@ pub fn run_move(
         if had_volatile {
             Pokemon::remove_volatile(battle, pokemon_pos, &effective_move_id);
             // Show the hint - get the move name from the effective move
-            let move_name = battle.active_move.as_ref().map(|m| m.name.clone()).unwrap_or_else(|| effective_move_id.to_string());
+            let move_name = battle.active_move.as_ref().map(|m| m.borrow().name.clone()).unwrap_or_else(|| effective_move_id.to_string());
             battle.add("-hint", &[crate::battle::Arg::String(format!("Some effects can force a Pokemon to use {} again in a row.", move_name))]);
         }
     }
@@ -450,13 +450,13 @@ pub fn run_move(
     // JavaScript: if (this.battle.activeMove) move = this.battle.activeMove;
     // Check dance flag on activeMove if available (e.g., when Metronome calls fierydance)
     let has_dance_flag = battle.active_move.as_ref()
-        .map(|m| m.flags.contains_key("dance"))
+        .map(|m| m.borrow().flags.contains_key("dance"))
         .unwrap_or_else(|| base_move.flags.contains_key("dance"));
     if has_dance_flag && move_did_something && !external_move {
         // JavaScript: if (this.battle.activeMove) move = this.battle.activeMove;
         // Get the dance move to use - this is activeMove (e.g., fierydance when called via Metronome)
         let dance_move_id = battle.active_move.as_ref()
-            .map(|m| m.id.clone())
+            .map(|m| m.borrow().id.clone())
             .unwrap_or_else(|| move_data.id.clone());
         let dance_move_data: Option<MoveData> = battle.dex.moves().get_by_id(&dance_move_id).cloned();
 

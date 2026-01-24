@@ -112,7 +112,7 @@ pub mod condition {
     ) -> EventResult {
         // Get the active move
         let move_id = match &battle.active_move {
-            Some(active_move) => active_move.id.clone(),
+            Some(active_move) => active_move.borrow().id.clone(),
             None => return EventResult::Continue,
         };
 
@@ -123,10 +123,13 @@ pub mod condition {
 
         // if (!move.flags['protect'] || move.category === 'Status') {
         // IMPORTANT: Check the ACTIVE move's runtime flags, not the dex data
-        // Abilities like Unseen Fist modify active_move.flags.protect at runtime
+        // Abilities like Unseen Fist modify active_move.borrow().flags.protect at runtime
         let (has_protect_flag, move_category) = match &battle.active_move {
-            Some(active_move) => (active_move.flags.protect, active_move.category.as_str()),
-            None => (true, ""), // Default to having protect if no active move
+            Some(active_move) => {
+                let am = active_move.borrow();
+                (am.flags.protect, am.category.clone())
+            },
+            None => (true, String::new()), // Default to having protect if no active move
         };
 
         if !has_protect_flag || move_category == "Status" {
@@ -139,9 +142,9 @@ pub mod condition {
             // if (move.isZ || move.isMax) target.getMoveHitData(move).zBrokeProtect = true;
             if move_data.is_z.is_some() || move_data.is_max.is_some() {
                 // Set zBrokeProtect in move hit data
-                if let Some(hit_data) = battle.get_move_hit_data_mut(target_pos) {
+                battle.with_move_hit_data_mut(target_pos, |hit_data| {
                     hit_data.z_broke_protect = true;
-                }
+                });
             }
 
             // return;
@@ -163,15 +166,15 @@ pub mod condition {
 
         let has_smart_target = {
             if let Some(ref active_move) = battle.active_move {
-                active_move.smart_target == Some(true)
+                active_move.borrow().smart_target == Some(true)
             } else {
                 false
             }
         };
 
         if has_smart_target {
-            if let Some(ref mut active_move) = battle.active_move {
-                active_move.smart_target = Some(false);
+            if let Some(ref active_move) = battle.active_move {
+                active_move.borrow_mut().smart_target = Some(false);
             }
         } else {
             battle.add(
@@ -211,9 +214,9 @@ pub mod condition {
         // Note: target_pos (the Burning Bulwark user) is the source of the burn status
         // This is important for Synchronize to know who to pass the status back to
         // Use check_move_makes_contact_with_active_move to check the active move's flags
-        let active_move = battle.active_move.clone();
+        let active_move_clone = battle.active_move.as_ref().map(|am| am.borrow().clone());
         let makes_contact = battle.check_move_makes_contact_with_active_move(
-            active_move.as_ref(),
+            active_move_clone.as_ref(),
             source_pos,
             target_pos,
             false,
@@ -246,7 +249,7 @@ pub mod condition {
 
         // Get the active move - use runtime flags, not dex lookup
         let is_z_or_max_powered = match &battle.active_move {
-            Some(active_move) => active_move.is_z_or_max_powered,
+            Some(active_move) => active_move.borrow().is_z_or_max_powered,
             None => return EventResult::Continue,
         };
 
@@ -257,9 +260,9 @@ pub mod condition {
         // pokemon_pos (the Burning Bulwark user) is the source of the burn status
         // Use check_move_makes_contact_with_active_move to check the active move's flags
         if is_z_or_max_powered {
-            let active_move = battle.active_move.clone();
+            let active_move_clone = battle.active_move.as_ref().map(|am| am.borrow().clone());
             let makes_contact = battle.check_move_makes_contact_with_active_move(
-                active_move.as_ref(),
+                active_move_clone.as_ref(),
                 source,
                 pokemon_pos,
                 false,

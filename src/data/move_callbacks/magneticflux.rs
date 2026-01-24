@@ -28,7 +28,7 @@ pub fn on_hit_side(
     active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     use crate::dex_data::ID;
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+    let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
 
     let source = match source_pos {
         Some(pos) => pos,
@@ -91,7 +91,7 @@ pub fn on_hit_side(
     let mut did_something = false;
     for target in targets {
         let boosts = [("def", 1), ("spd", 1)];
-        let boost_result = battle.boost(&boosts, target, Some(source), Some(move_id), false, false);
+        let boost_result = battle.boost(&boosts, target, Some(source), Some(&move_id), false, false);
         did_something = boost_result || did_something;
     }
 

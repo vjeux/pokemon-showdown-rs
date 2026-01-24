@@ -34,7 +34,7 @@ pub fn on_try_move(
 
     // Get move ID
     let move_id = match &battle.active_move {
-        Some(active_move) => active_move.id.clone(),
+        Some(active_move) => active_move.borrow().id.clone(),
         None => {
             debug_elog!("[METEORBEAM_ON_TRY_MOVE] No active_move, returning Continue");
             return EventResult::Continue;

@@ -61,7 +61,7 @@ pub fn on_modify_type(
 
     // Set the move's type to the result
     if let Some(ref mut active_move) = battle.active_move {
-        active_move.move_type = new_type.to_owned();
+        active_move.borrow_mut().move_type = new_type.to_owned();
     }
 
     EventResult::Continue

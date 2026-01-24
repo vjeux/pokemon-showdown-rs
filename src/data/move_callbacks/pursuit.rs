@@ -40,13 +40,13 @@ pub fn base_power_callback(
     // You can't get here unless the pursuit succeeds
     // if (target.beingCalledBack || target.switchFlag)
     if target.being_called_back || target.switch_flag.is_some() {
-        let bp = active_move.base_power * 2;
+        let bp = active_move.borrow().base_power * 2;
         // this.debug('Pursuit damage boost');
         battle.debug("Pursuit damage boost");
         return EventResult::Number(bp);
     }
 
-    EventResult::Number(active_move.base_power)
+    EventResult::Number(active_move.borrow().base_power)
 }
 
 /// beforeTurnCallback(pokemon) {
@@ -120,7 +120,7 @@ pub fn on_modify_move(
     if should_always_hit {
         // move.accuracy = true;
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.accuracy = crate::dex::Accuracy::AlwaysHits;
+            active_move.borrow_mut().accuracy = crate::dex::Accuracy::AlwaysHits;
         }
     }
 

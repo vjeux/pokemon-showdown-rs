@@ -75,17 +75,17 @@ pub fn on_modify_type(
             // case 'Tauros-Paldea-Combat':
             //     move.type = 'Fighting';
             "taurospaldea" | "taurospaldeacombat" => {
-                active_move.move_type = "Fighting".to_string();
+                active_move.borrow_mut().move_type = "Fighting".to_string();
             }
             // case 'Tauros-Paldea-Blaze':
             //     move.type = 'Fire';
             "taurospaldeablaze" => {
-                active_move.move_type = "Fire".to_string();
+                active_move.borrow_mut().move_type = "Fire".to_string();
             }
             // case 'Tauros-Paldea-Aqua':
             //     move.type = 'Water';
             "taurospaldeaaqua" => {
-                active_move.move_type = "Water".to_string();
+                active_move.borrow_mut().move_type = "Water".to_string();
             }
             _ => {}
         }

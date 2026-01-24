@@ -20,7 +20,7 @@ pub fn on_take_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (u
 
     // if (!this.activeMove) throw new Error("Battle.activeMove is null");
     let active_move_id = match &battle.active_move {
-        Some(m) => m.id.as_str(),
+        Some(m) => m.borrow().id.clone(),
         None => return EventResult::Continue,
     };
 
@@ -43,7 +43,7 @@ pub fn on_take_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (u
         src_pos != pokemon_pos
     } else {
         false
-    } || active_move_id == "knockoff";
+    } || active_move_id.as_str() == "knockoff";
 
     if should_prevent {
         let pokemon_id = {

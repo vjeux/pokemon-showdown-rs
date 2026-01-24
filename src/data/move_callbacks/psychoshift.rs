@@ -39,8 +39,8 @@ pub fn on_try_hit(
 
     // move.status = source.status;
     if let Some(ref mut active_move) = battle.active_move {
-        active_move.status = Some(source_status.to_string());
-        debug_elog!("[PSYCHOSHIFT_TRYHIT] Set move.status to {:?}", active_move.status);
+        active_move.borrow_mut().status = Some(source_status.to_string());
+        debug_elog!("[PSYCHOSHIFT_TRYHIT] Set move.status to {:?}", active_move.borrow().status);
     }
 
     EventResult::Continue

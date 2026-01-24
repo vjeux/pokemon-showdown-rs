@@ -296,7 +296,7 @@ pub fn spread_move_hit<'a>(
     debug_elog!("[SPREAD_MOVE_HIT] About to call get_spread_damage");
     debug_elog!("[SPREAD_MOVE_HIT] BEFORE get_spread_damage: damage={:?}", damage);
     // Get the active move for damage calculation - JavaScript passes ActiveMove directly
-    let active_move_for_damage = battle.active_move.clone();
+    let active_move_for_damage = battle.active_move.as_ref().map(|am| am.borrow().clone());
     if let Some(ref active_move) = active_move_for_damage {
         damage = crate::battle_actions::get_spread_damage(
             battle,
@@ -347,10 +347,11 @@ pub fn spread_move_hit<'a>(
     // JavaScript doesn't have this problem because it passes moveData as a parameter.
     let (has_self_effect, self_dropped, move_data_clone) = {
         if let Some(ref active_move) = battle.active_move {
-            let has_self = active_move.self_effect.is_some();
+            let am = active_move.borrow();
+            let has_self = am.self_effect.is_some();
             debug_elog!("[SPREAD_MOVE_HIT] BEFORE run_move_effects: move_id={}, has_self_effect={}, self_dropped={}, secondaries.len()={}",
-                active_move.id, has_self, active_move.self_dropped, active_move.secondaries.len());
-            (has_self, active_move.self_dropped, Some(active_move.clone()))
+                am.id, has_self, am.self_dropped, am.secondaries.len());
+            (has_self, am.self_dropped, Some(am.clone()))
         } else {
             debug_elog!("[SPREAD_MOVE_HIT] No active_move when extracting info BEFORE run_move_effects!");
             (false, false, None)
@@ -456,22 +457,20 @@ pub fn spread_move_hit<'a>(
 
     if has_force_switch {
         debug_elog!("[SPREAD_MOVE_HIT] Calling force_switch for move={}", move_data_id);
-        // force_switch needs ActiveMove - get pointer to avoid borrow issues
-        let active_move_ptr = battle.active_move.as_ref().map(|am| am as *const _);
+        // Clone inner ActiveMove to avoid borrow issues
+        let active_move_clone = battle.active_move.as_ref().map(|am| am.borrow().clone());
 
-        if let Some(ptr) = active_move_ptr {
-            damage = unsafe {
-                crate::battle_actions::force_switch(
-                    battle,
-                    damage,
-                    &targets_mut,
-                    source_pos,
-                    &*ptr,
-                )
-            };
+        if let Some(ref am) = active_move_clone {
+            damage = crate::battle_actions::force_switch(
+                battle,
+                damage,
+                &targets_mut,
+                source_pos,
+                am,
+            );
             debug_elog!("[SPREAD_MOVE_HIT] force_switch completed");
         } else {
-            debug_elog!("[SPREAD_MOVE_HIT] No active_move ptr, skipping force_switch");
+            debug_elog!("[SPREAD_MOVE_HIT] No active_move, skipping force_switch");
         }
     }
 

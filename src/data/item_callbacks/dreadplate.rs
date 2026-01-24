@@ -15,7 +15,7 @@ use crate::event::EventResult;
 pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // JavaScript checks move.type (the active move's type, not the dex type)
     let is_dark = battle.active_move.as_ref()
-        .map(|m| m.move_type == "Dark")
+        .map(|m| m.borrow().move_type == "Dark")
         .unwrap_or(false);
 
     // if (move && move.type === 'Dark')

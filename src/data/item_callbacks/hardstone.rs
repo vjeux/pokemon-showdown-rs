@@ -15,7 +15,7 @@ use crate::event::EventResult;
 pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // if (move && move.type === 'Rock')
     let is_rock = battle.active_move.as_ref()
-        .map(|m| m.move_type.as_str() == "Rock")
+        .map(|m| m.borrow().move_type.as_str() == "Rock")
         .unwrap_or(false);
 
     if is_rock {

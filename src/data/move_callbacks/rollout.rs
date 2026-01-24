@@ -41,7 +41,7 @@ pub fn base_power_callback(
             Some(active_move) => active_move,
             None => return EventResult::Continue,
         };
-        active_move.base_power
+        active_move.borrow().base_power
     };
 
     // const rolloutData = pokemon.volatiles['rollout'];
@@ -159,7 +159,7 @@ pub fn on_modify_move(
             Some(active_move) => active_move,
             None => return EventResult::Continue,
         };
-        active_move.source_effect.is_some()
+        active_move.borrow().source_effect.is_some()
     };
 
     if has_source_effect {

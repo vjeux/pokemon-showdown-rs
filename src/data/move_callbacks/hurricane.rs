@@ -51,11 +51,11 @@ pub fn on_modify_move(
     let weather_id = effective_weather;
     if weather_id == "raindance" || weather_id == "primordialsea" {
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.accuracy = crate::dex::Accuracy::AlwaysHits;
+            active_move.borrow_mut().accuracy = crate::dex::Accuracy::AlwaysHits;
         }
     } else if weather_id == "sunnyday" || weather_id == "desolateland" {
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.accuracy = crate::dex::Accuracy::Percent(50);
+            active_move.borrow_mut().accuracy = crate::dex::Accuracy::Percent(50);
         }
     }
 

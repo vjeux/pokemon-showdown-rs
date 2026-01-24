@@ -16,20 +16,28 @@ pub fn on_modify_secondaries(battle: &mut Battle) -> EventResult {
     // This filters out all secondaries that don't have effect.self
     // In other words, it blocks all opponent-targeting secondaries
 
-    if let Some(ref active_move) = battle.active_move {
+    let (filtered, should_debug) = if let Some(ref active_move) = battle.active_move {
         // Filter secondaries to keep only effects with self_secondary (self-targeting)
         // !!effect.self in JavaScript means "keep if self is truthy"
-        let filtered: Vec<_> = active_move.secondaries
+        let am = active_move.borrow();
+        let filtered: Vec<_> = am.secondaries
             .iter()
             .filter(|effect| effect.self_secondary.is_some())
             .cloned()
             .collect();
 
-        if filtered.len() < active_move.secondaries.len() {
-            battle.debug("Shield Dust prevent secondary");
-        }
+        let should_debug = filtered.len() < am.secondaries.len();
+        (Some(filtered), should_debug)
+    } else {
+        (None, false)
+    };
 
-        // Return the filtered secondaries so the caller uses them
+    if should_debug {
+        battle.debug("Shield Dust prevent secondary");
+    }
+
+    // Return the filtered secondaries so the caller uses them
+    if let Some(filtered) = filtered {
         return EventResult::Secondaries(filtered);
     }
 

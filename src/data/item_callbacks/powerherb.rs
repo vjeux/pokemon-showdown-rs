@@ -22,7 +22,7 @@ pub fn on_charge_move(
     target_pos: Option<(usize, usize)>,
     active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+    let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
     // if (pokemon.useItem())
     let used_item = {
         let _pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
@@ -42,7 +42,7 @@ pub fn on_charge_move(
         // this.addMove('-anim', pokemon, move.name, target);
         let move_name = battle
             .dex
-            .moves().get(move_id)
+            .moves().get(&move_id)
             .map(|m| m.name.clone())
             .unwrap_or_else(|| move_id.to_string());
 

@@ -56,7 +56,8 @@ pub fn on_any_base_power(battle: &mut Battle, _base_power: i32, source_pos: Opti
     }
 
     let (category, move_type) = if let Some(ref active_move) = battle.active_move {
-        (active_move.category.clone(), active_move.move_type.clone())
+        let am = active_move.borrow();
+        (am.category.clone(), am.move_type.clone())
     } else {
         return EventResult::Continue;
     };
@@ -67,11 +68,12 @@ pub fn on_any_base_power(battle: &mut Battle, _base_power: i32, source_pos: Opti
 
     // if (!move.auraBooster?.hasAbility('Dark Aura')) move.auraBooster = this.effectState.target;
     // if (move.auraBooster !== this.effectState.target) return;
-    let should_boost = if let Some(ref mut active_move) = battle.active_move {
-        if active_move.aura_booster.is_none() {
-            active_move.aura_booster = Some(aura_holder);
+    let should_boost = if let Some(ref active_move) = battle.active_move {
+        let mut am = active_move.borrow_mut();
+        if am.aura_booster.is_none() {
+            am.aura_booster = Some(aura_holder);
         }
-        active_move.aura_booster == Some(aura_holder)
+        am.aura_booster == Some(aura_holder)
     } else {
         false
     };
@@ -85,7 +87,7 @@ pub fn on_any_base_power(battle: &mut Battle, _base_power: i32, source_pos: Opti
     // So "return this.chainModify(...)" actually returns undefined, keeping relay_var unchanged.
     // The modifier is accumulated in event.modifier and applied at the end of runEvent.
     let has_aura_break = if let Some(ref active_move) = battle.active_move {
-        active_move.has_aura_break.unwrap_or(false)
+        active_move.borrow().has_aura_break.unwrap_or(false)
     } else {
         false
     };

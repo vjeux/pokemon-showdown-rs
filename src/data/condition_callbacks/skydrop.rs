@@ -30,7 +30,7 @@ pub fn on_any_invulnerability(
     source_pos: (usize, usize),
     attacking_active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
-    let attacking_move_id = attacking_active_move.map(|m| m.id.as_str()).unwrap_or("");
+    let attacking_move_id = attacking_active_move.map(|m| m.id.to_string()).unwrap_or_default();
     debug_log!("[SKYDROP_INVULN] Called for target={:?}, source={:?}, move='{}'", target_pos, source_pos, attacking_move_id);
 
     // Get the Pokemon that has the skydrop volatile from effect_holder
@@ -96,7 +96,7 @@ pub fn on_any_invulnerability(
         "thousandarrows",
     ];
 
-    if HITS_SKYDROP.contains(&attacking_move_id) {
+    if HITS_SKYDROP.contains(&attacking_move_id.as_str()) {
         debug_log!("[SKYDROP_INVULN] Move {} can hit through skydrop, returning Continue", attacking_move_id);
         return EventResult::Continue;
     }

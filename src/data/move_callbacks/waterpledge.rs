@@ -27,7 +27,8 @@ pub fn base_power_callback(
     };
 
     // Check if sourceEffect is 'firepledge' or 'grasspledge'
-    if let Some(ref source_effect) = active_move.source_effect {
+    let active_move_ref = active_move.borrow();
+    if let Some(ref source_effect) = active_move_ref.source_effect {
         let source_str = source_effect.as_str();
         if source_str == "firepledge" || source_str == "grasspledge" {
             // Note: JS has this.add('-combine') which we don't have infrastructure for yet
@@ -37,7 +38,7 @@ pub fn base_power_callback(
     }
 
     // Get the move data for base power
-    let move_data = match battle.dex.moves().get_by_id(&active_move.id) {
+    let move_data = match battle.dex.moves().get_by_id(&active_move_ref.id) {
         Some(m) => m,
         None => return EventResult::Continue,
     };
@@ -163,27 +164,28 @@ pub fn on_modify_move(
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // Get the active move
-    let active_move = match &mut battle.active_move {
+    let active_move = match &battle.active_move {
         Some(m) => m,
         None => return EventResult::Continue,
     };
 
     // if (move.sourceEffect === 'grasspledge')
-    if let Some(ref source_effect) = active_move.source_effect {
-        if source_effect.as_str() == "grasspledge" {
+    let source_effect = active_move.borrow().source_effect.clone();
+    if let Some(ref effect) = source_effect {
+        if effect.as_str() == "grasspledge" {
             // move.type = 'Grass';
-            active_move.move_type = "Grass".to_string();
+            active_move.borrow_mut().move_type = "Grass".to_string();
             // move.forceSTAB = true;
-            active_move.force_stab = true;
+            active_move.borrow_mut().force_stab = true;
             // move.sideCondition = 'grasspledge';
-            active_move.side_condition = Some("grasspledge".to_string());
-        } else if source_effect.as_str() == "firepledge" {
+            active_move.borrow_mut().side_condition = Some("grasspledge".to_string());
+        } else if effect.as_str() == "firepledge" {
             // move.type = 'Water';
-            active_move.move_type = "Water".to_string();
+            active_move.borrow_mut().move_type = "Water".to_string();
             // move.forceSTAB = true;
-            active_move.force_stab = true;
+            active_move.borrow_mut().force_stab = true;
             // move.self = { sideCondition: 'waterpledge' };
-            active_move.self_effect = Some(crate::dex::MoveSecondary {
+            active_move.borrow_mut().self_effect = Some(crate::dex::MoveSecondary {
                 side_condition: Some("waterpledge".to_string()),
                 ..Default::default()
             });
@@ -255,7 +257,8 @@ pub mod condition {
         // Get the active move - first check if we need to double secondaries
         let should_double_secondaries = {
             if let Some(ref active_move) = battle.active_move {
-                !active_move.secondaries.is_empty() && active_move.id.as_str() != "secretpower"
+                let am = active_move.borrow();
+                !am.secondaries.is_empty() && am.id.as_str() != "secretpower"
             } else {
                 false
             }
@@ -266,13 +269,14 @@ pub mod condition {
             // this.debug('doubling secondary chance');
             battle.debug("doubling secondary chance");
 
-            let active_move = match &mut battle.active_move {
+            let active_move = match &battle.active_move {
                 Some(m) => m,
                 None => return EventResult::Continue,
             };
 
             // for (const secondary of move.secondaries)
-            for secondary in &mut active_move.secondaries {
+            let mut active_move_mut = active_move.borrow_mut();
+            for secondary in &mut active_move_mut.secondaries {
                 // if (pokemon.hasAbility('serenegrace') && secondary.volatileStatus === 'flinch') continue;
                 if has_serene_grace
                     && secondary.volatile_status.as_deref() == Some("flinch")
@@ -287,7 +291,7 @@ pub mod condition {
             }
 
             // if (move.self?.chance) move.self.chance *= 2;
-            if let Some(ref mut self_effect) = active_move.self_effect {
+            if let Some(ref mut self_effect) = active_move_mut.self_effect {
                 if let Some(ref mut chance) = self_effect.chance {
                     *chance *= 2;
                 }

@@ -31,7 +31,7 @@ impl Battle {
 
                     // JS: this.activeMove && this.activeMove.ignoreAbility
                     if let Some(ref active_move) = self.active_move {
-                        if !active_move.ignore_ability {
+                        if !active_move.borrow().ignore_ability {
                             return false;
                         }
 

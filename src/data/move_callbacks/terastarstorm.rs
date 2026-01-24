@@ -53,12 +53,12 @@ pub fn on_modify_type(
     if is_terapagos_stellar {
         if let Some(ref mut active_move) = battle.active_move {
             // move.type = 'Stellar';
-            active_move.move_type = "Stellar".to_string();
+            active_move.borrow_mut().move_type = "Stellar".to_string();
 
             // if (pokemon.terastallized && ...)
             if should_be_physical {
                 // move.category = 'Physical';
-                active_move.category = "Physical".to_string();
+                active_move.borrow_mut().category = "Physical".to_string();
             }
         }
     }
@@ -92,7 +92,7 @@ pub fn on_modify_move(
     if is_terapagos_stellar {
         if let Some(ref mut active_move) = battle.active_move {
             // move.target = 'allAdjacentFoes';
-            active_move.target = "allAdjacentFoes".to_string();
+            active_move.borrow_mut().target = "allAdjacentFoes".to_string();
         }
     }
 

@@ -130,7 +130,7 @@ pub mod condition {
 
         // if (move.category !== 'Status') {
         let move_category = match &battle.active_move {
-            Some(active_move) => active_move.category.as_str(),
+            Some(active_move) => active_move.borrow().category.clone(),
             None => return EventResult::Continue,
         };
 

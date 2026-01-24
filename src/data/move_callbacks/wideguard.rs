@@ -115,21 +115,21 @@ pub mod condition {
         // if (move?.target !== 'allAdjacent' && move.target !== 'allAdjacentFoes') {
         //     return;
         // }
-        if move_data.target != "allAdjacent" && move_data.target != "allAdjacentFoes" {
+        if move_data.borrow().target != "allAdjacent" && move_data.borrow().target != "allAdjacentFoes" {
             return EventResult::Continue;
         }
 
         // if (move.isZ || move.isMax) {
-        if move_data.is_z.is_some() || move_data.is_max.is_some() {
+        if move_data.borrow().is_z.is_some() || move_data.borrow().is_max.is_some() {
             // if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
-            if move_data.id == ID::from("gmaxoneblow") || move_data.id == ID::from("gmaxrapidflow") {
+            if move_data.borrow().id == ID::from("gmaxoneblow") || move_data.borrow().id == ID::from("gmaxrapidflow") {
                 return EventResult::Continue;
             }
 
             // target.getMoveHitData(move).zBrokeProtect = true;
-            if let Some(hit_data) = battle.get_move_hit_data_mut(target) {
+            battle.with_move_hit_data_mut(target, |hit_data| {
                 hit_data.z_broke_protect = true;
-            }
+            });
             // return;
             return EventResult::Continue;
         }

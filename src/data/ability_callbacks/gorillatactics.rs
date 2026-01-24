@@ -60,7 +60,7 @@ pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
         if !lock.is_empty() && lock != move_id {
             // this.addMove('move', pokemon, move.name);
             let move_name = {
-                if let Some(move_data) = battle.dex.moves().get(move_id) {
+                if let Some(move_data) = battle.dex.moves().get(&move_id) {
                     move_data.name.clone()
                 } else {
                     move_id.to_string()
@@ -142,7 +142,7 @@ pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battl
 ///     this.debug('Gorilla Tactics Atk Boost');
 ///     return this.chainModify(1.5);
 /// }
-pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let _move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let _move_id = active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
     use crate::dex_data::ID;
 
     // if (pokemon.volatiles['dynamax']) return;

@@ -33,14 +33,14 @@ pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), _target
 
     use crate::dex::MoveSecondary;
 
-    if let Some(active_move) = battle.active_move.as_mut() {
+    if let Some(ref active_move) = battle.active_move {
         // if (move.category !== "Status")
-        if active_move.category != "Status" {
+        if active_move.borrow().category != "Status" {
             // Check if flinch already exists in secondaries
             // for (const secondary of move.secondaries) {
             //     if (secondary.volatileStatus === 'flinch') return;
             // }
-            let has_flinch = active_move.secondaries.iter()
+            let has_flinch = active_move.borrow().secondaries.iter()
                 .any(|s| s.volatile_status.as_deref() == Some("flinch"));
 
             if has_flinch {
@@ -51,7 +51,7 @@ pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), _target
             //     chance: 10,
             //     volatileStatus: 'flinch',
             // });
-            active_move.secondaries.push(MoveSecondary {
+            active_move.borrow_mut().secondaries.push(MoveSecondary {
                 chance: Some(10),
                 volatile_status: Some("flinch".to_string()),
                 ..Default::default()

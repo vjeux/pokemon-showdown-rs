@@ -67,8 +67,8 @@ pub mod condition {
         _target_pos: Option<(usize, usize)>,
     ) -> EventResult {
         // if (!move.overrideOffensiveStat) return;
-        let stat_and_boosts = if let Some(ref mut active_move) = battle.active_move {
-            if let Some(ref stat) = active_move.override_offensive_stat {
+        let stat_and_boosts = if let Some(ref active_move) = battle.active_move {
+            if let Some(ref stat) = active_move.borrow().override_offensive_stat {
                 stat.clone()
             } else {
                 return EventResult::Continue;
@@ -89,9 +89,9 @@ pub mod condition {
             "def".to_string()
         };
 
-        let move_name = if let Some(ref mut active_move) = battle.active_move {
-            active_move.override_offensive_stat = Some(new_stat.clone());
-            active_move.name.clone()
+        let move_name = if let Some(ref active_move) = battle.active_move {
+            active_move.borrow_mut().override_offensive_stat = Some(new_stat.clone());
+            active_move.borrow().name.clone()
         } else {
             return EventResult::Continue;
         };

@@ -77,7 +77,7 @@ pub mod condition {
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         use crate::dex_data::ID;
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+        let move_id = active_move.map(|m| m.id.to_string()).unwrap_or_default();
 
         // onFoeRedirectTarget(target, source, source2, move) {
         //     if (this.validTarget(this.effectState.target, source, move.target)) {

@@ -105,7 +105,7 @@ pub mod condition {
 
         // Get the active move
         let move_id = match &battle.active_move {
-            Some(active_move) => active_move.id.clone(),
+            Some(active_move) => active_move.borrow().id.clone(),
             None => return EventResult::Continue,
         };
 
@@ -116,7 +116,7 @@ pub mod condition {
 
         // Get move priority from active_move
         let move_priority = match &battle.active_move {
-            Some(active_move) => active_move.priority,
+            Some(active_move) => active_move.borrow().priority,
             None => return EventResult::Continue,
         };
 
@@ -127,9 +127,9 @@ pub mod condition {
 
         // if (!move.flags['protect']) {
         // IMPORTANT: Check the ACTIVE move's runtime flags, not the dex data
-        // Abilities like Unseen Fist modify active_move.flags.protect at runtime
+        // Abilities like Unseen Fist modify active_move.borrow().flags.protect at runtime
         let has_protect_flag = match &battle.active_move {
-            Some(active_move) => active_move.flags.protect,
+            Some(active_move) => active_move.borrow().flags.protect,
             None => true, // Default to having protect if no active move
         };
 
@@ -142,9 +142,9 @@ pub mod condition {
             // if (move.isZ || move.isMax) target.getMoveHitData(move).zBrokeProtect = true;
             if move_data.is_z.is_some() || move_data.is_max.is_some() {
                 // Set zBrokeProtect in move hit data
-                if let Some(hit_data) = battle.get_move_hit_data_mut(target) {
+                battle.with_move_hit_data_mut(target, |hit_data| {
                     hit_data.z_broke_protect = true;
-                }
+                });
             }
 
             return EventResult::Continue;

@@ -25,7 +25,7 @@ pub fn on_after_hit(
     let has_sheer_force = battle
         .active_move
         .as_ref()
-        .map(|m| m.has_sheer_force)
+        .map(|m| m.borrow().has_sheer_force)
         .unwrap_or(false);
 
     let source_hp = {
@@ -83,7 +83,7 @@ pub fn on_after_sub_damage(
     let has_sheer_force = battle
         .active_move
         .as_ref()
-        .map(|m| m.has_sheer_force)
+        .map(|m| m.borrow().has_sheer_force)
         .unwrap_or(false);
 
     let source_hp = {

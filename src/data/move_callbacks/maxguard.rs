@@ -117,8 +117,9 @@ pub mod condition {
         let move_id = battle
             .active_move
             .as_ref()
-            .map(|m| m.id.as_str())
-            .unwrap_or("");
+            .map(|m| m.borrow().id.as_str().to_string())
+            .unwrap_or_default();
+        let move_id = move_id.as_str();
         let bypasses_max_guard = matches!(
             move_id,
             "acupressure"
@@ -159,7 +160,7 @@ pub mod condition {
         // } else {
         //     this.add('-activate', target, 'move: Max Guard');
         // }
-        let smart_target = battle.active_move.as_ref().and_then(|m| m.smart_target);
+        let smart_target = battle.active_move.as_ref().and_then(|m| m.borrow().smart_target);
 
         if let Some(true) = smart_target {
             // Set smartTarget to false

@@ -23,14 +23,14 @@ pub fn on_immunity(_battle: &mut Battle, type_or_status: &str, _pokemon_pos: (us
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
     // if (target !== source)
     if target_pos == source_pos {
         return EventResult::Continue;
     }
 
     // if (move.flags['powder'])
-    if let Some(move_data) = battle.dex.moves().get(move_id) {
+    if let Some(move_data) = battle.dex.moves().get(&move_id) {
         if move_data.flags.contains_key("powder") {
             // this.dex.getImmunity('powder', target)
             // Note: The onImmunity callback above handles powder immunity, so if we get here

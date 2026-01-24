@@ -70,7 +70,7 @@ pub fn on_any_modify_sp_a(battle: &mut Battle, _spa: i32, source_pos: Option<(us
 
     let (_current_ruined, need_to_update) = {
         if let Some(ref active_move) = battle.active_move {
-            if let Some(ruined_pos) = active_move.ruined_spa {
+            if let Some(ruined_pos) = active_move.borrow().ruined_spa {
                 let ruined_has_vessel = {
                     if let Some(ruined) = battle.pokemon_at(ruined_pos.0, ruined_pos.1) {
                         ruined.has_ability(battle, &["vesselofruin"])
@@ -88,14 +88,14 @@ pub fn on_any_modify_sp_a(battle: &mut Battle, _spa: i32, source_pos: Option<(us
     };
 
     if need_to_update {
-        if let Some(ref mut active_move) = battle.active_move {
-            active_move.ruined_spa = Some(ability_holder);
+        if let Some(ref active_move) = battle.active_move {
+            active_move.borrow_mut().ruined_spa = Some(ability_holder);
         }
     }
 
     let should_apply = {
         if let Some(ref active_move) = battle.active_move {
-            active_move.ruined_spa == Some(ability_holder)
+            active_move.borrow().ruined_spa == Some(ability_holder)
         } else {
             false
         }

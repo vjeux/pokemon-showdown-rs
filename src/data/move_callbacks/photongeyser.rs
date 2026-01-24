@@ -26,7 +26,7 @@ pub fn on_modify_move(
     if atk_stat > spa_stat {
         // move.category = 'Physical';
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.category = "Physical".to_string();
+            active_move.borrow_mut().category = "Physical".to_string();
         }
     }
 

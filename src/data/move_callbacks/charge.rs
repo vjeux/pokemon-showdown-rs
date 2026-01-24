@@ -44,7 +44,7 @@ pub mod condition {
         if is_special_ability {
             // this.add('-start', pokemon, 'Charge', this.activeMove!.name, '[from] ability: ' + effect.name);
             let active_move_name = match &battle.active_move {
-                Some(active_move) => active_move.name.clone(),
+                Some(active_move) => active_move.borrow().name.clone(),
                 None => "".to_string(),
             };
 
@@ -101,7 +101,7 @@ pub mod condition {
         if is_special_ability {
             // this.add('-start', pokemon, 'Charge', this.activeMove!.name, '[from] ability: ' + effect.name);
             let active_move_name = match &battle.active_move {
-                Some(active_move) => active_move.name.clone(),
+                Some(active_move) => active_move.borrow().name.clone(),
                 None => "".to_string(),
             };
 
@@ -137,7 +137,7 @@ pub mod condition {
     ) -> EventResult {
         // JavaScript checks move.type (the active move's type, not the dex type)
         let is_electric = battle.active_move.as_ref()
-            .map(|m| m.move_type == "Electric")
+            .map(|m| m.borrow().move_type == "Electric")
             .unwrap_or(false);
 
         // if (move.type === 'Electric') {
@@ -190,7 +190,7 @@ pub mod condition {
     ) -> EventResult {
         // JavaScript checks move.type (the active move's type, not the dex type)
         let (is_electric, is_charge) = match &battle.active_move {
-            Some(m) => (m.move_type == "Electric", m.id.as_str() == "charge"),
+            Some(m) => (m.borrow().move_type == "Electric", m.borrow().id.as_str() == "charge"),
             None => return EventResult::Continue,
         };
 

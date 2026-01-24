@@ -56,7 +56,7 @@ pub fn on_hit(
             Some(m) => m,
             None => return EventResult::Continue,
         };
-        active_move.will_change_forme = true;
+        active_move.borrow_mut().will_change_forme = true;
     }
 
     EventResult::Continue

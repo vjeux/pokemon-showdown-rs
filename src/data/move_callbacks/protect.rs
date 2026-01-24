@@ -120,7 +120,7 @@ pub mod condition {
                 Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
-            active_move.flags.protect
+            active_move.borrow().flags.protect
         };
 
         if !has_protect_flag {
@@ -130,10 +130,10 @@ pub mod condition {
                     Some(active_move) => active_move,
                     None => return EventResult::Continue,
                 };
-                active_move.clone()
+                active_move.borrow().id.clone()
             };
 
-            if move_id.id == ID::from("gmaxoneblow") || move_id.id == ID::from("gmaxrapidflow") {
+            if move_id == ID::from("gmaxoneblow") || move_id == ID::from("gmaxrapidflow") {
                 return EventResult::Continue;
             }
 
@@ -143,15 +143,16 @@ pub mod condition {
                     Some(active_move) => active_move,
                     None => return EventResult::Continue,
                 };
-                (active_move.is_z.is_some(), active_move.is_max.is_some())
+                let am = active_move.borrow();
+                (am.is_z.is_some(), am.is_max.is_some())
             };
 
             if is_z || is_max {
                 // Set z_broke_protect on the target pokemon's move hit data
                 // target.getMoveHitData(move).zBrokeProtect = true;
-                if let Some(hit_data) = battle.get_move_hit_data_mut(target) {
+                battle.with_move_hit_data_mut(target, |hit_data| {
                     hit_data.z_broke_protect = true;
-                }
+                });
             }
 
             // return;
@@ -168,13 +169,13 @@ pub mod condition {
                 Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
-            active_move.smart_target
+            active_move.borrow().smart_target
         };
 
         if smart_target.unwrap_or(false) {
             // move.smartTarget = false;
-            if let Some(ref mut active_move) = battle.active_move {
-                active_move.smart_target = Some(false);
+            if let Some(ref active_move) = battle.active_move {
+                active_move.borrow_mut().smart_target = Some(false);
             }
         } else {
             // this.add('-activate', target, 'move: Protect');

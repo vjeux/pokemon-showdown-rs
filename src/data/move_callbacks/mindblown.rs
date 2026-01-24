@@ -34,7 +34,7 @@ pub fn on_after_move(
         // JS: if (move.mindBlownRecoil && !move.multihit)
         // In JS, "move" is the active move, which may have mindBlownRecoil set to false
         // if the hit loop already applied recoil.
-        (active_move.mindblown_recoil, active_move.multi_hit.is_some())
+        (active_move.borrow().mindblown_recoil, active_move.borrow().multi_hit.is_some())
     };
 
     // if (move.mindBlownRecoil && !move.multihit) {

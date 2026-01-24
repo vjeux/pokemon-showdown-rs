@@ -26,7 +26,7 @@ pub fn base_power_callback(
                 Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
-            active_move.base_power
+            active_move.borrow().base_power
         };
 
         let positive_boosts = {

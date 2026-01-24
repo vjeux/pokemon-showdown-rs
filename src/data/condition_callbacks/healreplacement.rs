@@ -30,7 +30,7 @@ pub fn on_start(
     // For slot conditions, the source effect should be stored in the slot condition's effect state
     // Get the sourceEffect from active_move which triggered this
     if let Some(ref active_move) = battle.active_move {
-        let source_effect = crate::battle::Effect::move_(active_move.id.clone());
+        let source_effect = crate::battle::Effect::move_(active_move.borrow().id.clone());
 
         // Store sourceEffect in the slot condition's effect state
         let pokemon_position = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].position;

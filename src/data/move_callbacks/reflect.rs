@@ -80,7 +80,7 @@ pub mod condition {
 
             // Use active_move category (runtime) instead of static dex data
             // JS uses this.getCategory(move) which returns the effective category
-            let category = active_move.map(|m| m.category.as_str()).unwrap_or("");
+            let category = active_move.map(|m| m.category.to_string()).unwrap_or_default();
 
             if has_ally && category == "Physical" {
                 // if (!target.getMoveHitData(move).crit && !move.infiltrates) {
@@ -96,7 +96,7 @@ pub mod condition {
                         Some(active_move) => active_move,
                         None => return EventResult::Continue,
                     };
-                    active_move.infiltrates
+                    active_move.borrow().infiltrates
                 };
 
                 if !crit && !infiltrates {

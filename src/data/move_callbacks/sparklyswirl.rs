@@ -73,7 +73,7 @@ pub fn on_hit(
                 let infiltrates = battle
                     .active_move
                     .as_ref()
-                    .map(|m| m.infiltrates)
+                    .map(|m| m.borrow().infiltrates)
                     .unwrap_or(false);
                 if !infiltrates {
                     continue;
@@ -159,7 +159,7 @@ pub mod self_callbacks {
                     let infiltrates = battle
                         .active_move
                         .as_ref()
-                        .map(|m| m.infiltrates)
+                        .map(|m| m.borrow().infiltrates)
                         .unwrap_or(false);
                     if !infiltrates {
                         continue;

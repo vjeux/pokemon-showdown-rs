@@ -40,8 +40,8 @@ pub fn on_modify_type(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Event
         }
     }
 
-    if let Some(active_move) = &mut battle.active_move {
-        active_move.move_type = move_type;
+    if let Some(ref active_move) = battle.active_move {
+        active_move.borrow_mut().move_type = move_type;
     }
 
     EventResult::Continue

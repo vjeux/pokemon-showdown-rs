@@ -28,7 +28,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
             None => return EventResult::Continue,
         };
 
-        let move_is_physical = active_move.category == "Physical";
+        let move_is_physical = active_move.borrow().category == "Physical";
         let source_hp = source.hp;
         let source_is_active = source.is_active;
         let source_has_magic_guard = source.has_ability(battle, &["magicguard"]);

@@ -301,9 +301,9 @@ pub fn modify_damage(
         active_move.id, type_mod);
     // Store type_mod in move hit data
     // target.getMoveHitData(move).typeMod = typeMod;
-    if let Some(move_hit_data) = battle.get_move_hit_data_mut(target_pos) {
+    battle.with_move_hit_data_mut(target_pos, |move_hit_data| {
         move_hit_data.type_mod = type_mod as i8;
-    }
+    });
 
     // if (typeMod > 0) {
     //   if (!suppressMessages) this.battle.add("-supereffective", target);

@@ -47,13 +47,13 @@ pub fn on_modify_move(
             // case 'primordialsea':
             //     move.accuracy = true;
             "raindance" | "primordialsea" => {
-                active_move.accuracy = crate::dex::Accuracy::AlwaysHits;
+                active_move.borrow_mut().accuracy = crate::dex::Accuracy::AlwaysHits;
             }
             // case 'sunnyday':
             // case 'desolateland':
             //     move.accuracy = 50;
             "sunnyday" | "desolateland" => {
-                active_move.accuracy = crate::dex::Accuracy::Percent(50);
+                active_move.borrow_mut().accuracy = crate::dex::Accuracy::Percent(50);
             }
             _ => {}
         }

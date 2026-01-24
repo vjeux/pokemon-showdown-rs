@@ -31,7 +31,7 @@ pub fn on_after_boost(
     let active_move_is_parting_shot = battle
         .active_move
         .as_ref()
-        .map(|m| m.id.as_str() == "partingshot")
+        .map(|m| m.borrow().id.as_str() == "partingshot")
         .unwrap_or(false);
 
     if eject_already_set || active_move_is_parting_shot {

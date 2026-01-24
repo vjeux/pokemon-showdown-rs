@@ -28,9 +28,9 @@ pub fn on_base_power(
         None => return EventResult::Continue,
     };
 
-    // Get the active move (clone to avoid borrow issues)
+    // Clone the active move to avoid borrow conflicts with mutable battle methods
     let active_move_clone = match &battle.active_move {
-        Some(active_move) => active_move.clone(),
+        Some(active_move) => active_move.borrow().clone(),
         None => return EventResult::Continue,
     };
 

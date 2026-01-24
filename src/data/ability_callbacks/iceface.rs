@@ -94,7 +94,7 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), 
             None => return EventResult::Continue,
         };
 
-        let is_phys = active_move.category == "Physical";
+        let is_phys = active_move.borrow().category == "Physical";
         (is_phys, pokemon.species_id.clone())
     };
 
@@ -151,7 +151,7 @@ pub fn on_critical_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
             None => return EventResult::Continue,
         };
 
-        let is_phys = active_move.category == "Physical";
+        let is_phys = active_move.borrow().category == "Physical";
         let has_sub = pokemon.has_volatile(&crate::dex_data::ID::from("substitute"));
         (is_phys, pokemon.species_id.clone(), has_sub)
     };
@@ -167,8 +167,8 @@ pub fn on_critical_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
             None => return EventResult::Continue,
         };
 
-        let bypasses = active_move.flags.bypasssub;
-        let infiltr = active_move.infiltrates;
+        let bypasses = active_move.borrow().flags.bypasssub;
+        let infiltr = active_move.borrow().infiltrates;
         (bypasses, infiltr)
     };
 
@@ -210,7 +210,7 @@ pub fn on_effectiveness(battle: &mut Battle, _type_mod: i32, target_pos: (usize,
             None => return EventResult::Continue,
         };
 
-        let is_phys = active_move.category == "Physical";
+        let is_phys = active_move.borrow().category == "Physical";
         let has_sub = pokemon.has_volatile(&crate::dex_data::ID::from("substitute"));
         (is_phys, pokemon.species_id.clone(), has_sub)
     };
@@ -227,8 +227,8 @@ pub fn on_effectiveness(battle: &mut Battle, _type_mod: i32, target_pos: (usize,
             None => return EventResult::Continue,
         };
 
-        let bypasses = active_move.flags.bypasssub;
-        let infiltr = active_move.infiltrates;
+        let bypasses = active_move.borrow().flags.bypasssub;
+        let infiltr = active_move.borrow().infiltrates;
         (bypasses, infiltr)
     };
 

@@ -44,7 +44,7 @@ pub fn base_power_callback(
         let base_power = battle
             .active_move
             .as_ref()
-            .map(|m| m.base_power)
+            .map(|m| m.borrow().base_power)
             .unwrap_or(0);
         return EventResult::Number(base_power * 2);
     }
@@ -53,7 +53,7 @@ pub fn base_power_callback(
     let base_power = battle
         .active_move
         .as_ref()
-        .map(|m| m.base_power)
+        .map(|m| m.borrow().base_power)
         .unwrap_or(0);
     EventResult::Number(base_power)
 }

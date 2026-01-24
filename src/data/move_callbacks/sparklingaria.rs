@@ -61,8 +61,8 @@ pub fn on_after_move(
 
         (
             source_pokemon.fainted,
-            active_move.hit_targets.clone(),
-            active_move.has_sheer_force,
+            active_move.borrow().hit_targets.clone(),
+            active_move.borrow().has_sheer_force,
         )
     };
 
