@@ -11,9 +11,7 @@ use crate::event::EventResult;
 ///     if (!pokemon.ateBerry) pokemon.disableMove('belch');
 /// }
 pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    use crate::debug_elog;
-
-    debug_elog!("[BELCH] on_disable_move called for pokemon at {:?}", pokemon_pos);
+    debug_log!("[BELCH] on_disable_move called for pokemon at {:?}", pokemon_pos);
 
     // if (!pokemon.ateBerry) pokemon.disableMove('belch');
     let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {

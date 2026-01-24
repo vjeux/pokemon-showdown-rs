@@ -46,7 +46,6 @@ impl Battle {
         source: Option<(usize, usize)>,
     ) -> crate::event::EventResult {
         use crate::event::EventResult;
-        use crate::debug_elog;
 
         debug_elog!("[DISPATCH_SINGLE_EVENT] event_id={}, effect_id={}", event_id, effect_id);
 

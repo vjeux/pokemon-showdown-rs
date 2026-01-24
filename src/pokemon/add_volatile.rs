@@ -1,7 +1,6 @@
 use crate::*;
 use crate::battle::{Effect, EffectHolder};
 use crate::event::EventResult;
-use crate::event_system::SharedEffectState;
 
 impl Pokemon {
     /// Add a volatile condition to a Pokemon

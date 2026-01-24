@@ -94,7 +94,6 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 /// }
 pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     use crate::dex_data::ID;
-    use crate::debug_elog;
 
     debug_elog!("[MYSTERYBERRY] on_eat called for pokemon at {:?}", pokemon_pos);
 
@@ -114,8 +113,8 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
 
         debug_elog!("[MYSTERYBERRY] Found pokemon: {} with {} move slots", pokemon.name, pokemon.move_slots.len());
 
-        let has_leppaberry = pokemon.get_volatile(&ID::from("leppaberry")).is_some();
-        debug_elog!("[MYSTERYBERRY] Has leppaberry volatile: {}", has_leppaberry);
+        let _has_leppaberry = pokemon.get_volatile(&ID::from("leppaberry")).is_some();
+        debug_elog!("[MYSTERYBERRY] Has leppaberry volatile: {}", _has_leppaberry);
 
         let move_slot_idx = if let Some(volatile) = pokemon.get_volatile(&ID::from("leppaberry")) {
             // Retrieve move slot index from volatile move_slot_index field
@@ -172,11 +171,11 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         debug_elog!("[MYSTERYBERRY] Modifying Pokemon '{}' at position {:?}", pokemon_mut.name, pokemon_pos);
         if move_slot_index < pokemon_mut.move_slots.len() {
             let move_slot = &mut pokemon_mut.move_slots[move_slot_index];
-            let old_pp = move_slot.pp;
+            let _old_pp = move_slot.pp;
             let new_pp = move_slot.pp.saturating_add(5).min(move_slot.maxpp);
             let move_id = move_slot.id.clone();
             move_slot.pp = new_pp;
-            debug_elog!("[MYSTERYBERRY] PP restored: {} -> {} (maxpp={})", old_pp, new_pp, move_slot.maxpp);
+            debug_elog!("[MYSTERYBERRY] PP restored: {} -> {} (maxpp={})", _old_pp, new_pp, move_slot.maxpp);
             debug_elog!("[MYSTERYBERRY] After modification, move_slot.pp = {}", move_slot.pp);
 
             // Also sync to base_move_slots so clearVolatile preserves PP
@@ -192,7 +191,7 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
 
     // Debug: Verify the modification persisted by re-reading the Pokemon
     {
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+        let _pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => {
                 debug_elog!("[MYSTERYBERRY] VERIFY: pokemon_at returned None");
@@ -200,9 +199,9 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
             }
         };
         debug_elog!("[MYSTERYBERRY] VERIFY: Pokemon '{}' move_slots[{}].pp = {}",
-            pokemon.name,
+            _pokemon.name,
             move_slot_index,
-            pokemon.move_slots.get(move_slot_index).map(|m| m.pp).unwrap_or(255));
+            _pokemon.move_slots.get(move_slot_index).map(|m| m.pp).unwrap_or(255));
     }
 
     // this.add('-activate', pokemon, 'item: Mystery Berry', moveSlot.move);

@@ -69,16 +69,16 @@ impl Battle {
         if callback_name == "onSetStatus" {
             // Sleep Clause Mod: Prevents putting multiple Pokemon to sleep
             // JavaScript: rulesets.ts lines 1392-1410
-            let has_sleep_clause = self.rule_table.as_ref().map(|rt| rt.has("sleepclausemod")).unwrap_or(false);
+            let _has_sleep_clause = self.rule_table.as_ref().map(|rt| rt.has("sleepclausemod")).unwrap_or(false);
 
             // Debug: print all rules in rule_table
             if let Some(ref rule_table) = self.rule_table {
-                let all_rules: Vec<_> = rule_table.keys().collect();
-                debug_elog!("[FIND_BATTLE_EVENT_HANDLERS] All rules in rule_table: {:?}", all_rules);
+                let _all_rules: Vec<_> = rule_table.keys().collect();
+                debug_elog!("[FIND_BATTLE_EVENT_HANDLERS] All rules in rule_table: {:?}", _all_rules);
             }
 
             debug_elog!("[FIND_BATTLE_EVENT_HANDLERS] Checking for sleepclausemod, rule_table exists={}, has_sleep_clause={}",
-                self.rule_table.is_some(), has_sleep_clause);
+                self.rule_table.is_some(), _has_sleep_clause);
 
             if let Some(ref rule_table) = self.rule_table {
                 if rule_table.has("sleepclausemod") {

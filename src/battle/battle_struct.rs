@@ -5,7 +5,7 @@ use std::collections::HashSet;
 
 use crate::battle_queue::BattleQueue;
 use crate::dex_data::{GameType, ID};
-use crate::event_system::{EffectState, SharedEffectState};
+use crate::event_system::SharedEffectState;
 use crate::field::Field;
 use crate::side::Side;
 use crate::prng::{PRNGSeed, PRNG};

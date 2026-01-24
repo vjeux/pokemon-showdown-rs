@@ -261,13 +261,13 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
 
     // DEBUG: Log what get_all_active returned and why
     debug_elog!("[NEUTRALIZING_GAS_END] sorted_active.len()={}, pokemon_pos={:?}", sorted_active.len(), pokemon_pos);
-    for (side_idx, side) in battle.sides.iter().enumerate() {
-        for (slot, opt_idx) in side.active.iter().enumerate() {
-            debug_elog!("[NEUTRALIZING_GAS_END] side={}, slot={}, active[slot]={:?}", side_idx, slot, opt_idx);
+    for (_side_idx, side) in battle.sides.iter().enumerate() {
+        for (_slot, opt_idx) in side.active.iter().enumerate() {
+            debug_elog!("[NEUTRALIZING_GAS_END] side={}, slot={}, active[slot]={:?}", _side_idx, _slot, opt_idx);
             if let Some(poke_idx) = opt_idx {
-                if let Some(pokemon) = side.pokemon.get(*poke_idx) {
+                if let Some(_pokemon) = side.pokemon.get(*poke_idx) {
                     debug_elog!("[NEUTRALIZING_GAS_END]   poke_idx={}, species={}, fainted={}, hp={}",
-                        poke_idx, pokemon.species_id, pokemon.fainted, pokemon.hp);
+                        poke_idx, _pokemon.species_id, _pokemon.fainted, _pokemon.hp);
                 }
             }
         }
@@ -290,8 +290,8 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     let speed_map: std::collections::HashMap<(usize, usize), f64> = speeds.into_iter().collect();
 
     // DEBUG: Log the speeds
-    for (&pos, &speed) in &speed_map {
-        debug_elog!("[NEUTRALIZING_GAS_END] pos={:?}, speed={}", pos, speed);
+    for (&_pos, &_speed) in &speed_map {
+        debug_elog!("[NEUTRALIZING_GAS_END] pos={:?}, speed={}", _pos, _speed);
     }
 
     // Speed sort using pre-calculated speeds

@@ -120,12 +120,12 @@ pub mod condition {
     /// }
     pub fn on_hit(
         battle: &mut Battle,
-        pokemon_pos: (usize, usize),
+        _pokemon_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
     ) -> EventResult {
         // DEBUG: Log effect context
         debug_elog!("[FOCUSPUNCH on_hit] pokemon_pos={:?}, effect={:?}",
-            pokemon_pos,
+            _pokemon_pos,
             battle.effect.as_ref().map(|e| (e.id.as_str(), e.effect_type, e.effect_holder.clone())));
 
         // if (move.category !== 'Status') {
@@ -138,11 +138,11 @@ pub mod condition {
 
         if move_category != "Status" {
             // this.effectState.lostFocus = true;
-            let result = battle.with_effect_state(|state| {
+            let _result = battle.with_effect_state(|state| {
                 state.lost_focus = Some(true);
                 debug_elog!("[FOCUSPUNCH on_hit] Set lost_focus=true in effect_state");
             });
-            debug_elog!("[FOCUSPUNCH on_hit] with_effect_state returned: {:?}", result.is_some());
+            debug_elog!("[FOCUSPUNCH on_hit] with_effect_state returned: {:?}", _result.is_some());
         }
 
         EventResult::Continue

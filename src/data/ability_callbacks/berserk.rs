@@ -21,10 +21,10 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_damage(battle: &mut Battle, _damage: i32, _target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
-    let effect_id = effect.map(|e| e.id.as_str());
-    let effect_type = effect.map(|e| e.effect_type);
+    let _effect_id = effect.map(|e| e.id.as_str());
+    let _effect_type = effect.map(|e| e.effect_type);
     debug_elog!("[BERSERK_ON_DAMAGE] turn={}, effect_id={:?}, effect_type={:?}, target={:?}, battle.effect={:?}",
-        battle.turn, effect_id, effect_type, _target_pos, battle.effect.as_ref().map(|e| (e.id.as_str(), e.effect_type)));
+        battle.turn, _effect_id, _effect_type, _target_pos, battle.effect.as_ref().map(|e| (e.id.as_str(), e.effect_type)));
     // if (effect.effectType === "Move" && !effect.multihit && !(effect.hasSheerForce && source.hasAbility('sheerforce'))) {
     let should_check = if let Some(effect) = effect {
         // Check if effect type is Move (not just if a move with this ID exists!)

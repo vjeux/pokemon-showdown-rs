@@ -337,11 +337,11 @@ pub fn switch_in(
                 }
 
                 let linked_volatiles: Vec<_> = (*pokemon).volatiles.iter()
-                    .filter_map(|(volatile_id, state)| {
+                    .filter_map(|(_volatile_id, state)| {
                         let borrowed = state.borrow();
                         if let (Some(status), Some(pokemon_vec)) = (&borrowed.linked_status, &borrowed.linked_pokemon) {
                             debug_elog!("[SWITCH_LINKED] Found linked volatile='{}' with linked_status='{}' linked_pokemon={:?}",
-                                volatile_id.as_str(), status, pokemon_vec);
+                                _volatile_id.as_str(), status, pokemon_vec);
                             Some((status.clone(), pokemon_vec.clone()))
                         } else {
                             None

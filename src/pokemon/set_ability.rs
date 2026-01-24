@@ -1,6 +1,6 @@
 use crate::*;
 use crate::event::EventResult;
-use crate::event_system::{EffectState, SharedEffectState};
+use crate::event_system::EffectState;
 use crate::battle::Effect;
 
 impl Pokemon {

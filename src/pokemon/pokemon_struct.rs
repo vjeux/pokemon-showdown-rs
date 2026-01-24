@@ -5,7 +5,7 @@ use std::collections::HashMap;
 use std::fmt;
 
 use crate::dex_data::{BoostsTable, Gender, StatsTable, ID};
-use crate::event_system::{EffectState, SharedEffectState};
+use crate::event_system::SharedEffectState;
 
 use super::{Attacker, MoveSlot, PokemonSet, TrappedState};
 

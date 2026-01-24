@@ -1,7 +1,7 @@
 use crate::*;
 use crate::battle::{EventInfo, EffectHolder, EffectType, Effect};
 use crate::event::EventResult;
-use crate::event_system::{EffectState, SharedEffectState};
+use crate::event_system::SharedEffectState;
 
 impl Battle {
 
