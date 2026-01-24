@@ -2,6 +2,69 @@
 
 use crate::*;
 
+/// Helper function to check if a condition object (serde_json::Map) has a callback for an event.
+/// This avoids allocating format! strings unless necessary by checking in order:
+/// 1. Direct event_id key
+/// 2. Priority variant (only if direct key not found)
+/// 3. "on" prefix variants (only if event_id doesn't start with "on" and above not found)
+#[inline]
+fn condition_object_has_callback(condition: &serde_json::Map<String, serde_json::Value>, event_id: &str) -> bool {
+    // Check direct key first (no allocation)
+    if condition.contains_key(event_id) {
+        return true;
+    }
+
+    // Check priority variant (allocation only if direct key failed)
+    let priority_key = format!("{}Priority", event_id);
+    if condition.contains_key(&priority_key) {
+        return true;
+    }
+
+    // Try with "on" prefix only if event_id doesn't already have it
+    if !event_id.starts_with("on") {
+        let with_on = format!("on{}", event_id);
+        if condition.contains_key(&with_on) {
+            return true;
+        }
+        let priority_with_on = format!("on{}Priority", event_id);
+        if condition.contains_key(&priority_with_on) {
+            return true;
+        }
+    }
+
+    false
+}
+
+/// Helper function to check if a HashMap-based extra field has a callback for an event.
+/// Used for move condition.extra fields which are HashMap<String, serde_json::Value>.
+#[inline]
+fn extra_has_callback(extra: &std::collections::HashMap<String, serde_json::Value>, event_id: &str) -> bool {
+    // Check direct key first (no allocation)
+    if extra.contains_key(event_id) {
+        return true;
+    }
+
+    // Check priority variant (allocation only if direct key failed)
+    let priority_key = format!("{}Priority", event_id);
+    if extra.contains_key(&priority_key) {
+        return true;
+    }
+
+    // Try with "on" prefix only if event_id doesn't already have it
+    if !event_id.starts_with("on") {
+        let with_on = format!("on{}", event_id);
+        if extra.contains_key(&with_on) {
+            return true;
+        }
+        let priority_with_on = format!("on{}Priority", event_id);
+        if extra.contains_key(&priority_with_on) {
+            return true;
+        }
+    }
+
+    false
+}
+
 impl Battle {
 
     // ============================================================================
@@ -42,22 +105,9 @@ impl Battle {
         if let Some(ability_data) = self.dex.abilities().get(volatile_str) {
             if let Some(condition_value) = ability_data.extra.get("condition") {
                 if let Some(condition) = condition_value.as_object() {
-                    // Check if the condition has this callback
-                    let has_key = condition.contains_key(event_id);
-                    let priority_key = format!("{}Priority", event_id);
-                    let has_priority_key = condition.contains_key(&priority_key);
-
-                    if has_key || has_priority_key {
+                    // Use helper function to check all event key variants
+                    if condition_object_has_callback(condition, event_id) {
                         return true;
-                    }
-
-                    // Try with "on" prefix
-                    if !event_id.starts_with("on") {
-                        let with_on = format!("on{}", event_id);
-                        let priority_with_on = format!("on{}Priority", event_id);
-                        if condition.contains_key(&with_on) || condition.contains_key(&priority_with_on) {
-                            return true;
-                        }
                     }
                 }
             }
@@ -73,23 +123,10 @@ impl Battle {
             if let Some(condition_value) = item_data.extra.get("condition") {
                 debug_elog!("[HAS_VOLATILE_CALLBACK] Found condition block: {:?}", condition_value);
                 if let Some(condition) = condition_value.as_object() {
-                    // Check if the condition has this callback
-                    let has_key = condition.contains_key(event_id);
-                    let priority_key = format!("{}Priority", event_id);
-                    let has_priority_key = condition.contains_key(&priority_key);
-                    debug_elog!("[HAS_VOLATILE_CALLBACK] Checking for event_id={}, has_key={}, has_priority_key={}", event_id, has_key, has_priority_key);
-
-                    if has_key || has_priority_key {
+                    // Use helper function to check all event key variants
+                    if condition_object_has_callback(condition, event_id) {
+                        debug_elog!("[HAS_VOLATILE_CALLBACK] Found callback for event_id={}", event_id);
                         return true;
-                    }
-
-                    // Try with "on" prefix
-                    if !event_id.starts_with("on") {
-                        let with_on = format!("on{}", event_id);
-                        let priority_with_on = format!("on{}Priority", event_id);
-                        if condition.contains_key(&with_on) || condition.contains_key(&priority_with_on) {
-                            return true;
-                        }
                     }
                 }
             }
@@ -101,22 +138,9 @@ impl Battle {
         // its callbacks are in move.condition, not in conditions.json
         if let Some(move_data) = self.dex.moves().get(volatile_str) {
             if let Some(ref condition_data) = move_data.condition {
-                // Check if the condition has this callback
-                let has_key = condition_data.extra.contains_key(event_id);
-                let priority_key = format!("{}Priority", event_id);
-                let has_priority_key = condition_data.extra.contains_key(&priority_key);
-
-                if has_key || has_priority_key {
+                // Use helper function to check all event key variants
+                if extra_has_callback(&condition_data.extra, event_id) {
                     return true;
-                }
-
-                // Try with "on" prefix
-                if !event_id.starts_with("on") {
-                    let with_on = format!("on{}", event_id);
-                    let priority_with_on = format!("on{}Priority", event_id);
-                    if condition_data.extra.contains_key(&with_on) || condition_data.extra.contains_key(&priority_with_on) {
-                        return true;
-                    }
                 }
             }
         }
@@ -145,18 +169,10 @@ impl Battle {
         // that create slot conditions with their own callbacks
         if let Some(move_data) = self.dex.moves().get(slot_cond_str) {
             if let Some(ref condition_data) = move_data.condition {
-                // Check if the condition has this callback
-                if condition_data.extra.contains_key(event_id) {
-                    debug_elog!("[HAS_SLOT_CONDITION_CALLBACK] Found {} in move condition extra", event_id);
+                // Use helper function to check all event key variants
+                if extra_has_callback(&condition_data.extra, event_id) {
+                    debug_elog!("[HAS_SLOT_CONDITION_CALLBACK] Found callback in move condition extra");
                     return true;
-                }
-                // Try with "on" prefix
-                if !event_id.starts_with("on") {
-                    let with_on = format!("on{}", event_id);
-                    if condition_data.extra.contains_key(&with_on) {
-                        debug_elog!("[HAS_SLOT_CONDITION_CALLBACK] Found {} in move condition extra", with_on);
-                        return true;
-                    }
                 }
             }
         }
@@ -200,15 +216,9 @@ impl Battle {
         // For these, we also need to check the move's condition callbacks
         if let Some(move_data) = self.dex.moves().get(side_cond_str) {
             if let Some(ref condition_data) = move_data.condition {
-                if condition_data.extra.contains_key(event_id) {
+                // Use helper function to check all event key variants
+                if extra_has_callback(&condition_data.extra, event_id) {
                     return true;
-                }
-                // Try with "on" prefix
-                if !event_id.starts_with("on") {
-                    let with_on = format!("on{}", event_id);
-                    if condition_data.extra.contains_key(&with_on) {
-                        return true;
-                    }
                 }
             }
         }
@@ -568,21 +578,10 @@ impl Battle {
                     if let Some(ref condition_data) = move_data.condition {
                         debug_elog!("[CONDITION_HAS_CALLBACK] Found as move with embedded condition (from dex branch), checking condition callbacks");
                         debug_elog!("[CONDITION_HAS_CALLBACK] condition_data.extra keys: {:?}, looking for event_id={}", condition_data.extra.keys().collect::<Vec<_>>(), event_id);
-                        // Check if the key exists in the condition data (not just if it's true)
-                        // This was populated by scripts/update-move-callbacks.js
-                        if condition_data.extra.contains_key(event_id) {
-                            debug_elog!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", event_id);
+                        // Use helper function to check all event key variants
+                        if extra_has_callback(&condition_data.extra, event_id) {
+                            debug_elog!("[CONDITION_HAS_CALLBACK] Found callback in condition.extra, returning true");
                             return true;
-                        }
-
-                        // Try with "on" prefix for backward compatibility
-                        // Move-embedded conditions like shadowforce have "onInvulnerability" not "Invulnerability"
-                        if !event_id.starts_with("on") {
-                            let with_on = format!("on{}", event_id);
-                            if condition_data.extra.contains_key(&with_on) {
-                                debug_elog!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", with_on);
-                                return true;
-                            }
                         }
 
                         // NOTE: Do NOT fallback from onSideResidual to onResidual for embedded conditions.
@@ -602,21 +601,10 @@ impl Battle {
             if let Some(move_data) = self.dex.moves().get(condition_id) {
                 if let Some(ref condition_data) = move_data.condition {
                     debug_elog!("[CONDITION_HAS_CALLBACK] Found as move with embedded condition, checking condition callbacks");
-                    // Check if the key exists in the condition data (not just if it's true)
-                    // This was populated by scripts/update-move-callbacks.js
-                    if condition_data.extra.contains_key(event_id) {
-                        debug_elog!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", event_id);
+                    // Use helper function to check all event key variants
+                    if extra_has_callback(&condition_data.extra, event_id) {
+                        debug_elog!("[CONDITION_HAS_CALLBACK] Found callback in condition.extra, returning true");
                         return true;
-                    }
-
-                    // Try with "on" prefix for backward compatibility
-                    // Move-embedded conditions like shadowforce have "onInvulnerability" not "Invulnerability"
-                    if !event_id.starts_with("on") {
-                        let with_on = format!("on{}", event_id);
-                        if condition_data.extra.contains_key(&with_on) {
-                            debug_elog!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", with_on);
-                            return true;
-                        }
                     }
                 }
             }

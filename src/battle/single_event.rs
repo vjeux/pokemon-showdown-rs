@@ -2,6 +2,7 @@ use crate::*;
 use crate::battle::{EventInfo, EffectHolder, EffectType, Effect};
 use crate::event::EventResult;
 use crate::event_system::SharedEffectState;
+use std::sync::Arc;
 
 impl Battle {
 
@@ -230,20 +231,28 @@ impl Battle {
         };
 
         // Look up proper name based on effect type
-        let effect_name = match effect_type {
-            EffectType::Ability => self.dex.abilities().get(effect_id.as_str())
-                .map(|a| a.name.clone())
-                .unwrap_or_else(|| effect_id.to_string()),
-            EffectType::Item => self.dex.items().get(effect_id.as_str())
-                .map(|i| i.name.clone())
-                .unwrap_or_else(|| effect_id.to_string()),
-            EffectType::Move | EffectType::MoveSelf => self.dex.moves().get(effect_id.as_str())
-                .map(|m| m.name.clone())
-                .unwrap_or_else(|| effect_id.to_string()),
-            _ => self.dex.conditions().get_by_id(effect_id)
-                .and_then(|c| c.name.clone())
-                .or_else(|| self.dex.moves().get(effect_id.as_str()).map(|m| m.name.clone()))
-                .unwrap_or_else(|| effect_id.to_string()),
+        // Optimization: if effect already has a proper name (different from id), use it directly
+        let effect_name: Arc<str> = if effect.name.as_ref() != effect_id.as_str() {
+            // Effect already has a proper display name, clone the Arc (cheap)
+            effect.name.clone()
+        } else {
+            // Need to look up the proper display name from dex
+            let name_str = match effect_type {
+                EffectType::Ability => self.dex.abilities().get(effect_id.as_str())
+                    .map(|a| a.name.clone())
+                    .unwrap_or_else(|| effect_id.to_string()),
+                EffectType::Item => self.dex.items().get(effect_id.as_str())
+                    .map(|i| i.name.clone())
+                    .unwrap_or_else(|| effect_id.to_string()),
+                EffectType::Move | EffectType::MoveSelf => self.dex.moves().get(effect_id.as_str())
+                    .map(|m| m.name.clone())
+                    .unwrap_or_else(|| effect_id.to_string()),
+                _ => self.dex.conditions().get_by_id(effect_id)
+                    .and_then(|c| c.name.clone())
+                    .or_else(|| self.dex.moves().get(effect_id.as_str()).map(|m| m.name.clone()))
+                    .unwrap_or_else(|| effect_id.to_string()),
+            };
+            Arc::from(name_str)
         };
 
         // Set up current effect context
@@ -251,7 +260,7 @@ impl Battle {
         // For slot conditions, with_effect_state_ref converts party index to slot position internally
         self.effect = Some(crate::Effect {
             id: effect_id.clone(),
-            name: effect_name.into(),
+            name: effect_name,
             effect_type,
             effect_holder: target.map(|(s, p)| EffectHolder::Pokemon(s, p)),
             side_index: target.map(|(side, _)| side),

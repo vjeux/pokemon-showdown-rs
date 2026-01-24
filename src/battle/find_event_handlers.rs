@@ -96,6 +96,18 @@ impl Battle {
             "BeforeTurn" | "Update" | "Weather" | "WeatherChange" | "TerrainChange"
         );
 
+        // Pre-compute all event name variants once to avoid repeated format! allocations
+        // These are used multiple times throughout the function
+        let on_event = format!("on{}", event_name);
+        let on_ally_event = if prefixed_handlers { format!("onAlly{}", event_name) } else { String::new() };
+        let on_foe_event = if prefixed_handlers { format!("onFoe{}", event_name) } else { String::new() };
+        let on_any_event = if prefixed_handlers { format!("onAny{}", event_name) } else { String::new() };
+        let on_source_event = if prefixed_handlers { format!("onSource{}", event_name) } else { String::new() };
+        let ally_callback = if prefixed_handlers { format!("Ally{}", event_name) } else { String::new() };
+        let foe_callback = if prefixed_handlers { format!("Foe{}", event_name) } else { String::new() };
+        let any_callback = if prefixed_handlers { format!("Any{}", event_name) } else { String::new() };
+        let source_callback = if prefixed_handlers { format!("Source{}", event_name) } else { String::new() };
+
         // JavaScript: const shouldBubbleDown = target instanceof Side;
         let should_bubble_down = matches!(target, Some(EventTarget::Side(_)));
 
@@ -135,8 +147,7 @@ impl Battle {
                 // We achieve this by having target_side_from_target be None above
             } else {
             // JavaScript: handlers = this.findPokemonEventHandlers(target, `on${eventName}`);
-            let prefixed_event = format!("on{}", event_name);
-            let mut pokemon_handlers = self.find_pokemon_event_handlers(&prefixed_event, target_pokemon_pos, None);
+            let mut pokemon_handlers = self.find_pokemon_event_handlers(&on_event, target_pokemon_pos, None);
             // Add event name to each handler and resolve priority
             for handler in &mut pokemon_handlers {
                 handler.callback_name = event_name.to_string();
@@ -170,20 +181,18 @@ impl Battle {
                         }
 
                         // onAlly handlers
-                        let ally_event = format!("onAlly{}", event_name);
                         let mut ally_handlers =
-                            self.find_pokemon_event_handlers(&ally_event, ally_pos, None);
+                            self.find_pokemon_event_handlers(&on_ally_event, ally_pos, None);
                         for handler in &mut ally_handlers {
-                            handler.callback_name = format!("Ally{}", event_name);
+                            handler.callback_name = ally_callback.clone();
                         }
                         handlers.extend(ally_handlers);
 
                         // onAny handlers
-                        let any_event = format!("onAny{}", event_name);
                         let mut any_handlers =
-                            self.find_pokemon_event_handlers(&any_event, ally_pos, None);
+                            self.find_pokemon_event_handlers(&on_any_event, ally_pos, None);
                         for handler in &mut any_handlers {
-                            handler.callback_name = format!("Any{}", event_name);
+                            handler.callback_name = any_callback.clone();
                         }
                         handlers.extend(any_handlers);
                     }
@@ -214,20 +223,18 @@ impl Battle {
                             }
 
                             // onFoe handlers
-                            let foe_event = format!("onFoe{}", event_name);
                             let mut foe_handlers =
-                                self.find_pokemon_event_handlers(&foe_event, foe_pos, None);
+                                self.find_pokemon_event_handlers(&on_foe_event, foe_pos, None);
                             for handler in &mut foe_handlers {
-                                handler.callback_name = format!("Foe{}", event_name);
+                                handler.callback_name = foe_callback.clone();
                             }
                             handlers.extend(foe_handlers);
 
                             // onAny handlers
-                            let any_event = format!("onAny{}", event_name);
                             let mut any_handlers =
-                                self.find_pokemon_event_handlers(&any_event, foe_pos, None);
+                                self.find_pokemon_event_handlers(&on_any_event, foe_pos, None);
                             for handler in &mut any_handlers {
-                                handler.callback_name = format!("Any{}", event_name);
+                                handler.callback_name = any_callback.clone();
                             }
                             handlers.extend(any_handlers);
                         }
@@ -242,14 +249,13 @@ impl Battle {
         // }
         if let Some(source_pos) = source {
             if prefixed_handlers {
-                let source_event = format!("onSource{}", event_name);
-                debug_elog!("[FIND_EVENT_HANDLERS] Looking for source event '{}' on source {:?}", source_event, source_pos);
+                debug_elog!("[FIND_EVENT_HANDLERS] Looking for source event '{}' on source {:?}", on_source_event, source_pos);
                 let mut source_handlers =
-                    self.find_pokemon_event_handlers(&source_event, source_pos, None);
-                debug_elog!("[FIND_EVENT_HANDLERS] Found {} source handlers for {}", source_handlers.len(), source_event);
+                    self.find_pokemon_event_handlers(&on_source_event, source_pos, None);
+                debug_elog!("[FIND_EVENT_HANDLERS] Found {} source handlers for {}", source_handlers.len(), on_source_event);
                 for handler in &mut source_handlers {
                     debug_elog!("[FIND_EVENT_HANDLERS] Source handler: {:?}", handler.effect.id);
-                    handler.callback_name = format!("Source{}", event_name);
+                    handler.callback_name = source_callback.clone();
                 }
                 handlers.extend(source_handlers);
             }
@@ -297,8 +303,7 @@ impl Battle {
                     if let Some(target_side) = target_side_idx {
                         if side_idx == target_side {
                             // Find handlers for on${eventName}
-                            let prefixed_event = format!("on{}", event_name);
-                            let mut pokemon_handlers = self.find_pokemon_event_handlers(&prefixed_event, poke_pos, None);
+                            let mut pokemon_handlers = self.find_pokemon_event_handlers(&on_event, poke_pos, None);
                             for handler in &mut pokemon_handlers {
                                 handler.callback_name = event_name.to_string();
                             }
@@ -306,20 +311,18 @@ impl Battle {
                         } else if prefixed_handlers {
                             // JavaScript: else if (prefixedHandlers)
                             //     handlers = handlers.concat(this.findPokemonEventHandlers(active, `onFoe${eventName}`));
-                            let foe_event = format!("onFoe{}", event_name);
-                            let mut foe_handlers = self.find_pokemon_event_handlers(&foe_event, poke_pos, None);
+                            let mut foe_handlers = self.find_pokemon_event_handlers(&on_foe_event, poke_pos, None);
                             for handler in &mut foe_handlers {
-                                handler.callback_name = format!("Foe{}", event_name);
+                                handler.callback_name = foe_callback.clone();
                             }
                             handlers.extend(foe_handlers);
                         }
 
                         // JavaScript: if (prefixedHandlers) handlers = handlers.concat(this.findPokemonEventHandlers(active, `onAny${eventName}`));
                         if prefixed_handlers {
-                            let any_event = format!("onAny{}", event_name);
-                            let mut any_handlers = self.find_pokemon_event_handlers(&any_event, poke_pos, None);
+                            let mut any_handlers = self.find_pokemon_event_handlers(&on_any_event, poke_pos, None);
                             for handler in &mut any_handlers {
-                                handler.callback_name = format!("Any{}", event_name);
+                                handler.callback_name = any_callback.clone();
                             }
                             handlers.extend(any_handlers);
                         }
@@ -333,8 +336,7 @@ impl Battle {
                 // JavaScript: if (side === target || side === target.allySide)
                 if side_idx == target_side {
                     // Find handlers for on${eventName}
-                    let prefixed_event = format!("on{}", event_name);
-                    let mut side_handlers = self.find_side_event_handlers(&prefixed_event, side_idx, None, None);
+                    let mut side_handlers = self.find_side_event_handlers(&on_event, side_idx, None, None);
                     for handler in &mut side_handlers {
                         handler.callback_name = event_name.to_string();
                     }
@@ -342,20 +344,18 @@ impl Battle {
                 } else if prefixed_handlers {
                     // JavaScript: else if (prefixedHandlers)
                     //     handlers.push(...this.findSideEventHandlers(side, `onFoe${eventName}`));
-                    let foe_event = format!("onFoe{}", event_name);
-                    let mut foe_side_handlers = self.find_side_event_handlers(&foe_event, side_idx, None, None);
+                    let mut foe_side_handlers = self.find_side_event_handlers(&on_foe_event, side_idx, None, None);
                     for handler in &mut foe_side_handlers {
-                        handler.callback_name = format!("Foe{}", event_name);
+                        handler.callback_name = foe_callback.clone();
                     }
                     handlers.extend(foe_side_handlers);
                 }
 
                 // JavaScript: if (prefixedHandlers) handlers.push(...this.findSideEventHandlers(side, `onAny${eventName}`));
                 if prefixed_handlers {
-                    let any_event = format!("onAny{}", event_name);
-                    let mut any_side_handlers = self.find_side_event_handlers(&any_event, side_idx, None, None);
+                    let mut any_side_handlers = self.find_side_event_handlers(&on_any_event, side_idx, None, None);
                     for handler in &mut any_side_handlers {
-                        handler.callback_name = format!("Any{}", event_name);
+                        handler.callback_name = any_callback.clone();
                     }
                     handlers.extend(any_side_handlers);
                 }
@@ -365,15 +365,14 @@ impl Battle {
         // JavaScript: handlers.push(...this.findFieldEventHandlers(this.field, `on${eventName}`));
         // Note: JavaScript does NOT pass customHolder here - that's only done in fieldEvent()
         // We must NOT pass target here or the field handler will incorrectly inherit the Pokemon's speed
-        let prefixed_event = format!("on{}", event_name);
-        let mut field_handlers = self.find_field_event_handlers(&prefixed_event, None, None);
+        let mut field_handlers = self.find_field_event_handlers(&on_event, None, None);
         for handler in &mut field_handlers {
             handler.callback_name = event_name.to_string();
         }
         handlers.extend(field_handlers);
 
         // JavaScript: handlers.push(...this.findBattleEventHandlers(`on${eventName}`));
-        let mut battle_handlers = self.find_battle_event_handlers(&prefixed_event, None, None);
+        let mut battle_handlers = self.find_battle_event_handlers(&on_event, None, None);
         for handler in &mut battle_handlers {
             handler.callback_name = event_name.to_string();
         }
