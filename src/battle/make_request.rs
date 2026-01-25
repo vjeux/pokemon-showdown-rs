@@ -89,6 +89,17 @@ impl Battle {
         // JS: for (let i = 0; i < this.sides.length; i++) { this.sides[i].activeRequest = requests[i]; }
         let requests = self.get_requests();
         for i in 0..self.sides.len() {
+            // Check if this is a wait request first
+            // Wait requests have a simpler structure: {"wait": true, "side": ...}
+            // and don't match the full BattleRequest struct
+            if requests[i].get("wait").and_then(|v| v.as_bool()).unwrap_or(false) {
+                // JS: if (!this.activeRequest || this.activeRequest.wait) return '';
+                // Wait request means this side has RequestState::None (empty string in JS)
+                self.sides[i].request_state = RequestState::None;
+                self.sides[i].active_request = None;
+                continue;
+            }
+
             // Convert serde_json::Value to BattleRequest
             if let Ok(request) = serde_json::from_value::<crate::choice::BattleRequest>(requests[i].clone()) {
                 // CRITICAL: In JavaScript, side.requestState is a GETTER that derives from activeRequest:

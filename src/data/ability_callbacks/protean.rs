@@ -18,7 +18,7 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
-    debug_elog!("[PROTEAN] on_prepare_hit called: source_pos={:?}, move_id={:?}", source_pos, active_move.map(|m| &*m.id));
+    debug_elog!("[PROTEAN] on_prepare_hit called: source_pos={:?}, move_id={:?}", source_pos, active_move.map(|m| m.id.as_str()));
 
     // Get source position
     let source_pos = match source_pos {

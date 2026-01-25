@@ -92,7 +92,7 @@ pub fn dispatch_on_after_move(
     target_pos: Option<(usize, usize)>,
     active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    debug_elog!("[DISPATCH_AFTER_MOVE] condition_id={}, active_move={:?}", condition_id, active_move.map(|m| m.borrow().id.as_str()));
+    debug_elog!("[DISPATCH_AFTER_MOVE] condition_id={}, active_move={:?}", condition_id, active_move.map(|m| m.id.as_str()));
     match condition_id {
         "lockedmove" => lockedmove::on_after_move(battle, pokemon_pos, target_pos, active_move),
         // Charge volatile: remove after using Electric move (not the Charge move itself)

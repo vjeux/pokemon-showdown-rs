@@ -52,6 +52,22 @@ impl BattleQueue {
     /// This matches the JavaScript logic 1-to-1 but adapts to Rust's ownership model
     /// by taking Battle as a parameter instead of storing a reference.
     pub fn insert_choice(&mut self, battle: &mut Battle, action: Action) {
+        // JS: if (choice.pokemon) { choice.pokemon.updateSpeed(); }
+        // Update the Pokemon's speed before insertion (equivalent to pokemon.updateSpeed())
+        if action.has_pokemon() {
+            if let (Some(side_idx), Some(poke_idx)) = (action.side_index(), action.pokemon_index()) {
+                // Two-phase borrow: calculate speed, then update
+                if battle.sides.get(side_idx).and_then(|s| s.pokemon.get(poke_idx)).is_some() {
+                    let new_speed = battle.get_pokemon_action_speed(side_idx, poke_idx);
+                    if let Some(pokemon) = battle.sides.get_mut(side_idx).and_then(|s| s.pokemon.get_mut(poke_idx)) {
+                        debug_elog!("[QUEUE.INSERT_CHOICE] Updating speed for pokemon at ({}, {}): {} -> {}",
+                            side_idx, poke_idx, pokemon.speed, new_speed);
+                        pokemon.speed = new_speed;
+                    }
+                }
+            }
+        }
+
         debug_elog!("[QUEUE.INSERT_CHOICE] Queue BEFORE insert:");
         for (_i, _act) in self.list.iter().enumerate() {
             debug_elog!("  Index {}: priority={}, speed={}, order={:?}",
